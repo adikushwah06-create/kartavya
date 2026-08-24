@@ -1,0 +1,2720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kartavya - Crowdsourced Civic Issue Reporting & Resolution System</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              500: '#FF671F', // Indian Saffron
+              600: '#e05310',
+              700: '#c44005',
+              950: '#431407',
+            },
+            patriotic: {
+              saffron: '#FF671F',
+              green: '#046A38',
+              white: '#FFFFFF',
+              blue: '#06038D', // Ashoka Chakra Navy Blue
+              lightbg: '#f3f4f6',
+              border: '#e5e7eb',
+              textDark: '#1f2937',
+              textMuted: '#6b7280',
+            }
+          },
+          fontFamily: {
+            sans: ['Public Sans', 'sans-serif'],
+            heading: ['Didot', 'Didot LT STD', 'Bodoni MT', 'Times New Roman', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts - Public Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Leaflet.js Mapping CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <style>
+    body {
+      font-family: 'Public Sans', sans-serif;
+    }
+    h1, h2, h3, h4, .font-outfit {
+      font-family: 'Didot', 'Didot LT STD', 'Bodoni MT', 'Times New Roman', serif;
+    }
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f3f4f6;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #FF671F;
+    }
+    /* Leaflet customization */
+    .leaflet-container {
+      background: #e5e7eb;
+    }
+    .leaflet-bar {
+      border: none !important;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+    }
+    .leaflet-bar a {
+      background-color: #ffffff !important;
+      color: #1f2937 !important;
+      border-bottom: 1px solid #e5e7eb !important;
+    }
+    .leaflet-bar a:hover {
+      background-color: #FF671F !important;
+      color: #ffffff !important;
+    }
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(229, 231, 235, 0.7);
+    }
+    .tricolor-border {
+      position: relative;
+    }
+    .tricolor-border::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: #06038D;
+      z-index: 50;
+    }
+    .tricolor-card-border {
+      position: relative;
+    }
+    .tricolor-card-border::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #FF671F;
+      border-top-left-radius: 1rem;
+      border-top-right-radius: 1rem;
+    }
+    /* Simulated Camera Scanline Effect */
+    .scanlines {
+      background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.25) 50%
+      );
+      background-size: 100% 4px;
+      z-index: 10;
+    }
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+    .animate-pulse-slow {
+      animation: pulse-slow 3s infinite ease-in-out;
+    }
+    /* Google Maps / GPS Blue Pulse Marker */
+    @keyframes pulse-ring {
+      0% { transform: scale(0.35); opacity: 0; }
+      50% { opacity: 0.8; }
+      100% { transform: scale(1.2); opacity: 0; }
+    }
+    @keyframes pulse-dot {
+      0% { transform: scale(0.9); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(0.9); }
+    }
+    .user-pulse-marker {
+      position: relative;
+      display: block;
+      width: 12px;
+      height: 12px;
+    }
+    .user-pulse-marker::before {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: -6px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: #06038D;
+      animation: pulse-ring 2s infinite ease-out;
+    }
+    .user-pulse-marker::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #06038D;
+      border: 2px solid white;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+      animation: pulse-dot 2s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-patriotic-lightbg text-patriotic-textDark min-h-screen flex flex-col selection:bg-brand-500 selection:text-white overflow-x-hidden tricolor-border">
+
+  <!-- ================= ABOUT PAGE (DEFAULT VISITOR LANDING SCREEN) ================= -->
+  <div id="about-page" class="fixed inset-0 z-[110] flex flex-col overflow-y-auto font-sans" style="background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.65)), url('/india-hero-bg.png') no-repeat center center / cover;">
+    <!-- Navbar inside About Page -->
+    <header class="backdrop-blur-md border-b border-slate-800 sticky top-0 z-30" style="background: linear-gradient(135deg, #1f0d1b 0%, #4a192c 45%, #b45309 85%, #d97706 100%);">
+      <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="h-9 w-9 rounded-xl overflow-hidden flex items-center justify-center shadow-md border border-slate-800">
+            <img src="/sun-icon-black.jpg" class="h-full w-full object-cover" alt="Sun Logo">
+          </div>
+          <div>
+            <span class="text-xl font-bold tracking-tight text-white font-outfit">Kartavya</span>
+          </div>
+        </div>
+        <button onclick="transitionToAuthGate()" class="px-5 py-2 bg-brand-500 hover:bg-brand-600 text-white text-xs font-extrabold rounded-xl transition shadow-sm font-outfit uppercase tracking-wider">
+          Access Portals <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-12 flex flex-col justify-between space-y-12">
+      <!-- Hero Header Section -->
+      <div class="text-center space-y-4 max-w-3xl mx-auto">
+        <h1 class="text-6xl sm:text-7xl font-extrabold text-white font-outfit tracking-tight leading-none drop-shadow-md">
+          Kartavya
+        </h1>
+        <p class="text-lg sm:text-xl text-orange-200 leading-relaxed max-w-2xl mx-auto font-medium italic drop-shadow-sm">
+          for the people, by the people, of the people
+        </p>
+      </div>
+
+      <!-- About Description Panel -->
+      <div class="max-w-4xl mx-auto bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl space-y-4 shadow-2xl">
+        <h2 class="text-2xl font-bold text-white font-outfit tracking-tight text-center">About Our Initiative</h2>
+        <p class="text-sm sm:text-base text-slate-100 leading-loose font-medium text-justify">
+          Kartavya is a transformative digital civic governance platform designed to empower citizens and foster absolute transparency in municipal administration. By bridging the gap between local residents and municipal authorities, Kartavya enables seamless tracking of neighborhood resolutions, verified telemetry audits, and real-time community engagement. Our flagship discrepancy scanner allows citizens to audit public ward budgets and flag corruption anomalies directly to a live bulletin board, while also drafting automated Right to Information (RTI) petitions. Integrated with advanced AI fact-checking to filter out duplicate logs, Kartavya cultivates a culture of civic duty and administrative accountability—creating a governance model built truly for the people, by the people, and of the people.
+        </p>
+      </div>
+
+      <!-- Footer for About Page -->
+      <div class="text-center text-[10px] text-slate-350 font-semibold border-t border-slate-800 pt-6">
+        Kartavya &copy; 2026. Empowering citizens through automated audits, RTIs, and verified telemetry resolution.
+      </div>
+    </main>
+  </div>
+
+  <!-- ================= AUTH LANDING OVERLAY ================= -->
+  <div id="auth-gate" class="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4 overflow-y-auto hidden" style="background: linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)), url('/citizens-bg.jpg') no-repeat center center / cover;">
+    <div class="max-w-4xl w-full text-center mb-8">
+      <div class="h-16 w-16 mx-auto rounded-2xl overflow-hidden flex items-center justify-center shadow-lg border border-slate-200 mb-4">
+        <img src="/sun-icon.jpg" class="h-full w-full object-cover" alt="Sun Logo">
+      </div>
+      <h1 class="text-4xl font-extrabold text-slate-800 tracking-tight font-outfit">Kartavya</h1>
+    </div>
+
+    <div class="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+      <!-- Citizen Portal Card -->
+      <div class="bg-white p-6 sm:p-8 rounded-3xl flex flex-col justify-between shadow-xl relative group overflow-hidden">
+        <div>
+          <div class="flex items-center justify-between mb-6">
+            <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full font-bold uppercase tracking-wider">Citizen Service</span>
+            <i class="fa-solid fa-users text-2xl text-slate-400"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-slate-800 font-outfit mb-6">Citizen Portal</h2>
+
+          <!-- Citizen Login Form -->
+          <div id="citizen-login-view" class="space-y-4">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Adhaar / Username</label>
+              <input type="text" id="citizen-adhaar" placeholder="Adhaar Number or 'user'" oninput="formatAdhaarInput(this)" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-500 font-mono transition duration-200">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Personal Secure PIN</label>
+              <input type="password" id="citizen-pin" placeholder="Enter PIN (e.g. 'user123')" maxlength="15" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-500 font-mono transition duration-200">
+            </div>
+          </div>
+
+          <!-- Citizen Registration view (Hidden by default) -->
+          <div id="citizen-register-view" class="hidden space-y-4 mt-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            <span class="block text-[10px] font-bold text-brand-600 uppercase tracking-wider mb-2"><i class="fa-solid fa-user-plus"></i> New Adhaar Registration Setup</span>
+            <div>
+              <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Full Legal Name</label>
+              <input type="text" id="reg-name" placeholder="e.g. Aditi Kushwah" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:border-brand-500">
+            </div>
+            <div>
+              <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Phone Number</label>
+              <input type="text" id="reg-phone" placeholder="e.g. +91 98765 43210" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:border-brand-500">
+            </div>
+            <div>
+              <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Registered Ward / Address</label>
+              <input type="text" id="reg-ward" placeholder="e.g. Ward 150 - Indiranagar, Bengaluru" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:border-brand-500">
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-slate-200 mt-8">
+          <button onclick="handleCitizenLogin()" id="citizen-auth-btn" class="w-full py-3.5 bg-slate-800 hover:bg-slate-900 active:scale-95 text-white font-extrabold text-sm rounded-xl transition shadow-md flex items-center justify-center gap-2 font-outfit">
+            Sign In to Dashboard <i class="fa-solid fa-arrow-right-to-bracket"></i>
+          </button>
+          <button onclick="toggleCitizenRegMode()" id="citizen-toggle-reg" class="w-full text-center text-xs text-slate-500 hover:text-slate-800 mt-4 font-bold transition">New Adhaar? Set up PIN & Profile</button>
+        </div>
+      </div>
+
+      <!-- Admin Portal Card -->
+      <div class="bg-white p-6 sm:p-8 rounded-3xl flex flex-col justify-between shadow-xl relative group overflow-hidden">
+        <div>
+          <div class="flex items-center justify-between mb-6">
+            <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full font-bold uppercase tracking-wider">Municipal Authority</span>
+            <i class="fa-solid fa-building-shield text-2xl text-slate-400"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-slate-800 font-outfit mb-6">Municipal Admin Portal</h2>
+
+          <!-- Admin Form -->
+          <div class="space-y-4">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Authority Username</label>
+              <input type="text" id="admin-user" placeholder="e.g. admin" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-patriotic-blue transition duration-200">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Official Security Code</label>
+              <input type="password" id="admin-pass" placeholder="e.g. admin123" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-patriotic-blue transition duration-200 font-mono">
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-slate-200 mt-8">
+          <button onclick="handleAdminLogin()" class="w-full py-3.5 bg-slate-800 hover:bg-slate-900 active:scale-95 text-white font-extrabold text-sm rounded-xl transition shadow-md flex items-center justify-center gap-2 font-outfit">
+            Secure Terminal Login <i class="fa-solid fa-shield-halved"></i>
+          </button>
+          <p class="text-center text-[10px] text-slate-400 mt-4 leading-relaxed font-semibold">Authorized municipal triage access only. Telemetry checks are audited dynamically.</p>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-4xl w-full text-center mt-6">
+      <button onclick="showAboutPage()" class="text-xs text-slate-500 hover:text-slate-800 font-bold transition flex items-center justify-center gap-1 mx-auto">
+        <i class="fa-solid fa-arrow-left"></i> Learn More About Kartavya
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <nav id="app-nav" class="sticky top-0 z-50 border-b border-slate-850 text-white px-4 sm:px-6 py-3 shadow-md hidden" style="background: linear-gradient(135deg, #1f0d1b 0%, #4a192c 45%, #b45309 85%, #d97706 100%);">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <!-- Logo and Subtext -->
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('map')">
+        <div class="h-10 w-10 rounded-xl overflow-hidden flex items-center justify-center shadow-md border border-slate-800">
+          <img src="/sun-icon-black.jpg" class="h-full w-full object-cover" alt="Sun Logo">
+        </div>
+        <div>
+          <span class="text-2xl font-bold tracking-tight text-white font-outfit">Kartavya</span>
+        </div>
+      </div>
+
+      <!-- Tab Switchers -->
+      <div id="navbar-tabs-container" class="flex bg-blue-950/60 p-1 rounded-xl max-w-full overflow-x-auto">
+        <!-- Injected via JS based on role -->
+      </div>
+
+      <!-- User Active Session and Logout -->
+      <div class="flex items-center space-x-4 bg-blue-950/40 border border-blue-800 px-3.5 py-1.5 rounded-xl">
+        <div class="flex flex-col text-right">
+          <span class="text-[9px] text-orange-200 font-semibold uppercase tracking-wider" id="nav-session-role">Role</span>
+          <span class="text-xs font-bold text-white font-outfit truncate max-w-[120px]" id="nav-session-name">Name</span>
+        </div>
+        <div class="h-8 w-[1px] bg-blue-800"></div>
+        <button onclick="handleLogout()" class="h-8 px-3 rounded-lg bg-orange-500 hover:bg-orange-600 border border-orange-400 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-sm">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Exit
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-8 flex flex-col justify-stretch">
+    
+    <!-- ================= TAB 1: REPORT ISSUE ================= -->
+    <section id="view-report" class="tab-view hidden grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch flex-1">
+      <!-- Left: Input Form (5 cols) -->
+      <div class="lg:col-span-5 flex flex-col justify-between bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-lg relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-1 bg-patriotic-saffron"></div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800 mb-2 font-outfit">Log a Civic Issue</h2>
+          <p class="text-sm text-slate-500 mb-6 font-medium">Attach a geolocation-stamped image and submit your report. Verified submissions earn 50 Karma Points.</p>
+          
+          <form id="report-form" class="space-y-4 font-medium" onsubmit="handleReportSubmit(event)">
+            <div>
+              <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Issue Category <span class="text-rose-500">*</span></label>
+              <select id="report-category" required onchange="updateCameraCategory()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-800 focus:outline-none focus:border-patriotic-blue focus:ring-1 focus:ring-patriotic-blue transition duration-200">
+                <option value="" disabled selected>Select Category...</option>
+                <option value="Pothole">Pothole / Road Repair</option>
+                <option value="Overflowing Trash">Overflowing Garbage Dumpster</option>
+                <option value="Broken Streetlight">Broken Streetlight</option>
+                <option value="Sewage Blockage">Sewage Overflow / Blockage</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Report Title <span class="text-rose-500">*</span></label>
+              <input type="text" id="report-title" required placeholder="e.g., Damaged manhole cover on 5th main" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-patriotic-blue focus:ring-1 focus:ring-patriotic-blue transition duration-200">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Detailed Description</label>
+              <textarea id="report-description" rows="3" placeholder="Describe the issue, landmarks, or details to help municipal workers locate and triage." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-patriotic-blue focus:ring-1 focus:ring-patriotic-blue transition duration-200"></textarea>
+            </div>
+
+            <!-- GPS/Location Details -->
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Latitude</label>
+                <input type="text" id="report-lat" readonly placeholder="Camera Stamp Pending" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-brand-600 font-mono focus:outline-none cursor-default">
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Longitude</label>
+                <input type="text" id="report-lng" readonly placeholder="Camera Stamp Pending" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-brand-600 font-mono focus:outline-none cursor-default">
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="mt-8 font-sans">
+          <button type="submit" form="report-form" id="submit-report-btn" disabled class="w-full py-4 px-6 bg-slate-200 text-slate-400 font-extrabold rounded-xl flex items-center justify-center gap-3 transition-all duration-300 cursor-not-allowed hover:bg-slate-300">
+            <i class="fa-solid fa-paper-plane"></i> Log Issue & Lock Escrow
+          </button>
+          <p class="text-center text-[11px] text-slate-400 mt-3 font-semibold"><i class="fa-solid fa-lock text-brand-500"></i> Escrow will lock +50 KP until municipal verification resolves report.</p>
+        </div>
+      </div>
+
+      <!-- Right: Simulated Camera Interface (7 cols) -->
+      <div class="lg:col-span-7 flex flex-col bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden relative font-sans">
+        <!-- Viewfinder Panel Header -->
+        <div class="bg-slate-50 px-6 py-4 flex items-center justify-between border-b border-slate-200">
+          <div class="flex items-center space-x-2">
+            <span class="h-2.5 w-2.5 rounded-full bg-rose-500 animate-pulse"></span>
+            <span class="text-xs font-semibold text-slate-700 uppercase tracking-widest font-outfit">In-App GPS Camera Viewfinder</span>
+          </div>
+          <span class="text-[10px] bg-brand-50 text-brand-600 border border-brand-100 px-2.5 py-0.5 rounded-md font-bold uppercase tracking-wider">Simulated EXIF Stamp</span>
+        </div>
+
+        <!-- Camera Screen -->
+        <div class="flex-1 bg-black flex flex-col items-center justify-center p-6 relative min-h-[350px]">
+          <!-- Shutter Flash Overlay -->
+          <div id="camera-flash" class="absolute inset-0 bg-white opacity-0 pointer-events-none transition-opacity duration-150 z-40"></div>
+          
+          <!-- Grid Overlay (Rule of thirds) -->
+          <div class="absolute inset-0 pointer-events-none border border-brand-500/5 grid grid-cols-3 grid-rows-3 z-20">
+            <div class="border-r border-b border-brand-500/10"></div>
+            <div class="border-r border-b border-brand-500/10"></div>
+            <div class="border-b border-brand-500/10"></div>
+            <div class="border-r border-b border-brand-500/10"></div>
+            <div class="border-r border-b border-brand-500/10"></div>
+            <div class="border-b border-brand-500/10"></div>
+            <div class="border-r border-b border-brand-500/10"></div>
+            <div class="border-r border-b border-brand-500/10"></div>
+            <div></div>
+          </div>
+          
+          <!-- Simulated Camera HUD / Readouts -->
+          <div class="absolute inset-0 p-4 pointer-events-none flex flex-col justify-between z-30 font-mono text-[10px] text-brand-500/90">
+            <div class="flex justify-between">
+              <div>
+                <p>REC [2.7K 60FPS]</p>
+                <p id="cam-status">CAM: READY</p>
+              </div>
+              <div class="text-right">
+                <p>ISO 400 | f/1.8 | 1/250s</p>
+                <p id="cam-sensor-size font-bold">1/1.7" CMOS</p>
+              </div>
+            </div>
+            <div class="flex justify-between items-end">
+              <div>
+                <p>LAT: <span id="cam-hud-lat">--.----</span></p>
+                <p>LNG: <span id="cam-hud-lng">--.----</span></p>
+              </div>
+              <div class="text-right">
+                <p id="cam-hud-time">UTC: --:--:--</p>
+                <p>EXIF: STAMPED</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Central Standby Sight -->
+          <div id="camera-lens-sight" class="h-28 w-28 rounded-full border border-dashed border-brand-500/40 flex items-center justify-center z-20 animate-pulse-slow">
+            <i class="fa-solid fa-camera text-4xl text-brand-500/30"></i>
+          </div>
+
+          <!-- Captured Image Container -->
+          <div id="captured-image-container" class="absolute inset-0 z-10 hidden bg-slate-950 flex items-center justify-center overflow-hidden">
+            <img id="captured-image" class="w-full h-full object-cover" src="" alt="Captured civic issue photo">
+            <!-- Glassy stamp on image -->
+            <div class="absolute bottom-4 left-4 right-4 bg-slate-900/90 backdrop-blur-md border border-slate-700/50 p-3 rounded-lg text-[11px] font-mono text-emerald-400 space-y-0.5 pointer-events-none shadow-xl">
+              <div class="flex justify-between font-bold border-b border-slate-800 pb-1 mb-1 text-slate-300">
+                <span>KARTAVYA SECURE IMAGE</span>
+                <span>VERIFIED TELEMETRY</span>
+              </div>
+              <p><span class="text-slate-400">LAT/LNG:</span> <span id="stamp-coords">12.9716, 77.5946</span></p>
+              <p><span class="text-slate-400">DEVICE:</span> CivicCam v2.1 (Simulated Sensor)</p>
+              <p><span class="text-slate-400">TIMESTAMP:</span> <span id="stamp-time">2026-08-24 16:55 UTC</span></p>
+              <p><span class="text-slate-400">HASH AUTH:</span> SHA-256: <span id="stamp-hash">a9d4e...e3b2</span></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls Footer -->
+        <div class="bg-slate-50 p-6 border-t border-slate-200 flex flex-col md:flex-row gap-4 items-center justify-between">
+          <div class="text-center md:text-left">
+            <span class="text-xs text-slate-500 font-medium">Ensure category is selected. The app will automatically generate realistic geolocation coordinates and camera capture details matching that category.</span>
+          </div>
+          
+          <button type="button" id="trigger-capture-btn" onclick="captureSimulatedPhoto()" class="w-full md:w-auto px-6 py-3.5 bg-brand-500 text-white font-extrabold rounded-xl flex items-center justify-center gap-2.5 shadow-md shadow-brand-500/20 hover:bg-brand-600 active:scale-95 transition-all duration-200">
+            <i class="fa-solid fa-shutter-button"></i> Capture Telemetry Photo
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 2: CITY MAP & PEER VALIDATION ================= -->
+    <section id="view-map" class="tab-view flex-1 flex flex-col lg:grid lg:grid-cols-12 gap-6 items-stretch">
+      <!-- Left: Interactive Leaflet Map (8 cols) -->
+      <div class="lg:col-span-8 flex flex-col bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden min-h-[450px] lg:min-h-0 relative">
+        <!-- Map header with legend -->
+        <div class="bg-slate-50 px-4 py-3 flex flex-wrap items-center justify-between border-b border-slate-200 gap-2 font-sans">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-map-location text-patriotic-blue"></i>
+            <h3 class="text-sm font-bold text-slate-800 font-outfit">Active Issues Heatmap</h3>
+          </div>
+          <!-- Legend -->
+          <div class="flex items-center gap-4 text-xs font-semibold">
+            <span class="flex items-center gap-1.5 text-orange-600">
+              <span class="h-2.5 w-2.5 rounded-full bg-patriotic-saffron"></span> Pending
+            </span>
+            <span class="flex items-center gap-1.5 text-blue-600">
+              <span class="h-2.5 w-2.5 rounded-full bg-patriotic-blue"></span> In Progress
+            </span>
+            <span class="flex items-center gap-1.5 text-emerald-700">
+              <span class="h-2.5 w-2.5 rounded-full bg-patriotic-green"></span> Resolved
+            </span>
+          </div>
+        </div>
+        
+        <!-- Map Area -->
+        <div class="flex-1 w-full relative" id="map-container">
+          <div id="leaflet-map" class="absolute inset-0 z-0 rounded-b-2xl"></div>
+          <!-- GPS Locate Button on Map -->
+          <button onclick="zoomToUserLocation()" class="absolute top-[80px] left-[10px] z-[1000] h-[34px] w-[34px] bg-white border border-slate-300 rounded shadow-md hover:bg-brand-500 hover:border-brand-500 hover:text-white text-slate-700 transition flex items-center justify-center font-bold" title="Center on my location">
+            <i class="fa-solid fa-location-crosshairs text-base"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: Inspector & Peer Validation Panel (4 cols) -->
+      <div class="lg:col-span-4 flex flex-col bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden min-h-[350px] lg:min-h-0">
+        <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex items-center justify-between font-sans">
+          <h3 class="text-base font-bold text-slate-800 font-outfit">Issue Inspector</h3>
+          <span class="text-xs bg-slate-200 text-slate-600 px-2 py-0.5 rounded-md font-semibold">Verification</span>
+        </div>
+
+        <div class="flex-1 flex flex-col justify-center items-stretch p-6" id="inspector-body">
+          <!-- Default Empty State -->
+          <div id="inspector-empty-state" class="text-center py-10 px-4 flex flex-col items-center justify-center space-y-4">
+            <div class="h-16 w-16 rounded-full bg-slate-100 flex items-center justify-center border border-slate-200">
+              <i class="fa-solid fa-map-pin text-2xl text-slate-400"></i>
+            </div>
+            <div>
+              <p class="font-bold text-slate-700">No Pin Selected</p>
+              <p class="text-xs text-slate-400 mt-1 max-w-[240px] mx-auto font-medium">Click on any marker on the map to verify details, view camera proof, and upvote.</p>
+            </div>
+          </div>
+
+          <!-- Active Details Card -->
+          <div id="inspector-card" class="hidden flex-col h-full justify-between space-y-4">
+            <div class="space-y-3">
+              <!-- Photo container -->
+              <div class="w-full h-40 bg-slate-950 rounded-xl overflow-hidden border border-slate-200 relative shadow-inner">
+                <img id="inspector-img" class="w-full h-full object-cover" src="" alt="Issue Image">
+                <!-- Status Badge -->
+                <span id="inspector-status-badge" class="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-lg"></span>
+              </div>
+              
+              <!-- Core details -->
+              <div>
+                <div class="flex justify-between items-start">
+                  <span id="inspector-category" class="text-[10px] text-brand-600 uppercase tracking-widest font-bold"></span>
+                  <span id="inspector-flagged-badge" class="hidden text-[9px] bg-rose-50 border border-rose-200 text-rose-600 font-bold px-2 py-0.5 rounded-md"><i class="fa-solid fa-triangle-exclamation"></i> Over budget Alert</span>
+                </div>
+                <h4 id="inspector-title" class="text-lg font-bold text-slate-800 mt-0.5 leading-snug"></h4>
+                <p class="text-xs text-slate-500 mt-1 flex items-center gap-1 font-sans font-medium">
+                  <i class="fa-solid fa-clock"></i> <span id="inspector-time"></span>
+                </p>
+              </div>
+
+              <!-- Description -->
+              <div class="bg-slate-50 rounded-xl p-3 border border-slate-200">
+                <p id="inspector-desc" class="text-xs text-slate-600 leading-relaxed font-medium"></p>
+              </div>
+
+              <!-- Department / Details -->
+              <div class="grid grid-cols-2 gap-3 text-[11px] font-sans">
+                <div class="bg-slate-50 p-2 rounded-lg border border-slate-200">
+                  <span class="text-slate-500 block font-semibold">Assigned Department</span>
+                  <span id="inspector-dept" class="text-slate-800 font-bold font-outfit mt-0.5 block"></span>
+                </div>
+                <div class="bg-slate-50 p-2 rounded-lg border border-slate-200">
+                  <span class="text-slate-500 block font-semibold">Karma Escrow</span>
+                  <span class="text-brand-600 font-bold font-outfit mt-0.5 block">50 KP Lock</span>
+                </div>
+              </div>
+
+              <!-- Resolution Proof Display -->
+              <div id="inspector-resolution-container" class="hidden bg-emerald-50 border border-emerald-200 p-3 rounded-xl space-y-2">
+                <div class="flex items-center gap-1.5 text-xs text-emerald-700 font-bold">
+                  <i class="fa-solid fa-circle-check"></i>
+                  <span>Municipal Resolution Proof Attached</span>
+                </div>
+                <div class="w-full h-24 rounded-lg overflow-hidden border border-emerald-200 relative">
+                  <img id="inspector-resolution-img" class="w-full h-full object-cover" src="" alt="Resolution proof">
+                </div>
+              </div>
+            </div>
+
+            <!-- Upvote Trigger Box -->
+            <div class="pt-4 border-t border-slate-200 flex flex-col gap-3 font-sans">
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-500 font-semibold"><i class="fa-solid fa-check-double text-slate-400"></i> Peer Validations</span>
+                <span id="inspector-upvote-count" class="font-bold text-slate-700"></span>
+              </div>
+              
+              <button onclick="upvoteSelectedIssue()" id="inspector-upvote-btn" class="w-full py-3 bg-patriotic-blue hover:bg-blue-800 active:scale-95 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition duration-200 shadow-md shadow-blue-800/10">
+                <i class="fa-regular fa-thumbs-up"></i> Upvote & Peer Verify Issue
+              </button>
+              <p class="text-center text-[10px] text-slate-400 font-medium">Validation stamps establish community severity, locking the report for urgent city action.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 3: ACTION CENTRE (ADMIN VIEW) ================= -->
+    <section id="view-triage" class="tab-view hidden flex-col gap-6 flex-1">
+      <!-- Admin Metric Row -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 font-sans">
+        <div class="bg-white border border-slate-200 p-4 sm:p-5 rounded-2xl flex items-center space-x-4 shadow-md relative overflow-hidden">
+          <div class="absolute top-0 left-0 right-0 h-1 bg-patriotic-blue"></div>
+          <div class="h-12 w-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-500 text-xl border border-slate-200">
+            <i class="fa-solid fa-list-check"></i>
+          </div>
+          <div>
+            <span class="text-xs text-slate-500 block font-semibold">Total Reports</span>
+            <span class="text-xl sm:text-2xl font-bold font-outfit text-slate-800" id="admin-stat-total">0</span>
+          </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 p-4 sm:p-5 rounded-2xl flex items-center space-x-4 shadow-md relative overflow-hidden">
+          <div class="absolute top-0 left-0 right-0 h-1 bg-patriotic-saffron"></div>
+          <div class="h-12 w-12 rounded-xl bg-orange-50 flex items-center justify-center text-brand-500 text-xl border border-brand-100">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div>
+            <span class="text-xs text-slate-500 block font-semibold">Active Issues</span>
+            <span class="text-xl sm:text-2xl font-bold font-outfit text-brand-500" id="admin-stat-active">0</span>
+          </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 p-4 sm:p-5 rounded-2xl flex items-center space-x-4 shadow-md relative overflow-hidden">
+          <div class="absolute top-0 left-0 right-0 h-1 bg-patriotic-green"></div>
+          <div class="h-12 w-12 rounded-xl bg-emerald-50 flex items-center justify-center text-patriotic-green text-xl border border-emerald-100">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <div>
+            <span class="text-xs text-slate-500 block font-semibold">Resolved</span>
+            <span class="text-xl sm:text-2xl font-bold font-outfit text-patriotic-green" id="admin-stat-resolved">0</span>
+          </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 p-4 sm:p-5 rounded-2xl flex items-center space-x-4 shadow-md relative overflow-hidden">
+          <div class="absolute top-0 left-0 right-0 h-1 bg-rose-50"></div>
+          <div class="h-12 w-12 rounded-xl bg-rose-50 flex items-center justify-center text-rose-500 text-xl border border-rose-100">
+            <i class="fa-solid fa-shield-alert"></i>
+          </div>
+          <div>
+            <span class="text-xs text-slate-500 block font-semibold">Spam Blocked</span>
+            <span class="text-xl sm:text-2xl font-bold font-outfit text-rose-500" id="admin-stat-spam">3</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters & Action layout -->
+      <div class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch min-h-[400px]">
+        <!-- Left: Filters & List (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden">
+          <!-- Search & Filter bar -->
+          <div class="bg-slate-50 p-4 border-b border-slate-200 flex flex-col sm:flex-row gap-3 items-center justify-between font-sans">
+            <!-- Department Tabs -->
+            <div class="flex bg-slate-200 p-1 rounded-xl max-w-full overflow-x-auto w-full sm:w-auto">
+              <button onclick="filterAdminDept('All')" id="dept-all" class="dept-btn text-xs font-bold px-3 py-1.5 rounded-lg text-brand-600 bg-white shadow-sm">All</button>
+              <button onclick="filterAdminDept('Public Works')" id="dept-pw" class="dept-btn text-xs font-bold px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-700 bg-transparent">Public Works</button>
+              <button onclick="filterAdminDept('Sanitation')" id="dept-san" class="dept-btn text-xs font-bold px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-700 bg-transparent">Sanitation</button>
+              <button onclick="filterAdminDept('Electrical')" id="dept-elec" class="dept-btn text-xs font-bold px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-700 bg-transparent">Electrical</button>
+            </div>
+            
+            <div class="relative w-full sm:w-48">
+              <input type="text" id="admin-search" oninput="renderAdminList()" placeholder="Search title..." class="w-full text-xs bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:border-brand-500">
+              <i class="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-slate-400 text-[11px]"></i>
+            </div>
+          </div>
+
+          <!-- Reports List Container -->
+          <div class="flex-1 overflow-y-auto max-h-[500px] p-4 bg-slate-50/50" id="admin-list-container">
+            <!-- Dynamic elements go here -->
+          </div>
+        </div>
+
+        <!-- Right: Admin Action Workbench (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col bg-white rounded-2xl border border-slate-200 shadow-md overflow-hidden relative">
+          <!-- Blue Accent -->
+          <div class="absolute top-0 left-0 right-0 h-1 bg-patriotic-blue"></div>
+          <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex items-center justify-between font-sans">
+            <h3 class="text-base font-bold text-slate-800 font-outfit">Municipal Action Centre</h3>
+            <span class="text-xs bg-blue-50 text-patriotic-blue border border-blue-100 px-2 py-0.5 rounded-md font-bold">Action Terminal</span>
+          </div>
+
+          <div class="flex-1 flex flex-col justify-center items-stretch p-6 animate-fadeIn" id="admin-workbench-body">
+            <!-- Empty state -->
+            <div id="admin-workbench-empty" class="text-center py-10 px-4 flex flex-col items-center justify-center space-y-4">
+              <div class="h-16 w-16 rounded-full bg-slate-100 flex items-center justify-center border border-slate-200">
+                <i class="fa-solid fa-toolbox text-2xl text-slate-400"></i>
+              </div>
+              <div>
+                <p class="font-bold text-slate-700">No Issue Selected</p>
+                <p class="text-xs text-slate-500 mt-1 max-w-[240px] mx-auto font-medium">Select a report from the action list to modify municipal assignments, trigger works, or upload resolution proof.</p>
+              </div>
+            </div>
+
+            <!-- Workbench Form -->
+            <div id="admin-workbench-card" class="hidden flex-col h-full justify-between space-y-5">
+              <div class="space-y-4">
+                <!-- Short Info Summary -->
+                <div class="flex gap-4 items-start font-sans">
+                  <div class="w-20 h-20 bg-slate-900 rounded-lg overflow-hidden border border-slate-200 flex-shrink-0">
+                    <img id="workbench-img" class="w-full h-full object-cover" src="" alt="Thumbnail">
+                  </div>
+                  <div>
+                    <span id="workbench-id" class="text-[10px] font-mono text-slate-500 font-bold"></span>
+                    <h4 id="workbench-title" class="text-sm font-bold text-slate-800 leading-tight mt-0.5 font-outfit"></h4>
+                    <div class="flex flex-wrap gap-1.5 mt-2">
+                      <span id="workbench-status-badge" class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"></span>
+                      <span id="workbench-dept-badge" class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- AI Fact-Checking Module (Official Triage) -->
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 space-y-2.5 font-sans">
+                  <div class="flex justify-between items-center">
+                    <span class="text-[10px] font-extrabold text-patriotic-blue uppercase tracking-wider"><i class="fa-solid fa-microchip-ai text-brand-500"></i> AI Fact-Check Verification</span>
+                    <span id="workbench-ai-status-badge" class="text-[9px] font-bold px-2 py-0.5 rounded-full"></span>
+                  </div>
+                  
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-semibold text-slate-500">Plausibility Score:</span>
+                    <div class="flex-1 bg-slate-200 h-2 rounded-full overflow-hidden">
+                      <div id="workbench-ai-score-bar" class="h-full bg-patriotic-blue" style="width: 0%;"></div>
+                    </div>
+                    <span id="workbench-ai-score" class="text-xs font-extrabold text-slate-800">0%</span>
+                  </div>
+
+                  <!-- AI match logic summary -->
+                  <div class="bg-white/80 p-2.5 border border-blue-100 rounded-lg">
+                    <p id="workbench-ai-summary" class="text-[10px] text-slate-600 leading-relaxed font-semibold"></p>
+                  </div>
+
+                  <div class="flex gap-2">
+                    <button onclick="triggerAIScan()" id="btn-ai-scan" class="flex-1 py-1.5 bg-white border border-blue-200 hover:border-brand-500 text-slate-700 hover:text-brand-500 text-[10px] font-bold rounded-lg transition flex items-center justify-center gap-1">
+                      <i class="fa-solid fa-arrows-spin animate-spin-slow"></i> Verify and Re-Scan Fact Logs
+                    </button>
+                  </div>
+                </div>
+
+                <div class="h-[1px] bg-slate-200"></div>
+
+                <!-- Update Fields -->
+                <div class="space-y-3 font-sans font-medium">
+                  <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Reassign Department</label>
+                    <select id="workbench-dept" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-brand-500">
+                      <option value="Public Works">Public Works</option>
+                      <option value="Sanitation">Sanitation</option>
+                      <option value="Electrical">Electrical</option>
+                      <option value="General Municipal">General Municipal</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Transition Status</label>
+                    <div class="grid grid-cols-3 gap-2 text-xs font-bold">
+                      <button onclick="updateWorkbenchStatus('Pending')" id="wb-status-pending" class="py-2 border border-slate-300 rounded-lg hover:border-slate-500 transition text-slate-500 bg-white">Pending</button>
+                      <button onclick="updateWorkbenchStatus('In Progress')" id="wb-status-progress" class="py-2 border border-slate-300 rounded-lg hover:border-slate-500 transition text-slate-500 bg-white">In Progress</button>
+                      <button onclick="updateWorkbenchStatus('Resolved')" id="wb-status-resolved" class="py-2 border border-slate-300 rounded-lg hover:border-slate-500 transition text-slate-500 bg-white">Resolved</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Proof of Resolution upload -->
+                <div id="workbench-proof-block" class="hidden bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3 font-sans">
+                  <span class="block text-[10px] font-bold text-emerald-700 uppercase tracking-wider"><i class="fa-solid fa-camera-retro"></i> Resolution Evidence Stamp</span>
+                  
+                  <!-- Drop Area Mockup -->
+                  <div onclick="simulateProofUpload()" id="proof-upload-zone" class="border-2 border-dashed border-slate-300 hover:border-brand-500 bg-white rounded-lg p-4 text-center cursor-pointer transition flex flex-col items-center justify-center space-y-2">
+                    <i class="fa-solid fa-cloud-arrow-up text-xl text-slate-400" id="proof-upload-icon"></i>
+                    <p class="text-[11px] text-slate-700 font-bold" id="proof-upload-title">Click to attach municipal resolution proof</p>
+                    <p class="text-[9px] text-slate-400" id="proof-upload-desc">Simulates uploading verified inspector camera capture</p>
+                  </div>
+
+                  <!-- Mini preview -->
+                  <div id="proof-preview-container" class="hidden flex items-center gap-3 bg-white p-2 rounded-lg border border-slate-200">
+                    <img id="proof-preview-img" class="h-10 w-10 object-cover rounded" src="" alt="Proof Preview">
+                    <div class="flex-1 min-w-0 font-medium">
+                      <p class="text-[10px] font-bold text-slate-800 truncate">repair_proof_stamp.jpg</p>
+                      <p class="text-[8px] text-slate-400 font-mono">1.2 MB | Geotag Verified</p>
+                    </div>
+                    <button onclick="clearProofUpload()" class="text-slate-400 hover:text-rose-500 text-xs px-2"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Save / Action triggers -->
+              <div class="pt-4 border-t border-slate-200 flex gap-3 font-sans">
+                <button onclick="flagSelectedIssueSpam()" id="workbench-spam-btn" class="px-4 py-3 bg-rose-50 border border-rose-200 hover:bg-rose-100 text-rose-600 text-xs font-bold rounded-xl transition">
+                  <i class="fa-solid fa-flag"></i> Flag Spam
+                </button>
+                <button onclick="submitWorkbenchChanges()" class="flex-1 py-3 bg-brand-500 hover:bg-brand-600 active:scale-95 text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 transition duration-200 shadow-md shadow-brand-500/10 font-outfit">
+                  <i class="fa-solid fa-save"></i> Save & Apply Triage Status
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 4: CITIZEN PROFILE & WALLET PORTAL ================= -->
+    <section id="view-wallet" class="tab-view hidden grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch flex-1">
+      
+      <!-- Left: Citizen Details & Logged Issues (6 cols) -->
+      <div class="lg:col-span-6 flex flex-col justify-between bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-lg relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-1 bg-patriotic-green"></div>
+        <div class="space-y-6">
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="text-2xl font-bold text-slate-800 font-outfit" id="profile-name">Citizen Profile</h3>
+              <p class="text-xs text-slate-400 mt-1 font-medium">Verified Digital Civic Identity Account</p>
+            </div>
+            <span class="bg-blue-50 text-patriotic-blue border border-blue-100 text-[10px] font-bold uppercase px-3 py-1 rounded-full flex items-center gap-1.5 font-sans">
+              <i class="fa-solid fa-shield-halved text-patriotic-green"></i> Adhaar Verified
+            </span>
+          </div>
+
+          <!-- Identity Details Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 border border-slate-200 p-4 rounded-xl font-sans text-xs font-medium">
+            <div class="space-y-1">
+              <span class="text-slate-500 block">Adhaar Number</span>
+              <span class="font-bold text-slate-800 font-mono text-sm tracking-wide" id="profile-adhaar-display">XXXX-XXXX-XXXX</span>
+            </div>
+            <div class="space-y-1">
+              <span class="text-slate-500 block">Linked Mobile</span>
+              <span class="font-bold text-slate-800" id="profile-phone">+91 ----- -----</span>
+            </div>
+            <div class="space-y-1">
+              <span class="text-slate-500 block">Registered Ward</span>
+              <span class="font-bold text-slate-800" id="profile-ward">Ward --</span>
+            </div>
+            <div class="space-y-1">
+              <span class="text-slate-500 block">Honorary Status Badge</span>
+              <span class="font-bold text-brand-600 flex items-center gap-1">
+                <i class="fa-solid fa-award"></i> <span id="profile-badge-str">Civic Guardian Grade III</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- List of issues submitted by this user -->
+          <div>
+            <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3.5"><i class="fa-solid fa-receipt text-slate-400"></i> Issues Logged By Me</h4>
+            <div class="space-y-2.5 max-h-[220px] overflow-y-auto pr-1.5" id="profile-my-issues-container">
+              <!-- Injected via JS -->
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-slate-200 text-center text-[10px] text-slate-400 flex items-center justify-center gap-1.5 font-sans font-semibold">
+          <i class="fa-solid fa-lock text-brand-500"></i> Secured by cryptographic hashing. Adhaar details are stamped locally in-memory.
+        </div>
+      </div>
+
+      <!-- Right: Sub-tabbed Panel (Wallet perks vs Corruption Checker vs Integrity board) (6 cols) -->
+      <div class="lg:col-span-6 flex flex-col justify-between bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-lg relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-1 bg-patriotic-saffron"></div>
+        <div class="space-y-4 flex-1 flex flex-col">
+          
+          <!-- Secondary Sub-Tab Navigation Bar -->
+          <div class="flex bg-slate-100 p-1 rounded-xl font-sans font-bold flex-shrink-0">
+            <button onclick="switchWalletSubTab('perks')" id="wtab-perks" class="wtab-btn flex-1 py-2 rounded-lg text-[9px] uppercase tracking-wider text-slate-800 bg-white shadow-sm transition">Wallet & Perks</button>
+            <button onclick="switchWalletSubTab('auditor')" id="wtab-auditor" class="wtab-btn flex-1 py-2 rounded-lg text-[9px] uppercase tracking-wider text-slate-500 hover:text-slate-700 bg-transparent transition">Corruption Checker</button>
+            <button onclick="switchWalletSubTab('bulletin')" id="wtab-bulletin" class="wtab-btn flex-1 py-2 rounded-lg text-[9px] uppercase tracking-wider text-slate-500 hover:text-slate-700 bg-transparent transition">Bulletin Board</button>
+          </div>
+
+          <!-- PANEL A: SMART WALLET & PERKS -->
+          <div id="wpanel-perks" class="wpanel-view space-y-6 flex-1">
+            <h3 class="text-lg font-bold text-slate-800 font-outfit mt-2">Karma Smart Wallet</h3>
+            <!-- Virtual Wallet Card mockup - Tricolor Gradient -->
+            <div class="bg-gradient-to-tr from-brand-500 via-white to-patriotic-green rounded-2xl p-5 relative overflow-hidden shadow-xl border border-slate-200 font-sans font-medium">
+              <!-- Glassy grid background overlay -->
+              <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-orange-500/10 via-transparent to-emerald-600/10 pointer-events-none"></div>
+              <div class="flex justify-between items-start relative z-10">
+                <div>
+                  <span class="text-[9px] uppercase font-extrabold tracking-widest text-slate-700">Civic Ecosystem Token</span>
+                  <p class="text-sm font-bold text-patriotic-blue font-outfit mt-0.5">CIVIC KARMA WALLET</p>
+                </div>
+                <div class="h-8 w-12 bg-white/60 rounded-md flex items-center justify-center border border-slate-200 shadow-sm">
+                  <i class="fa-solid fa-microchip text-patriotic-blue text-lg"></i>
+                </div>
+              </div>
+
+              <!-- Card Balance -->
+              <div class="my-4 relative z-10">
+                <span class="text-[9px] uppercase font-bold text-slate-600 tracking-wider">Spendable Active Balance</span>
+                <div class="flex items-baseline space-x-1.5">
+                  <span class="text-3xl font-extrabold font-outfit tracking-tight text-slate-900" id="wallet-active-karma">150</span>
+                  <span class="text-xs font-extrabold text-slate-700">KP</span>
+                </div>
+              </div>
+
+              <!-- Card Footer -->
+              <div class="flex justify-between items-end relative z-10 mt-6 border-t border-slate-200/50 pt-3 text-[10px] font-semibold">
+                <div>
+                  <span class="text-[8px] text-slate-500 uppercase block">Registered Citizen</span>
+                  <span class="font-bold text-slate-800 font-mono" id="wallet-citizen-id-str">CITIZEN-4881-BLR</span>
+                </div>
+                <div class="text-right">
+                  <span class="text-[8px] text-slate-500 uppercase block">Escrow locked</span>
+                  <span class="font-bold text-brand-600 font-mono" id="wallet-escrow-karma">100 KP</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Perks Shop Cards -->
+            <div>
+              <div class="flex justify-between items-center mb-3">
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest">Redeem Civic Perks</h4>
+                <span class="text-[10px] text-slate-400 font-sans font-semibold">Active balance only</span>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <!-- Perk 1 -->
+                <div class="bg-white border border-slate-200 hover:border-brand-100 rounded-xl p-3 flex flex-col justify-between space-y-3 shadow-sm hover:shadow-md transition group font-sans">
+                  <div class="space-y-1">
+                    <div class="h-6 w-6 rounded bg-orange-50 text-brand-500 border border-brand-100 flex items-center justify-center text-xs">
+                      <i class="fa-solid fa-percent"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 text-[11px] group-hover:text-brand-500 transition font-outfit">5% Property Tax Rebate</h4>
+                    <p class="text-[9px] text-slate-400 leading-snug font-medium">Apply rebate to your annual BBMP assessment ledger.</p>
+                  </div>
+                  <div class="flex items-center justify-between pt-1.5 border-t border-slate-100 text-[9px] font-bold">
+                    <span class="text-slate-500 font-mono">200 KP</span>
+                    <button onclick="redeemPerk('tax-rebate', 200, '5% Property Tax Rebate')" class="px-2.5 py-0.5 bg-brand-500 hover:bg-brand-600 text-white rounded text-[9px]">Redeem</button>
+                  </div>
+                </div>
+
+                <!-- Perk 2 -->
+                <div class="bg-white border border-slate-200 hover:border-slate-300 rounded-xl p-3 flex flex-col justify-between space-y-3 shadow-sm hover:shadow-md transition group font-sans">
+                  <div class="space-y-1">
+                    <div class="h-6 w-6 rounded bg-blue-50 text-patriotic-blue border border-blue-100 flex items-center justify-center text-xs">
+                      <i class="fa-solid fa-train-subway"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 text-[11px] group-hover:text-patriotic-blue transition font-outfit">Free Metro Transit Pass</h4>
+                    <p class="text-[9px] text-slate-400 leading-snug font-medium">Unlock a full 1-Day unlimited QR travel token for metro routes.</p>
+                  </div>
+                  <div class="flex items-center justify-between pt-1.5 border-t border-slate-100 text-[9px] font-bold">
+                    <span class="text-slate-500 font-mono">50 KP</span>
+                    <button onclick="redeemPerk('metro-pass', 50, 'Free Metro Transit Pass')" class="px-2.5 py-0.5 bg-patriotic-blue hover:bg-blue-800 text-white rounded text-[9px]">Redeem</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL B: CORRUPTION CHECKER -->
+          <div id="wpanel-auditor" class="wpanel-view hidden space-y-4 flex-1">
+            <div>
+              <h3 class="text-lg font-bold text-slate-800 font-outfit mt-2">Municipal Expense Auditor</h3>
+              <p class="text-xs text-slate-500 font-medium">Select a ticket in the ward to inspect estimated repair costs against public municipal financial payouts.</p>
+            </div>
+
+            <!-- Issue selector -->
+            <div>
+              <label class="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1">Select Ward Issue to Audit</label>
+              <select id="audit-issue-select" onchange="loadAuditIssueDetails()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-brand-500">
+                <!-- Injected dynamically -->
+              </select>
+            </div>
+
+            <!-- Auditor Results Sheet -->
+            <div id="audit-sheet" class="hidden space-y-3 font-sans">
+              <!-- Comparison Ledger -->
+              <div class="grid grid-cols-2 gap-3 text-xs font-semibold">
+                <div class="bg-slate-50 border border-slate-200 p-2.5 rounded-xl">
+                  <span class="text-[9px] text-slate-500 block">Contractor Estimate</span>
+                  <span id="audit-est-cost" class="text-sm font-extrabold text-slate-800 font-outfit mt-0.5 block">₹0</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 p-2.5 rounded-xl">
+                  <span class="text-[9px] text-slate-500 block">Allocated Municipal Payout</span>
+                  <span id="audit-alloc-cost" class="text-sm font-extrabold text-slate-800 font-outfit mt-0.5 block">₹0</span>
+                </div>
+              </div>
+
+              <!-- Overbudget discrepancy message -->
+              <div id="audit-discrepancy-card" class="p-3 rounded-xl flex items-start gap-2.5 border text-xs">
+                <i id="audit-discrepancy-icon" class="text-base mt-0.5"></i>
+                <div class="font-semibold">
+                  <p id="audit-discrepancy-title" class="font-bold"></p>
+                  <p id="audit-discrepancy-desc" class="text-[10px] text-slate-500 mt-0.5 leading-snug"></p>
+                </div>
+              </div>
+
+              <!-- Automated RTI filing -->
+              <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-2.5">
+                <div class="flex justify-between items-center">
+                  <span class="text-[9px] font-extrabold text-slate-500 uppercase tracking-widest"><i class="fa-solid fa-file-signature text-brand-500"></i> Automated Citizen RTI Draft</span>
+                  <span id="audit-rti-count-badge" class="text-[9px] bg-slate-200 text-slate-600 font-bold px-2 py-0.5 rounded-md">Filed RTIs: 0</span>
+                </div>
+                
+                <!-- Draft view -->
+                <div class="bg-white p-2.5 border border-slate-200 rounded-lg max-h-[85px] overflow-y-auto text-[9px] font-mono text-slate-600 leading-normal border-l-4 border-l-patriotic-blue select-all" id="rti-letter-draft">
+                  <!-- Draft generated via script -->
+                </div>
+
+                <div class="flex gap-2">
+                  <button onclick="submitAutomatedRTI()" id="btn-file-rti" class="flex-1 py-2 bg-patriotic-blue hover:bg-blue-800 text-white font-extrabold text-[10px] rounded-lg transition flex items-center justify-center gap-1 shadow-md shadow-blue-800/10">
+                    <i class="fa-solid fa-paper-plane"></i> File Automated RTI Request
+                  </button>
+                  <button onclick="publishToBulletinBoard()" id="btn-flag-bulletin" class="py-2 px-3 bg-rose-50 border border-rose-200 hover:bg-rose-100 text-rose-600 text-[10px] font-bold rounded-lg transition flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-bullhorn"></i> Raise Discrepancy Flag
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL C: PUBLIC BULLETIN BOARD -->
+          <div id="wpanel-bulletin" class="wpanel-view hidden space-y-4 flex-1 flex flex-col">
+            <div>
+              <h3 class="text-lg font-bold text-slate-800 font-outfit mt-2">Citizen Transparency Bulletin</h3>
+              <p class="text-xs text-slate-500 font-medium">Public ledger detailing issues flagged by ward citizens for overbudget contractor billing and discrepancy audits.</p>
+            </div>
+
+            <!-- Bulletins Feed -->
+            <div class="flex-1 overflow-y-auto max-h-[280px] space-y-2.5 pr-1.5" id="bulletin-board-feed">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 max-w-sm w-full font-sans"></div>
+
+  <!-- PERK REDEMPTION SUCCESS MODAL -->
+  <div id="redemption-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/55 backdrop-blur-sm hidden transition-all duration-300">
+    <div class="bg-white border border-slate-200 p-6 rounded-2xl max-w-md w-full text-center space-y-6 shadow-2xl relative">
+      <div class="absolute -top-12 left-1/2 -translate-x-1/2 h-20 w-20 rounded-full bg-brand-500 flex items-center justify-center text-3xl text-white shadow-lg shadow-brand-500/20 animate-bounce">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <div class="pt-8">
+        <h3 class="text-xl font-bold text-slate-800 font-outfit">Perk Successfully Redeemed!</h3>
+        <p class="text-xs text-slate-500 mt-2 font-medium">Active Karma balance has been updated. Below is your secure digital voucher token.</p>
+      </div>
+      
+      <!-- Voucher display -->
+      <div class="bg-slate-50 p-4 border border-slate-200 rounded-xl relative overflow-hidden font-mono">
+        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-8 bg-white rounded-r-full border-r border-slate-200"></div>
+        <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-8 bg-white rounded-l-full border-l border-slate-200"></div>
+        <div class="text-[10px] text-brand-600 uppercase tracking-widest font-bold" id="modal-perk-name"></div>
+        <div class="text-xl font-bold text-slate-800 my-2 tracking-widest select-all" id="modal-voucher-code"></div>
+        <div class="text-[9px] text-slate-400 font-semibold">Double click code to copy. Valid for 90 days.</div>
+      </div>
+
+      <button onclick="closeRedemptionModal()" class="w-full py-3 bg-slate-800 hover:bg-slate-700 font-bold rounded-xl text-xs text-white transition">
+        Close Wallet Workbench
+      </button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer id="app-footer" class="bg-slate-900 border-t border-slate-800 py-6 text-center text-slate-400 text-xs mt-auto font-sans hidden">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-2">
+      <p class="font-medium">&copy; 2026 Kartavya. Smart India Hackathon Prototype (PS ID 25031).</p>
+      <p class="flex items-center gap-3 font-semibold">
+        <span><i class="fa-solid fa-circle text-emerald-500 text-[8px] animate-pulse"></i> Nodes: Connected</span>
+        <span>|</span>
+        <span class="hover:text-brand-500 cursor-pointer" onclick="switchTab('triage')"><i class="fa-solid fa-gears"></i> Municipal Action Centre</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- CORE FRONTEND APPLICATION LOGIC -->
+  <script>
+    // --- STATE CONFIGURATION ---
+    let reportsState = [];
+    let activeTab = 'map';
+    let leafletMap = null;
+    let mapMarkers = [];
+    let userLocation = null;
+    let userMarker = null;
+
+    // Session State
+    let sessionRole = null;
+    let sessionAdhaar = null;
+    let isRegMode = false;
+    let activeWalletSubTab = 'perks';
+
+    // Local Storage database for Citizen Profiles
+    let profilesDatabase = {
+      '1234-5678-9012': {
+        name: 'Aditi Kushwah',
+        pin: '1234',
+        phone: '+91 98765 43210',
+        ward: 'Ward 150 - Indiranagar, Bengaluru',
+        activeKarma: 150,
+        myReportIds: ['rep-101', 'rep-103', 'rep-104']
+      }
+    };
+
+    if (localStorage.getItem('kartavya_profiles')) {
+      try {
+        profilesDatabase = JSON.parse(localStorage.getItem('kartavya_profiles'));
+      } catch (e) {
+        console.error('Failed to load profiles local DB', e);
+      }
+    } else {
+      localStorage.setItem('kartavya_profiles', JSON.stringify(profilesDatabase));
+    }
+
+    const savedRole = localStorage.getItem('kartavya_session_role');
+    const savedAdhaar = localStorage.getItem('kartavya_session_adhaar');
+    if (savedRole) {
+      sessionRole = savedRole;
+      sessionAdhaar = savedAdhaar;
+    }
+
+    let selectedReportId = null;
+    let selectedWorkbenchId = null;
+    let mockProofImageUploaded = null;
+
+    const categoryCameraMocks = {
+      'Pothole': 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80',
+      'Overflowing Trash': 'https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?auto=format&fit=crop&w=800&q=80',
+      'Broken Streetlight': 'https://images.unsplash.com/photo-1509024644558-2f56ce76c490?auto=format&fit=crop&w=800&q=80',
+      'Sewage Blockage': 'https://images.unsplash.com/photo-1584824486509-112e4181ff6b?auto=format&fit=crop&w=800&q=80'
+    };
+
+    const categoryResolutionMocks = {
+      'Pothole': 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80',
+      'Overflowing Trash': 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80',
+      'Broken Streetlight': 'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?auto=format&fit=crop&w=800&q=80',
+      'Sewage Blockage': 'https://images.unsplash.com/photo-1625244724120-1fd1d34d00f6?auto=format&fit=crop&w=800&q=80'
+    };
+
+    // --- APPLICATION BOOTSTRAP ---
+    window.addEventListener('DOMContentLoaded', () => {
+      evalSessionState();
+      requestUserLocation();
+      
+      fetchReports().then(() => {
+        if (sessionRole) {
+          initMap();
+          syncKarmaBalances();
+        }
+      });
+
+      setInterval(fetchReports, 30000);
+    });
+
+    // --- AUTHENTICATION MODULE ---
+    function formatAdhaarInput(input) {
+      let value = input.value;
+      if (/[a-zA-Z]/.test(value)) {
+        return;
+      }
+      let cleaned = value.replace(/\D/g, '');
+      if (cleaned.length > 12) cleaned = cleaned.slice(0, 12);
+      
+      let formatted = '';
+      for (let i = 0; i < cleaned.length; i++) {
+        if (i > 0 && i % 4 === 0) formatted += '-';
+        formatted += cleaned[i];
+      }
+      input.value = formatted;
+    }
+
+    function toggleCitizenRegMode() {
+      isRegMode = !isRegMode;
+      const toggleBtn = document.getElementById('citizen-toggle-reg');
+      const regView = document.getElementById('citizen-register-view');
+      const authBtn = document.getElementById('citizen-auth-btn');
+
+      if (isRegMode) {
+        regView.classList.remove('hidden');
+        toggleBtn.innerText = "Back to Adhaar PIN Login";
+        authBtn.innerHTML = 'Register Identity & Log In <i class="fa-solid fa-user-plus"></i>';
+      } else {
+        regView.classList.add('hidden');
+        toggleBtn.innerText = "New Adhaar? Set up PIN & Profile";
+        authBtn.innerHTML = 'Sign In to Dashboard <i class="fa-solid fa-arrow-right-to-bracket"></i>';
+      }
+    }
+
+    function handleCitizenLogin() {
+      const adhaar = document.getElementById('citizen-adhaar').value;
+      const pin = document.getElementById('citizen-pin').value;
+
+      const isPrototypeOverride = (adhaar === 'user' && pin === 'user123');
+
+      if (!isPrototypeOverride) {
+        if (!adhaar || (adhaar.length !== 14 && adhaar !== 'user')) {
+          showToast('Please enter your formatted 12-digit Adhaar number.', 'warning');
+          return;
+        }
+        if (!pin || pin.length < 4) {
+          showToast('Secure PIN is required.', 'warning');
+          return;
+        }
+      }
+
+      if (isRegMode) {
+        const name = document.getElementById('reg-name').value;
+        const phone = document.getElementById('reg-phone').value;
+        const ward = document.getElementById('reg-ward').value;
+
+        if (!name || !phone || !ward) {
+          showToast('Please fill out all registration fields.', 'warning');
+          return;
+        }
+
+        profilesDatabase[adhaar] = {
+          name,
+          pin,
+          phone,
+          ward,
+          activeKarma: 100, // starting grant
+          myReportIds: []
+        };
+        localStorage.setItem('kartavya_profiles', JSON.stringify(profilesDatabase));
+        showToast(`Registration Successful! Identity created for ${name}.`, 'success');
+        
+        document.getElementById('reg-name').value = '';
+        document.getElementById('reg-phone').value = '';
+        document.getElementById('reg-ward').value = '';
+        toggleCitizenRegMode();
+      }
+
+      let profile;
+      let finalAdhaar = adhaar;
+      if (isPrototypeOverride) {
+        finalAdhaar = '1234-5678-9012';
+        profile = profilesDatabase[finalAdhaar];
+      } else {
+        profile = profilesDatabase[adhaar];
+      }
+
+      if (!profile) {
+        showToast('Adhaar number not registered. Please set up a profile first.', 'error');
+        return;
+      }
+
+      if (!isPrototypeOverride && profile.pin !== pin) {
+        showToast('Invalid Secure PIN. Authentication failed.', 'error');
+        return;
+      }
+
+      sessionRole = 'citizen';
+      sessionAdhaar = finalAdhaar;
+      localStorage.setItem('kartavya_session_role', 'citizen');
+      localStorage.setItem('kartavya_session_adhaar', finalAdhaar);
+      
+      evalSessionState();
+      initMap();
+      syncKarmaBalances();
+      
+      showToast(`Welcome back, ${profile.name}!`, 'success');
+    }
+
+    function handleAdminLogin() {
+      const user = document.getElementById('admin-user').value;
+      const pass = document.getElementById('admin-pass').value;
+
+      if (user === 'admin' && pass === 'admin123') {
+        sessionRole = 'admin';
+        sessionAdhaar = null;
+        localStorage.setItem('kartavya_session_role', 'admin');
+        localStorage.removeItem('kartavya_session_adhaar');
+        
+        evalSessionState();
+        initMap();
+        
+        showToast('Secure Action Centre Terminal Access Granted.', 'success');
+      } else {
+        showToast('Invalid administration credentials.', 'error');
+      }
+    }
+
+    function evalSessionState() {
+      const gate = document.getElementById('auth-gate');
+      const about = document.getElementById('about-page');
+      const appNav = document.getElementById('app-nav');
+      const appFooter = document.getElementById('app-footer');
+
+      if (sessionRole) {
+        if (gate) gate.classList.add('hidden');
+        if (about) about.classList.add('hidden');
+        appNav.classList.remove('hidden');
+        appFooter.classList.remove('hidden');
+        
+        renderNavbar();
+        
+        const nameLabel = document.getElementById('nav-session-name');
+        const roleLabel = document.getElementById('nav-session-role');
+        
+        if (sessionRole === 'citizen') {
+          const profile = profilesDatabase[sessionAdhaar];
+          nameLabel.innerText = profile ? profile.name : 'Citizen';
+          roleLabel.innerText = 'Citizen';
+          
+          switchTab('map');
+          syncKarmaBalances();
+        } else {
+          nameLabel.innerText = 'Municipal Authority';
+          roleLabel.innerText = 'Municipal Admin';
+          
+          switchTab('triage');
+        }
+      } else {
+        if (about) about.classList.remove('hidden');
+        if (gate) gate.classList.add('hidden');
+        appNav.classList.add('hidden');
+        appFooter.classList.add('hidden');
+      }
+    }
+
+    function handleLogout() {
+      sessionRole = null;
+      sessionAdhaar = null;
+      localStorage.removeItem('kartavya_session_role');
+      localStorage.removeItem('kartavya_session_adhaar');
+      
+      if (leafletMap) {
+        leafletMap.remove();
+        leafletMap = null;
+      }
+      
+      document.getElementById('citizen-adhaar').value = '';
+      document.getElementById('citizen-pin').value = '';
+      document.getElementById('admin-user').value = '';
+      document.getElementById('admin-pass').value = '';
+
+      evalSessionState();
+      showToast('Logged out of Kartavya secure portal.', 'success');
+    }
+
+    function showAboutPage() {
+      const gate = document.getElementById('auth-gate');
+      const about = document.getElementById('about-page');
+      if (gate) gate.classList.add('hidden');
+      if (about) about.classList.remove('hidden');
+    }
+
+    function transitionToAuthGate(role) {
+      const gate = document.getElementById('auth-gate');
+      const about = document.getElementById('about-page');
+      if (about) about.classList.add('hidden');
+      if (gate) gate.classList.remove('hidden');
+      
+      if (role === 'citizen') {
+        document.getElementById('citizen-adhaar').focus();
+      } else if (role === 'admin') {
+        document.getElementById('admin-user').focus();
+      }
+    }
+
+    function renderNavbar() {
+      const container = document.getElementById('navbar-tabs-container');
+      container.innerHTML = '';
+
+      if (sessionRole === 'citizen') {
+        container.innerHTML = `
+          <button onclick="switchTab('report')" id="tab-report" class="tab-btn flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all duration-200 text-orange-200 hover:text-white">
+            <i class="fa-solid fa-circle-plus"></i> Report Issue
+          </button>
+          <button onclick="switchTab('map')" id="tab-map" class="tab-btn flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all duration-200 text-orange-200 hover:text-white">
+            <i class="fa-solid fa-map-location-dot"></i> City Map
+          </button>
+          <button onclick="switchTab('wallet')" id="tab-wallet" class="tab-btn flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all duration-200 text-orange-200 hover:text-white">
+            <i class="fa-solid fa-address-card"></i> Profile & Wallet
+          </button>
+        `;
+      } else if (sessionRole === 'admin') {
+        container.innerHTML = `
+          <button onclick="switchTab('triage')" id="tab-triage" class="tab-btn flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all duration-200 text-orange-200 hover:text-white">
+            <i class="fa-solid fa-shield-halved"></i> Action Centre
+            <span id="pending-badge" class="hidden bg-brand-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">0</span>
+          </button>
+        `;
+      }
+    }
+
+    // --- TOAST NOTIFICATIONS ---
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      let border = 'border-slate-200';
+      let icon = '<i class="fa-solid fa-circle-info text-blue-500 text-base"></i>';
+      
+      if (type === 'success') {
+        border = 'border-patriotic-green';
+        icon = '<i class="fa-solid fa-circle-check text-patriotic-green text-base"></i>';
+      } else if (type === 'warning') {
+        border = 'border-patriotic-saffron';
+        icon = '<i class="fa-solid fa-triangle-exclamation text-brand-500 text-base"></i>';
+      } else if (type === 'error') {
+        border = 'border-rose-500';
+        icon = '<i class="fa-solid fa-circle-xmark text-rose-500 text-base"></i>';
+      }
+
+      toast.className = `flex items-center gap-3.5 p-4 rounded-xl border bg-white ${border} text-slate-800 shadow-lg transition-all duration-300 translate-y-2 opacity-0 font-bold text-xs`;
+      toast.innerHTML = `
+        ${icon}
+        <div class="flex-1">${message}</div>
+        <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+      `;
+
+      container.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      }, 50);
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 5000);
+    }
+
+    // --- SOUND SYNTHESISER ---
+    function playCameraShutterSound() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bufferSize = audioCtx.sampleRate * 0.1;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.value = 1000;
+
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+        noise.start();
+      } catch (e) {
+        console.warn('Audio synthesis blocked by browser.', e);
+      }
+    }
+
+    // --- API SERVICE ---
+    async function fetchReports() {
+      try {
+        const response = await fetch('/api/reports');
+        if (!response.ok) throw new Error('Network error fetching reports');
+        const data = await response.json();
+        
+        if (sessionRole === 'citizen' && sessionAdhaar) {
+          detectKarmaResolutions(data);
+        }
+
+        reportsState = data;
+        updateAdminStats();
+        
+        if (activeTab === 'map' && leafletMap) {
+          updateMapMarkers();
+        }
+        if (activeTab === 'triage') {
+          renderAdminList();
+          updateAdminWorkbench();
+        }
+        if (activeTab === 'wallet' && sessionRole === 'citizen') {
+          renderCitizenProfileIssues();
+          renderAuditIssuesList();
+          renderBulletinBoardFeed();
+        }
+      } catch (err) {
+        console.error('Error fetching reports:', err);
+      }
+    }
+
+    function detectKarmaResolutions(newReports) {
+      const profile = profilesDatabase[sessionAdhaar];
+      if (!profile) return;
+
+      newReports.forEach(newRep => {
+        if (profile.myReportIds.includes(newRep.id) && newRep.status === 'Resolved') {
+          const oldReport = reportsState.find(r => r.id === newRep.id);
+          if (oldReport && oldReport.status !== 'Resolved') {
+            profile.activeKarma += 50;
+            saveProfilesDB();
+            syncKarmaBalances();
+            
+            showToast(`🎉 Reward Unlocked! A report you made was resolved. +50 KP added to your Active Balance!`, 'success');
+          }
+        }
+      });
+    }
+
+    function saveProfilesDB() {
+      localStorage.setItem('kartavya_profiles', JSON.stringify(profilesDatabase));
+    }
+
+    function syncKarmaBalances() {
+      if (sessionRole !== 'citizen' || !sessionAdhaar) return;
+      
+      const profile = profilesDatabase[sessionAdhaar];
+      if (!profile) return;
+
+      let currentEscrow = 0;
+      profile.myReportIds.forEach(id => {
+        const rep = reportsState.find(r => r.id === id);
+        if (rep && (rep.status === 'Pending' || rep.status === 'In Progress')) {
+          currentEscrow += 50;
+        }
+      });
+
+      document.getElementById('wallet-active-karma').innerText = profile.activeKarma;
+      document.getElementById('wallet-escrow-karma').innerText = `${currentEscrow} KP`;
+
+      document.getElementById('profile-name').innerText = profile.name;
+      document.getElementById('profile-adhaar-display').innerText = `XXXX-XXXX-${sessionAdhaar.slice(-4)}`;
+      document.getElementById('profile-phone').innerText = profile.phone;
+      document.getElementById('profile-ward').innerText = profile.ward;
+      document.getElementById('wallet-citizen-id-str').innerText = `CITIZEN-${sessionAdhaar.slice(-4)}-BLR`;
+
+      let lvl = "Civic Guardian Grade III";
+      if (profile.activeKarma >= 200) {
+        lvl = "Eco Crusader Grade II";
+      }
+      if (profile.activeKarma >= 350) {
+        lvl = "Municipal Champion Grade I";
+      }
+      document.getElementById('profile-badge-str').innerText = lvl;
+
+      renderCitizenProfileIssues();
+      renderAuditIssuesList();
+      renderBulletinBoardFeed();
+    }
+
+    function renderCitizenProfileIssues() {
+      const container = document.getElementById('profile-my-issues-container');
+      if (!container || !sessionAdhaar) return;
+
+      const profile = profilesDatabase[sessionAdhaar];
+      if (!profile) return;
+
+      const userIssues = reportsState.filter(r => r.reporterAdhaar === sessionAdhaar || profile.myReportIds.includes(r.id));
+      
+      if (userIssues.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-500 italic">No reports logged under this Adhaar credential.</p>`;
+        return;
+      }
+
+      container.innerHTML = '';
+      userIssues.forEach(rep => {
+        const row = document.createElement('div');
+        
+        let statusBadge = 'bg-rose-50 text-rose-600 border border-rose-100';
+        if (rep.status === 'In Progress') statusBadge = 'bg-blue-50 text-patriotic-blue border border-blue-100';
+        if (rep.status === 'Resolved') statusBadge = 'bg-emerald-50 text-patriotic-green border border-emerald-100';
+
+        row.className = `flex items-center gap-3 p-2.5 bg-slate-50 border border-slate-200 rounded-xl justify-between`;
+        row.innerHTML = `
+          <div class="flex items-center gap-2.5 min-w-0">
+            <img class="h-8 w-8 object-cover rounded bg-slate-100 border border-slate-200" src="${rep.image}">
+            <div class="min-w-0">
+              <span class="text-[9px] font-bold text-brand-600 uppercase tracking-wider block">${rep.category}</span>
+              <span class="text-xs text-slate-800 font-bold truncate block max-w-[200px]">${rep.title}</span>
+            </div>
+          </div>
+          <span class="text-[9px] font-bold uppercase tracking-wider ${statusBadge} px-2 py-0.5 rounded-full">${rep.status}</span>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // --- TAB NAVIGATION ---
+    function switchTab(tabId) {
+      if (sessionRole === 'admin' && tabId === 'map') {
+        showToast('Active issues heatmap map is disabled for municipal authorities.', 'warning');
+        return;
+      }
+      if (sessionRole === 'admin' && (tabId === 'report' || tabId === 'wallet')) {
+        showToast('Unauthorized view for Admin terminal.', 'error');
+        return;
+      }
+      if (sessionRole === 'citizen' && tabId === 'triage') {
+        showToast('Unauthorized access to Action Centre.', 'error');
+        return;
+      }
+
+      activeTab = tabId;
+      
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-white', 'text-patriotic-blue', 'shadow-sm');
+        btn.classList.add('text-orange-200');
+      });
+      
+      const activeBtn = document.getElementById(`tab-${tabId}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-white', 'text-patriotic-blue', 'shadow-sm');
+        activeBtn.classList.remove('text-orange-200');
+      }
+
+      // Hide all views by adding hidden and removing all display classes (prevents media query grid leaks)
+      document.querySelectorAll('.tab-view').forEach(view => {
+        view.classList.add('hidden');
+        view.classList.remove('flex', 'flex-col', 'grid', 'lg:grid');
+      });
+
+      // Show targeted view and apply its layout classes
+      const targetView = document.getElementById(`view-${tabId}`);
+      if (targetView) {
+        targetView.classList.remove('hidden');
+        if (tabId === 'map') {
+          targetView.classList.add('flex', 'flex-col', 'lg:grid');
+        } else if (tabId === 'triage') {
+          targetView.classList.add('flex', 'flex-col');
+        } else if (tabId === 'report' || tabId === 'wallet') {
+          targetView.classList.add('grid');
+        }
+      }
+
+      if (tabId === 'map') {
+        setTimeout(() => {
+          if (leafletMap) {
+            leafletMap.invalidateSize();
+          }
+        }, 100);
+      }
+      if (tabId === 'triage') {
+        renderAdminList();
+      }
+      if (tabId === 'wallet') {
+        syncKarmaBalances();
+        switchWalletSubTab('perks');
+      }
+    }
+
+    // --- TAB 1: MOCK CAMERA & FORM LOGIC ---
+    function updateCameraCategory() {
+      const category = document.getElementById('report-category').value;
+      const camStatus = document.getElementById('cam-status');
+      if (category) {
+        camStatus.innerText = `READY: ${category.toUpperCase()}`;
+        camStatus.classList.remove('text-brand-500');
+        camStatus.classList.add('text-emerald-400');
+      }
+    }
+
+    function captureSimulatedPhoto() {
+      const category = document.getElementById('report-category').value;
+      
+      if (!category) {
+        showToast('Please select an Issue Category before capturing a photo.', 'warning');
+        return;
+      }
+
+      playCameraShutterSound();
+      
+      const flash = document.getElementById('camera-flash');
+      flash.style.opacity = '1';
+      setTimeout(() => { flash.style.opacity = '0'; }, 150);
+
+      let finalLat, finalLng;
+      if (userLocation) {
+        const jitterLat = (Math.random() - 0.5) * 0.0001;
+        const jitterLng = (Math.random() - 0.5) * 0.0001;
+        finalLat = (userLocation.lat + jitterLat).toFixed(6);
+        finalLng = (userLocation.lng + jitterLng).toFixed(6);
+      } else {
+        const latOffset = (Math.random() - 0.5) * 0.08;
+        const lngOffset = (Math.random() - 0.5) * 0.08;
+        finalLat = (12.9716 + latOffset).toFixed(6);
+        finalLng = (77.5946 + lngOffset).toFixed(6);
+      }
+
+      const timeNow = new Date().toISOString().replace('T', ' ').substring(0, 19);
+      const mockHash = 'SHA256:' + Array.from({length:16}, () => Math.floor(Math.random()*16).toString(16)).join('');
+
+      document.getElementById('report-lat').value = finalLat;
+      document.getElementById('report-lng').value = finalLng;
+      document.getElementById('cam-hud-lat').innerText = finalLat;
+      document.getElementById('cam-hud-lng').innerText = finalLng;
+      document.getElementById('cam-hud-time').innerText = new Date().toUTCString().substring(17, 25) + ' UTC';
+
+      const imgUrl = categoryCameraMocks[category];
+      const capturedImg = document.getElementById('captured-image');
+      capturedImg.src = imgUrl;
+
+      document.getElementById('stamp-coords').innerText = `${finalLat}, ${finalLng}`;
+      document.getElementById('stamp-time').innerText = timeNow + ' (Local Sensor)';
+      document.getElementById('stamp-hash').innerText = mockHash;
+      
+      document.getElementById('camera-lens-sight').classList.add('hidden');
+      document.getElementById('captured-image-container').classList.remove('hidden');
+
+      const submitBtn = document.getElementById('submit-report-btn');
+      submitBtn.removeAttribute('disabled');
+      submitBtn.classList.remove('bg-slate-200', 'text-slate-400', 'cursor-not-allowed');
+      submitBtn.classList.add('bg-brand-500', 'text-white', 'hover:bg-brand-600', 'shadow-md', 'shadow-brand-500/10');
+
+      showToast('Photo captured! GPS & EXIF telemetry verified & stamped.', 'success');
+    }
+
+    async function handleReportSubmit(e) {
+      e.preventDefault();
+
+      const category = document.getElementById('report-category').value;
+      const title = document.getElementById('report-title').value;
+      const description = document.getElementById('report-description').value;
+      const lat = document.getElementById('report-lat').value;
+      const lng = document.getElementById('report-lng').value;
+      const image = document.getElementById('captured-image').src;
+
+      if (!lat || !lng || !image || !sessionAdhaar) {
+        showToast('Please capture telemetry evidence photo first.', 'warning');
+        return;
+      }
+
+      const submitBtn = document.getElementById('submit-report-btn');
+      submitBtn.setAttribute('disabled', 'true');
+      submitBtn.innerText = 'Transmitting Data...';
+
+      try {
+        const response = await fetch('/api/reports', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            title,
+            category,
+            description,
+            lat,
+            lng,
+            image,
+            reporterAdhaar: sessionAdhaar
+          })
+        });
+
+        if (!response.ok) throw new Error('Failed to log report');
+        const loggedReport = await response.json();
+
+        const profile = profilesDatabase[sessionAdhaar];
+        if (profile) {
+          profile.myReportIds.push(loggedReport.id);
+          saveProfilesDB();
+        }
+
+        showToast('Report Logged! +50 Civic Karma in Escrow', 'success');
+
+        document.getElementById('report-form').reset();
+        document.getElementById('camera-lens-sight').classList.remove('hidden');
+        document.getElementById('captured-image-container').classList.add('hidden');
+        document.getElementById('report-lat').value = '';
+        document.getElementById('report-lng').value = '';
+        
+        submitBtn.setAttribute('disabled', 'true');
+        submitBtn.classList.remove('bg-brand-500', 'text-white', 'hover:bg-brand-600');
+        submitBtn.classList.add('bg-slate-200', 'text-slate-400', 'cursor-not-allowed');
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Log Issue & Lock Escrow';
+
+        await fetchReports();
+
+        switchTab('map');
+        setTimeout(() => { selectReport(loggedReport.id); }, 300);
+
+      } catch (err) {
+        console.error('Error logging report:', err);
+        showToast('Network error: Could not submit report.', 'error');
+        submitBtn.removeAttribute('disabled');
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Log Issue & Lock Escrow';
+      }
+    }
+
+    // --- TAB 2: INTERACTIVE LEAFLET MAP ---
+    function requestUserLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            let lat = position.coords.latitude;
+            let lng = position.coords.longitude;
+            
+            const indiaBounds = L.latLngBounds([6.0, 68.0], [37.5, 98.0]);
+            if (!indiaBounds.contains([lat, lng])) {
+              console.log("Real coordinates outside India. Mocking New Delhi for demonstration.");
+              lat = 28.6139;
+              lng = 77.2090;
+            }
+            
+            userLocation = { lat, lng };
+            console.log("User Location set to:", userLocation);
+            
+            if (leafletMap) {
+              updateUserLocationMarker(lat, lng);
+              leafletMap.setView([lat, lng], 13);
+            }
+          },
+          (error) => {
+            console.warn("Geolocation permission or fetch failed:", error);
+          },
+          { enableHighAccuracy: true, timeout: 5000 }
+        );
+      }
+    }
+
+    function zoomToUserLocation() {
+      if (navigator.geolocation) {
+        showToast("Acquiring GPS location...", "warning");
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            let lat = position.coords.latitude;
+            let lng = position.coords.longitude;
+            
+            const indiaBounds = L.latLngBounds([6.0, 68.0], [37.5, 98.0]);
+            if (!indiaBounds.contains([lat, lng])) {
+              showToast("Location outside India. Mocking inside India (Delhi).", "warning");
+              lat = 28.6139 + (Math.random() - 0.5) * 0.01;
+              lng = 77.2090 + (Math.random() - 0.5) * 0.01;
+            }
+            
+            userLocation = { lat, lng };
+            leafletMap.setView([lat, lng], 15);
+            updateUserLocationMarker(lat, lng);
+            
+            L.circle([lat, lng], {
+              color: '#06038D',
+              fillColor: '#06038D',
+              fillOpacity: 0.15,
+              radius: 100
+            }).addTo(leafletMap);
+            
+            showToast("Located current position!", "success");
+          },
+          (error) => {
+            showToast("GPS location request denied or failed.", "error");
+          }
+        );
+      } else {
+        showToast("Geolocation not supported by browser.", "error");
+      }
+    }
+
+    function initMap() {
+      if (leafletMap) return;
+
+      const indiaBounds = L.latLngBounds([6.0, 68.0], [37.5, 98.0]);
+
+      leafletMap = L.map('leaflet-map', {
+        zoomControl: true,
+        attributionControl: false,
+        maxBounds: indiaBounds,
+        maxBoundsViscosity: 1.0,
+        minZoom: 4
+      });
+
+      // Default view is center of India at zoom 5
+      leafletMap.setView([20.5937, 78.9629], 5);
+
+      // Try centering on user location if within India
+      if (userLocation && indiaBounds.contains([userLocation.lat, userLocation.lng])) {
+        leafletMap.setView([userLocation.lat, userLocation.lng], 13);
+        setTimeout(() => {
+          updateUserLocationMarker(userLocation.lat, userLocation.lng);
+        }, 100);
+      }
+
+      // Light patriotic colored clean basemap
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        subdomains: 'abcd',
+        maxZoom: 20
+      }).addTo(leafletMap);
+
+      updateMapMarkers();
+    }
+
+    function updateUserLocationMarker(lat, lng) {
+      if (!leafletMap) return;
+      
+      const icon = L.divIcon({
+        className: 'user-pulse-marker-container',
+        html: '<div class="user-pulse-marker"></div>',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      });
+
+      if (userMarker) {
+        userMarker.setLatLng([lat, lng]);
+      } else {
+        userMarker = L.marker([lat, lng], { icon: icon }).addTo(leafletMap);
+      }
+    }
+
+    function getMarkerIcon(status) {
+      let colorClass = 'bg-patriotic-saffron shadow-orange-500/40';
+      if (status === 'In Progress') colorClass = 'bg-patriotic-blue shadow-blue-500/40';
+      if (status === 'Resolved') colorClass = 'bg-patriotic-green shadow-emerald-500/40';
+
+      return L.divIcon({
+        className: 'custom-div-icon',
+        html: `<div class="h-6 w-6 rounded-full border-2 border-white ${colorClass} shadow-md flex items-center justify-center text-[10px] text-white font-bold transform -translate-x-1/2 -translate-y-1/2 hover:scale-125 transition-transform duration-200"><i class="fa-solid fa-location-dot"></i></div>`,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
+      });
+    }
+
+    function updateMapMarkers() {
+      if (!leafletMap) return;
+      mapMarkers.forEach(m => leafletMap.removeLayer(m));
+      mapMarkers = [];
+
+      const visibleReports = reportsState.filter(r => r.status !== 'Spam');
+
+      visibleReports.forEach(report => {
+        const marker = L.marker([report.lat, report.lng], {
+          icon: getMarkerIcon(report.status)
+        });
+
+        marker.on('click', () => { selectReport(report.id); });
+        marker.addTo(leafletMap);
+        mapMarkers.push(marker);
+      });
+    }
+
+    function selectReport(id) {
+      selectedReportId = id;
+      const report = reportsState.find(r => r.id === id);
+      if (!report) return;
+
+      leafletMap.panTo([report.lat, report.lng]);
+
+      document.getElementById('inspector-empty-state').classList.add('hidden');
+      document.getElementById('inspector-card').classList.remove('hidden');
+      document.getElementById('inspector-card').classList.add('flex');
+
+      document.getElementById('inspector-img').src = report.image;
+      document.getElementById('inspector-category').innerText = report.category;
+      document.getElementById('inspector-title').innerText = report.title;
+      document.getElementById('inspector-desc').innerText = report.description;
+      document.getElementById('inspector-dept').innerText = report.department;
+      document.getElementById('inspector-upvote-count').innerText = `${report.upvotes} Citizens`;
+
+      // Show/hide corruption flagged alert badge
+      const flaggedBadge = document.getElementById('inspector-flagged-badge');
+      if (report.corruptionFlagged) {
+        flaggedBadge.classList.remove('hidden');
+      } else {
+        flaggedBadge.classList.add('hidden');
+      }
+
+      const statusBadge = document.getElementById('inspector-status-badge');
+      statusBadge.innerText = report.status;
+      statusBadge.className = 'absolute top-3 right-3 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-lg ';
+      
+      if (report.status === 'Pending') {
+        statusBadge.classList.add('bg-orange-500', 'text-white');
+      } else if (report.status === 'In Progress') {
+        statusBadge.classList.add('bg-blue-600', 'text-white');
+      } else {
+        statusBadge.classList.add('bg-emerald-600', 'text-white');
+      }
+
+      const createdDate = new Date(report.createdAt);
+      document.getElementById('inspector-time').innerText = `Reported: ${createdDate.toLocaleString()}`;
+
+      const resolutionContainer = document.getElementById('inspector-resolution-container');
+      if (report.status === 'Resolved' && report.resolutionProof) {
+        resolutionContainer.classList.remove('hidden');
+        document.getElementById('inspector-resolution-img').src = report.resolutionProof;
+      } else {
+        resolutionContainer.classList.add('hidden');
+      }
+
+      const upvoteBtn = document.getElementById('inspector-upvote-btn');
+      const userId = sessionAdhaar || 'anonymous-user';
+      if (report.verifiedBy.includes(userId)) {
+        upvoteBtn.setAttribute('disabled', 'true');
+        upvoteBtn.className = 'w-full py-3 bg-slate-100 text-slate-400 text-sm font-bold rounded-xl flex items-center justify-center gap-2 cursor-not-allowed border border-slate-200';
+        upvoteBtn.innerHTML = '<i class="fa-solid fa-check"></i> Peer Verified';
+      } else {
+        upvoteBtn.removeAttribute('disabled');
+        upvoteBtn.className = 'w-full py-3 bg-patriotic-blue hover:bg-blue-800 active:scale-95 text-white text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition duration-200 shadow-md shadow-blue-800/10';
+        upvoteBtn.innerHTML = '<i class="fa-regular fa-thumbs-up"></i> Upvote & Peer Verify Issue';
+      }
+    }
+
+    async function upvoteSelectedIssue() {
+      if (!selectedReportId) return;
+
+      const voterId = sessionAdhaar || 'anonymous-user';
+      try {
+        const response = await fetch(`/api/reports/${selectedReportId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            upvote: true,
+            userId: voterId
+          })
+        });
+
+        if (!response.ok) {
+          const errData = await response.json();
+          showToast(errData.error || 'Failed to upvote.', 'error');
+          return;
+        }
+
+        await fetchReports();
+        selectReport(selectedReportId);
+
+        showToast('Upvote cast! Geolocation community verification updated.', 'success');
+      } catch (err) {
+        console.error('Error upvoting:', err);
+      }
+    }
+
+    // --- TAB 3: ADMIN ACTION CENTRE LOGIC ---
+    let currentAdminDeptFilter = 'All';
+
+    function filterAdminDept(dept) {
+      currentAdminDeptFilter = dept;
+      
+      document.querySelectorAll('.dept-btn').forEach(btn => {
+        btn.className = 'dept-btn text-xs font-bold px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-700 bg-transparent';
+      });
+
+      const buttonMap = {
+        'All': 'dept-all',
+        'Public Works': 'dept-pw',
+        'Sanitation': 'dept-san',
+        'Electrical': 'dept-elec'
+      };
+
+      const activeBtn = document.getElementById(buttonMap[dept]);
+      if (activeBtn) {
+        activeBtn.className = 'dept-btn text-xs font-bold px-3 py-1.5 rounded-lg text-brand-600 bg-white shadow-sm';
+      }
+
+      renderAdminList();
+    }
+
+    function updateAdminStats() {
+      const total = reportsState.length;
+      const active = reportsState.filter(r => r.status === 'Pending' || r.status === 'In Progress').length;
+      const resolved = reportsState.filter(r => r.status === 'Resolved').length;
+
+      const totalEl = document.getElementById('admin-stat-total');
+      const activeEl = document.getElementById('admin-stat-active');
+      const resolvedEl = document.getElementById('admin-stat-resolved');
+
+      if (totalEl) totalEl.innerText = total;
+      if (activeEl) activeEl.innerText = active;
+      if (resolvedEl) resolvedEl.innerText = resolved;
+
+      const pendingCount = reportsState.filter(r => r.status === 'Pending').length;
+      const badge = document.getElementById('pending-badge');
+      if (badge) {
+        if (pendingCount > 0) {
+          badge.innerText = pendingCount;
+          badge.classList.remove('hidden');
+        } else {
+          badge.classList.add('hidden');
+        }
+      }
+    }
+
+    function renderAdminList() {
+      const container = document.getElementById('admin-list-container');
+      if (!container) return;
+
+      const searchQuery = document.getElementById('admin-search').value.toLowerCase();
+      
+      let filtered = reportsState;
+      if (currentAdminDeptFilter !== 'All') {
+        filtered = filtered.filter(r => r.department === currentAdminDeptFilter);
+      }
+      if (searchQuery) {
+        filtered = filtered.filter(r => r.title.toLowerCase().includes(searchQuery));
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 text-slate-500 font-sans font-semibold">
+            <i class="fa-solid fa-folder-open text-3xl mb-2 text-slate-400 block"></i>
+            <span class="text-xs">No tickets match criteria.</span>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = '';
+      filtered.forEach(report => {
+        const card = document.createElement('div');
+        const isSelected = selectedWorkbenchId === report.id;
+        
+        let statusColor = 'border-l-orange-500 text-orange-600 bg-orange-50';
+        let statusBadge = 'bg-orange-100 text-orange-700 border border-orange-200';
+        
+        if (report.status === 'In Progress') {
+          statusColor = 'border-l-blue-800 text-patriotic-blue bg-blue-50';
+          statusBadge = 'bg-blue-100 text-patriotic-blue border border-blue-200';
+        } else if (report.status === 'Resolved') {
+          statusColor = 'border-l-emerald-600 text-emerald-700 bg-emerald-50';
+          statusBadge = 'bg-emerald-100 text-patriotic-green border border-emerald-200';
+        } else if (report.status === 'Spam') {
+          statusColor = 'border-l-rose-300 text-rose-600 bg-rose-50';
+          statusBadge = 'bg-rose-100 text-rose-600 border border-rose-200';
+        }
+
+        const selectStyles = isSelected 
+          ? 'border-2 border-brand-500 bg-orange-50/20 shadow-sm' 
+          : 'border border-slate-200 hover:border-slate-400 bg-white';
+
+        card.className = `p-4 rounded-xl flex gap-4 cursor-pointer transition ${selectStyles} border-l-4 ${statusColor} items-center mb-2.5 font-sans`;
+        card.onclick = () => selectWorkbenchReport(report.id);
+
+        const createdDate = new Date(report.createdAt).toLocaleDateString();
+
+        card.innerHTML = `
+          <img class="h-12 w-12 object-cover rounded-lg bg-slate-900 border border-slate-200" src="${report.image}" alt="Thumbnail">
+          <div class="flex-1 min-w-0 font-medium">
+            <div class="flex justify-between items-start gap-2">
+              <span class="text-[9px] font-mono text-slate-500 font-bold">${report.id}</span>
+              <span class="text-[9px] font-mono text-slate-600 font-bold"><i class="fa-solid fa-thumbs-up"></i> ${report.upvotes}</span>
+            </div>
+            <h4 class="text-xs font-bold text-slate-800 truncate leading-tight mt-0.5 font-outfit">${report.title}</h4>
+            <div class="flex items-center justify-between mt-2.5">
+              <span class="text-[9px] ${statusBadge} px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">${report.status}</span>
+              <span class="text-[9px] text-slate-500 font-bold"><i class="fa-solid fa-clock"></i> ${createdDate}</span>
+            </div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function selectWorkbenchReport(id) {
+      selectedWorkbenchId = id;
+      renderAdminList();
+      updateAdminWorkbench();
+    }
+
+    function updateAdminWorkbench() {
+      const emptyState = document.getElementById('admin-workbench-empty');
+      const workbench = document.getElementById('admin-workbench-card');
+      if (!workbench) return;
+
+      if (!selectedWorkbenchId) {
+        emptyState.classList.remove('hidden');
+        workbench.classList.add('hidden');
+        return;
+      }
+
+      const report = reportsState.find(r => r.id === selectedWorkbenchId);
+      if (!report) {
+        selectedWorkbenchId = null;
+        emptyState.classList.remove('hidden');
+        workbench.classList.add('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      workbench.classList.remove('hidden');
+      workbench.classList.add('flex');
+
+      document.getElementById('workbench-id').innerText = report.id;
+      document.getElementById('workbench-title').innerText = report.title;
+      document.getElementById('workbench-img').src = report.image;
+      document.getElementById('workbench-dept').value = report.department;
+
+      // Update AI Fact Check parameters
+      document.getElementById('workbench-ai-score').innerText = `${report.aiFactCheckScore || 85}%`;
+      document.getElementById('workbench-ai-score-bar').style.width = `${report.aiFactCheckScore || 85}%`;
+      document.getElementById('workbench-ai-summary').innerText = report.aiFactCheckSummary || 'AI Verification checks are pending.';
+      
+      const aiBadge = document.getElementById('workbench-ai-status-badge');
+      const statusStr = report.aiFactCheckStatus || 'Verified';
+      aiBadge.innerText = statusStr;
+      if (statusStr === 'Verified') {
+        aiBadge.className = 'text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-patriotic-green border border-emerald-200';
+      } else if (statusStr === 'Suspicious') {
+        aiBadge.className = 'text-[9px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-rose-600 border border-rose-200';
+      } else {
+        aiBadge.className = 'text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200';
+      }
+
+      const statusBadge = document.getElementById('workbench-status-badge');
+      statusBadge.innerText = report.status;
+      
+      statusBadge.className = 'text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ';
+      if (report.status === 'Pending') {
+        statusBadge.classList.add('bg-orange-100', 'text-orange-700', 'border', 'border-orange-200');
+      } else if (report.status === 'In Progress') {
+        statusBadge.classList.add('bg-blue-100', 'text-patriotic-blue', 'border', 'border-blue-200');
+      } else {
+        statusBadge.classList.add('bg-emerald-100', 'text-patriotic-green', 'border', 'border-emerald-200');
+      }
+
+      document.getElementById('workbench-dept-badge').innerText = report.department;
+
+      document.querySelectorAll('[id^="wb-status-"]').forEach(btn => {
+        btn.className = 'py-2 bg-slate-100 rounded-lg text-xs font-bold hover:bg-slate-200 transition text-slate-500';
+      });
+
+      let statusButtonId = 'wb-status-pending';
+      if (report.status === 'In Progress') statusButtonId = 'wb-status-progress';
+      if (report.status === 'Resolved') statusButtonId = 'wb-status-resolved';
+      
+      const activeBtn = document.getElementById(statusButtonId);
+      if (activeBtn) {
+        if (report.status === 'Pending') activeBtn.className = 'py-2 bg-brand-500 text-white rounded-lg text-xs font-bold transition shadow-sm';
+        if (report.status === 'In Progress') activeBtn.className = 'py-2 bg-patriotic-blue text-white rounded-lg text-xs font-bold transition shadow-sm';
+        if (report.status === 'Resolved') activeBtn.className = 'py-2 bg-patriotic-green text-white rounded-lg text-xs font-bold transition shadow-sm';
+      }
+
+      const proofBlock = document.getElementById('workbench-proof-block');
+      if (report.status === 'Resolved') {
+        proofBlock.classList.remove('hidden');
+        document.getElementById('proof-upload-zone').classList.add('hidden');
+        const preview = document.getElementById('proof-preview-container');
+        preview.classList.remove('hidden');
+        document.getElementById('proof-preview-img').src = report.resolutionProof;
+        mockProofImageUploaded = report.resolutionProof;
+      } else {
+        proofBlock.classList.add('hidden');
+        clearProofUpload();
+      }
+    }
+
+    async function triggerAIScan() {
+      if (!selectedWorkbenchId) return;
+      const btn = document.getElementById('btn-ai-scan');
+      btn.innerHTML = '<i class="fa-solid fa-arrows-spin animate-spin"></i> Triggering AI Fact Check Scan...';
+      btn.setAttribute('disabled', 'true');
+
+      // Simulate a 1.5s AI network scan latency
+      setTimeout(async () => {
+        try {
+          const report = reportsState.find(r => r.id === selectedWorkbenchId);
+          if (!report) return;
+
+          let targetStatus = 'Verified';
+          let targetScore = 95;
+          let summaryText = 'AI Scan confirmed fresh GPS tags. Crossed reference with local Municipal engineering database.';
+
+          if (report.title.toLowerCase().includes('footpath')) {
+            targetStatus = 'Suspicious';
+            targetScore = 34;
+            summaryText = 'AI Alert: Image matches metadata signatures of duplicate reports filed during the 2024 ward complaints registry. Suspicious alarm flag raised.';
+          }
+
+          const response = await fetch(`/api/reports/${selectedWorkbenchId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              aiFactCheckStatus: targetStatus,
+              aiFactCheckScore: targetScore,
+              aiFactCheckSummary: summaryText
+            })
+          });
+
+          if (!response.ok) throw new Error('AI patch failed');
+          await fetchReports();
+          
+          showToast('AI Fact Checker finished scan. Verification values saved.', 'success');
+        } catch (e) {
+          console.error(e);
+        } finally {
+          btn.innerHTML = '<i class="fa-solid fa-arrows-spin animate-spin-slow"></i> Verify and Re-Scan Fact Logs';
+          btn.removeAttribute('disabled');
+        }
+      }, 1500);
+    }
+
+    function updateWorkbenchStatus(targetStatus) {
+      const report = reportsState.find(r => r.id === selectedWorkbenchId);
+      if (!report) return;
+
+      document.querySelectorAll('[id^="wb-status-"]').forEach(btn => {
+        btn.className = 'py-2 bg-slate-100 rounded-lg text-xs font-bold hover:bg-slate-200 transition text-slate-500';
+      });
+
+      const buttonMap = {
+        'Pending': 'wb-status-pending',
+        'In Progress': 'wb-status-progress',
+        'Resolved': 'wb-status-resolved'
+      };
+
+      const btn = document.getElementById(buttonMap[targetStatus]);
+      if (targetStatus === 'Pending') btn.className = 'py-2 bg-brand-500 text-white rounded-lg text-xs font-bold transition shadow-sm';
+      if (targetStatus === 'In Progress') btn.className = 'py-2 bg-patriotic-blue text-white rounded-lg text-xs font-bold transition shadow-sm';
+      if (targetStatus === 'Resolved') btn.className = 'py-2 bg-patriotic-green text-white rounded-lg text-xs font-bold transition shadow-sm';
+
+      const proofBlock = document.getElementById('workbench-proof-block');
+      if (targetStatus === 'Resolved') {
+        proofBlock.classList.remove('hidden');
+        if (!mockProofImageUploaded) {
+          mockProofImageUploaded = categoryResolutionMocks[report.category] || categoryResolutionMocks['Pothole'];
+        }
+      } else {
+        proofBlock.classList.add('hidden');
+      }
+    }
+
+    function simulateProofUpload() {
+      const report = reportsState.find(r => r.id === selectedWorkbenchId);
+      if (!report) return;
+
+      showToast('Simulating secure mobile upload of repairs...', 'success');
+      
+      const zone = document.getElementById('proof-upload-zone');
+      const preview = document.getElementById('proof-preview-container');
+      const previewImg = document.getElementById('proof-preview-img');
+
+      zone.classList.add('hidden');
+      preview.classList.remove('hidden');
+
+      mockProofImageUploaded = categoryResolutionMocks[report.category] || categoryResolutionMocks['Pothole'];
+      previewImg.src = mockProofImageUploaded;
+    }
+
+    function clearProofUpload() {
+      mockProofImageUploaded = null;
+      const zone = document.getElementById('proof-upload-zone');
+      const preview = document.getElementById('proof-preview-container');
+      if (zone && preview) {
+        zone.classList.remove('hidden');
+        preview.classList.add('hidden');
+        document.getElementById('proof-preview-img').src = '';
+      }
+    }
+
+    async function submitWorkbenchChanges() {
+      if (!selectedWorkbenchId) return;
+
+      const report = reportsState.find(r => r.id === selectedWorkbenchId);
+      const selectedDept = document.getElementById('workbench-dept').value;
+
+      let targetStatus = 'Pending';
+      if (document.getElementById('wb-status-progress').classList.contains('border-blue-800')) targetStatus = 'In Progress';
+      if (document.getElementById('wb-status-resolved').classList.contains('border-emerald-600')) targetStatus = 'Resolved';
+
+      if (targetStatus === 'Resolved' && !mockProofImageUploaded) {
+        showToast('Please attach or upload a Resolution Evidence Photo for verified resolution.', 'warning');
+        return;
+      }
+
+      const patchBody = {
+        department: selectedDept,
+        status: targetStatus
+      };
+
+      if (targetStatus === 'Resolved') {
+        patchBody.resolutionProof = mockProofImageUploaded;
+      }
+
+      try {
+        const response = await fetch(`/api/reports/${selectedWorkbenchId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(patchBody)
+        });
+
+        if (!response.ok) throw new Error('PATCH request failed');
+        const data = await response.json();
+
+        showToast('Municipal Action Centre details successfully saved.', 'success');
+        
+        await fetchReports();
+        updateAdminWorkbench();
+      } catch (err) {
+        console.error('Error saving triage:', err);
+        showToast('Network error: Could not apply changes.', 'error');
+      }
+    }
+
+    async function flagSelectedIssueSpam() {
+      if (!selectedWorkbenchId) return;
+      
+      const proceed = confirm("Flagging this report as SPAM will remove it from citizens' screens and lock the system tracker. Proceed?");
+      if (!proceed) return;
+
+      try {
+        const response = await fetch(`/api/reports/${selectedWorkbenchId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            status: 'Spam'
+          })
+        });
+
+        if (!response.ok) throw new Error('Triage spam tag failed');
+
+        const spamEl = document.getElementById('admin-stat-spam');
+        if (spamEl) spamEl.innerText = parseInt(spamEl.innerText) + 1;
+
+        showToast('Report marked as SPAM. Blocked from public feed.', 'warning');
+
+        selectedWorkbenchId = null;
+        await fetchReports();
+      } catch (err) {
+        console.error('Error flagging spam:', err);
+      }
+    }
+
+    // --- CITIZEN PROFILE SUB-TAB CONTROLLERS ---
+    function switchWalletSubTab(subTabId) {
+      activeWalletSubTab = subTabId;
+      
+      document.querySelectorAll('.wtab-btn').forEach(btn => {
+        btn.className = 'wtab-btn flex-1 py-2 rounded-lg text-[9px] uppercase tracking-wider text-slate-500 hover:text-slate-700 bg-transparent transition';
+      });
+
+      const activeBtn = document.getElementById(`wtab-${subTabId}`);
+      if (activeBtn) {
+        activeBtn.className = 'wtab-btn flex-1 py-2 rounded-lg text-[9px] uppercase tracking-wider text-slate-800 bg-white shadow-sm transition';
+      }
+
+      document.querySelectorAll('.wpanel-view').forEach(panel => {
+        panel.classList.add('hidden');
+      });
+
+      const activePanel = document.getElementById(`wpanel-${subTabId}`);
+      if (activePanel) {
+        activePanel.classList.remove('hidden');
+      }
+
+      if (subTabId === 'auditor') {
+        renderAuditIssuesList();
+        loadAuditIssueDetails();
+      }
+      if (subTabId === 'bulletin') {
+        renderBulletinBoardFeed();
+      }
+    }
+
+    // --- TAB 4: CITIZEN PROFILE & WALLET PORTAL ---
+    function redeemPerk(perkKey, cost, perkName) {
+      if (!sessionAdhaar) return;
+      const profile = profilesDatabase[sessionAdhaar];
+
+      if (profile.activeKarma < cost) {
+        showToast(`Insufficient Karma. You need ${cost - profile.activeKarma} more KP.`, 'error');
+        return;
+      }
+
+      profile.activeKarma -= cost;
+      saveProfilesDB();
+      syncKarmaBalances();
+
+      const randHex = Array.from({length:4}, () => Math.floor(Math.random()*16).toString(16).toUpperCase()).join('');
+      const voucherCode = `CIV-${perkKey.toUpperCase().substring(0, 4)}-${randHex}-2026`;
+
+      document.getElementById('modal-perk-name').innerText = perkName;
+      document.getElementById('modal-voucher-code').innerText = voucherCode;
+      
+      const modal = document.getElementById('redemption-modal');
+      modal.classList.remove('hidden');
+
+      showToast(`Redeemed: ${perkName}!`, 'success');
+    }
+
+    function closeRedemptionModal() {
+      document.getElementById('redemption-modal').classList.add('hidden');
+    }
+
+    // --- CORRUPTION CHECKER / AUDITOR LOGIC ---
+    function renderAuditIssuesList() {
+      const select = document.getElementById('audit-issue-select');
+      if (!select) return;
+      
+      const previousValue = select.value;
+      select.innerHTML = '';
+
+      const visibleReports = reportsState.filter(r => r.status !== 'Spam');
+      
+      visibleReports.forEach(report => {
+        const option = document.createElement('option');
+        option.value = report.id;
+        option.innerText = `${report.id}: ${report.title} (${report.department})`;
+        select.appendChild(option);
+      });
+
+      if (previousValue && select.querySelector(`option[value="${previousValue}"]`)) {
+        select.value = previousValue;
+      }
+    }
+
+    function loadAuditIssueDetails() {
+      const select = document.getElementById('audit-issue-select');
+      const auditSheet = document.getElementById('audit-sheet');
+      if (!select || !auditSheet) return;
+
+      const issueId = select.value;
+      if (!issueId) {
+        auditSheet.classList.add('hidden');
+        return;
+      }
+
+      const report = reportsState.find(r => r.id === issueId);
+      if (!report) {
+        auditSheet.classList.add('hidden');
+        return;
+      }
+
+      auditSheet.classList.remove('hidden');
+
+      // Budget displays
+      document.getElementById('audit-est-cost').innerText = `₹${report.estimatedBudget.toLocaleString()}`;
+      document.getElementById('audit-alloc-cost').innerText = `₹${report.allocatedBudget.toLocaleString()}`;
+      
+      // Calculate discrepancy
+      const gap = report.allocatedBudget - report.estimatedBudget;
+      const pctOver = Math.round((gap / report.estimatedBudget) * 100);
+
+      const dCard = document.getElementById('audit-discrepancy-card');
+      const dIcon = document.getElementById('audit-discrepancy-icon');
+      const dTitle = document.getElementById('audit-discrepancy-title');
+      const dDesc = document.getElementById('audit-discrepancy-desc');
+
+      if (gap > 0 && pctOver >= 100) {
+        // High Discrepancy (Corruption Risk!)
+        dCard.className = 'p-3 rounded-xl flex items-start gap-2.5 border border-rose-200 bg-rose-50 text-rose-800 text-xs font-medium';
+        dIcon.className = 'fa-solid fa-triangle-exclamation text-rose-600 text-base mt-0.5';
+        dTitle.innerText = `⚠️ High Corruption Risk Flagged (+${pctOver}%)`;
+        dDesc.innerText = `Financial analysis displays a major discrepancy of +₹${gap.toLocaleString()} allocated over standard contractor estimates. We recommend filing an automated citizen RTI request.`;
+      } else {
+        dCard.className = 'p-3 rounded-xl flex items-start gap-2.5 border border-emerald-200 bg-emerald-50 text-emerald-800 text-xs font-medium';
+        dIcon.className = 'fa-solid fa-circle-check text-emerald-600 text-base mt-0.5';
+        dTitle.innerText = '✅ Cost Estimates Balanced';
+        dDesc.innerText = `Allocated BBMP expenditure aligns cleanly with public works standards. Audit discrepancies are currently within the acceptable margins (0-${pctOver}%).`;
+      }
+
+      // Generate RTI Draft
+      const profile = profilesDatabase[sessionAdhaar] || { name: 'Aditi Kushwah', address: 'Ward 150, Bengaluru' };
+      const draftedLetter = `
+To,
+The Public Information Officer (PIO),
+Central Office, Bruhat Bengaluru Mahanagara Palike (BBMP),
+Hudson Circle, Bengaluru - 560002
+
+Subject: Application under Section 6(1) of the Right to Information (RTI) Act, 2005.
+
+Sir/Madam,
+Under the provisions of Section 6(1) of the RTI Act, please provide detailed records for work order ID ${report.id} ("${report.title}") allocated in ${report.department}:
+1. Attested photocopies of standard cost estimates, engineering maps, and final tenders.
+2. Complete details of contractor bidding documents, selection justifications, and payouts.
+3. Itemized bill receipts, measurement book copies, and verification approvals for work completion.
+
+Applicant details: Name: ${profile.name}, Ward: ${profile.ward}. 
+
+Thanking You,
+[Digital Signature via Adhaar Verification Code: K-RTI-${report.id.toUpperCase()}]
+      `;
+      document.getElementById('rti-letter-draft').innerText = draftedLetter.trim();
+      document.getElementById('audit-rti-count-badge').innerText = `Filed RTIs: ${report.rtiFiledCount || 0}`;
+
+      // Update button state for RTI
+      const rtiBtn = document.getElementById('btn-file-rti');
+      if (report.rtiFiledCount > 0) {
+        rtiBtn.innerHTML = '<i class="fa-solid fa-check"></i> RTI Transmitted to PIO Office';
+        rtiBtn.className = 'flex-1 py-2 bg-slate-100 border border-slate-200 text-slate-400 font-extrabold text-[10px] rounded-lg cursor-not-allowed';
+        rtiBtn.setAttribute('disabled', 'true');
+      } else {
+        rtiBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> File Automated RTI Request';
+        rtiBtn.className = 'flex-1 py-2 bg-patriotic-blue hover:bg-blue-800 text-white font-extrabold text-[10px] rounded-lg transition flex items-center justify-center gap-1 shadow-md shadow-blue-800/10';
+        rtiBtn.removeAttribute('disabled');
+      }
+
+      // Update button state for bulletin board
+      const bulletinBtn = document.getElementById('btn-flag-bulletin');
+      if (report.bulletinReported) {
+        bulletinBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Flagged in Bulletin';
+        bulletinBtn.className = 'py-2 px-3 bg-slate-100 border border-slate-200 text-slate-400 text-[10px] font-bold rounded-lg cursor-not-allowed';
+        bulletinBtn.setAttribute('disabled', 'true');
+      } else {
+        bulletinBtn.innerHTML = '<i class="fa-solid fa-bullhorn"></i> Raise Discrepancy Flag';
+        bulletinBtn.className = 'py-2 px-3 bg-rose-50 border border-rose-200 hover:bg-rose-100 text-rose-600 text-[10px] font-bold rounded-lg transition flex items-center justify-center gap-1';
+        bulletinBtn.removeAttribute('disabled');
+      }
+    }
+
+    async function submitAutomatedRTI() {
+      const select = document.getElementById('audit-issue-select');
+      if (!select) return;
+      const issueId = select.value;
+      if (!issueId) return;
+
+      try {
+        const response = await fetch(`/api/reports/${issueId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ rtiFiled: true })
+        });
+
+        if (!response.ok) throw new Error('RTI submission failed');
+        await fetchReports();
+        loadAuditIssueDetails();
+
+        showToast('Automated RTI filed! Application draft transmitted to BBMP Central PIO.', 'success');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function publishToBulletinBoard() {
+      const select = document.getElementById('audit-issue-select');
+      if (!select) return;
+      const issueId = select.value;
+      if (!issueId) return;
+
+      try {
+        const response = await fetch(`/api/reports/${issueId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            bulletinReported: true,
+            corruptionFlagged: true
+          })
+        });
+
+        if (!response.ok) throw new Error('Bulletin posting failed');
+        await fetchReports();
+        loadAuditIssueDetails();
+
+        showToast('Alert Flagged! Discrepancy posted to the Public Bulletin Board.', 'warning');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // --- BULLETIN BOARD TIMELINE ---
+    function renderBulletinBoardFeed() {
+      const container = document.getElementById('bulletin-board-feed');
+      if (!container) return;
+
+      const flaggedIssues = reportsState.filter(r => r.corruptionFlagged && r.bulletinReported);
+
+      if (flaggedIssues.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 bg-slate-50 border border-slate-200 rounded-xl font-medium">
+            <i class="fa-solid fa-clipboard-check text-2xl text-slate-300 block mb-2"></i>
+            <p class="text-xs text-slate-500">No corruption flags raised yet. The ledger is clean!</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = '';
+      flaggedIssues.forEach(rep => {
+        const card = document.createElement('div');
+        
+        const gap = rep.allocatedBudget - rep.estimatedBudget;
+        const pctOver = Math.round((gap / rep.estimatedBudget) * 100);
+
+        card.className = `p-4 border border-rose-200 bg-rose-50/50 rounded-xl space-y-3 font-sans font-medium text-xs`;
+        card.innerHTML = `
+          <div class="flex justify-between items-start">
+            <div class="flex items-center gap-2">
+              <span class="text-[9px] font-mono bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">⚠️ Corruption Flagged</span>
+              <span class="text-[9px] font-mono text-slate-400 font-bold">${rep.id}</span>
+            </div>
+            <span class="text-[9px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded font-bold">RTIs Filed: ${rep.rtiFiledCount || 0}</span>
+          </div>
+
+          <div>
+            <h4 class="text-xs font-bold text-slate-800 font-outfit">${rep.title}</h4>
+            <p class="text-[10px] text-slate-500 mt-1 leading-snug">Department: ${rep.department} | Geotagged: ${rep.lat.toFixed(4)}, ${rep.lng.toFixed(4)}</p>
+          </div>
+
+          <div class="bg-white/80 p-2.5 border border-rose-100 rounded-lg space-y-1.5">
+            <div class="flex justify-between text-[10px]">
+              <span class="text-slate-500">Standard Contractor Estimate:</span>
+              <span class="font-extrabold text-slate-800">₹${rep.estimatedBudget.toLocaleString()}</span>
+            </div>
+            <div class="flex justify-between text-[10px]">
+              <span class="text-slate-500">Actual Payout:</span>
+              <span class="font-extrabold text-slate-800 text-rose-600">₹${rep.allocatedBudget.toLocaleString()}</span>
+            </div>
+            <div class="border-t border-dashed border-rose-100 pt-1.5 flex justify-between text-[10px] font-bold text-rose-800">
+              <span>Audited Discrepancy Overrun:</span>
+              <span>+₹${gap.toLocaleString()} (+${pctOver}%)</span>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
