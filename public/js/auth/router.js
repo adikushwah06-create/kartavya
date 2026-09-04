@@ -88,9 +88,13 @@ class AppRouter {
       // Update dashboard navbar user display
       this.syncDashboardUser(auth.user);
 
-      // Default to city map tab if no active view is visible
+      // Default to student tab if student role is selected, else city map
       if (window.switchTab) {
-        window.switchTab('map');
+        if (auth.user?.roles && auth.user.roles.includes('Student')) {
+          window.switchTab('student');
+        } else {
+          window.switchTab('map');
+        }
       }
       return;
     }

@@ -1065,6 +1065,9 @@
       </div>
     </section>
 
+    <!-- ================= TAB 5: STUDENT INNOVATION & RESEARCH PORTAL ================= -->
+    <section id="view-student" class="tab-view hidden flex-col flex-1 gap-6"></section>
+
   </main>
 
   <!-- TOAST NOTIFICATION CONTAINER -->
@@ -1095,6 +1098,10 @@
       </button>
     </div>
   </div>
+
+  <!-- STUDENT PORTAL: PROJECT DETAILS & APPLICATION MODALS -->
+  <div id="project-details-modal" class="hidden"></div>
+  <div id="project-apply-modal" class="hidden"></div>
 
   <!-- FOOTER -->
   <footer id="app-footer" class="bg-slate-900 border-t border-slate-800 py-6 text-center text-slate-400 text-xs mt-auto font-sans hidden">
@@ -1427,21 +1434,27 @@
       const googleUser = window.KartavyaAuthStore?.getState()?.user;
       if (googleUser || sessionRole === 'citizen') {
         container.innerHTML = `
-          <button onclick="switchTab('report')" id="tab-report" class="tab-btn flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all duration-200 text-orange-200 hover:text-white">
+          <button onclick="switchTab('report')" id="tab-report" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-lg font-bold text-sm transition-all duration-200 text-orange-200 hover:text-white">
             <i class="fa-solid fa-circle-plus"></i> Report Issue
           </button>
-          <button onclick="switchTab('map')" id="tab-map" class="tab-btn flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all duration-200 text-orange-200 hover:text-white">
+          <button onclick="switchTab('map')" id="tab-map" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-lg font-bold text-sm transition-all duration-200 text-orange-200 hover:text-white">
             <i class="fa-solid fa-map-location-dot"></i> City Map
           </button>
-          <button onclick="switchTab('wallet')" id="tab-wallet" class="tab-btn flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all duration-200 text-orange-200 hover:text-white">
+          <button onclick="switchTab('student')" id="tab-student" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-lg font-bold text-sm transition-all duration-200 text-orange-200 hover:text-white">
+            <i class="fa-solid fa-graduation-cap"></i> Student Portal
+          </button>
+          <button onclick="switchTab('wallet')" id="tab-wallet" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-lg font-bold text-sm transition-all duration-200 text-orange-200 hover:text-white">
             <i class="fa-solid fa-address-card"></i> Profile & Wallet
           </button>
         `;
       } else if (sessionRole === 'admin') {
         container.innerHTML = `
-          <button onclick="switchTab('triage')" id="tab-triage" class="tab-btn flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all duration-200 text-orange-200 hover:text-white">
+          <button onclick="switchTab('triage')" id="tab-triage" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-lg font-bold text-sm transition-all duration-200 text-orange-200 hover:text-white">
             <i class="fa-solid fa-shield-halved"></i> Action Centre
             <span id="pending-badge" class="hidden bg-brand-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">0</span>
+          </button>
+          <button onclick="switchTab('student')" id="tab-student" class="tab-btn flex items-center gap-2 px-3.5 py-2 rounded-lg font-bold text-sm transition-all duration-200 text-orange-200 hover:text-white">
+            <i class="fa-solid fa-graduation-cap"></i> Student Portal
           </button>
         `;
       }
@@ -1683,11 +1696,15 @@
         targetView.classList.remove('hidden');
         if (tabId === 'map') {
           targetView.classList.add('flex', 'flex-col', 'lg:grid');
-        } else if (tabId === 'triage') {
+        } else if (tabId === 'triage' || tabId === 'student') {
           targetView.classList.add('flex', 'flex-col');
         } else if (tabId === 'report' || tabId === 'wallet') {
           targetView.classList.add('grid');
         }
+      }
+
+      if (tabId === 'student' && window.KartavyaStudentPortal) {
+        window.KartavyaStudentPortal.render();
       }
 
       if (tabId === 'map') {
@@ -2853,5 +2870,8 @@ Thanking You,
   <script src="/js/auth/components/OnboardingModal.js"></script>
   <script src="/js/auth/router.js"></script>
   <script src="/js/auth/index.js"></script>
+
+  <!-- Kartavya Student Innovation & Research Portal -->
+  <script src="/js/student/studentPortal.js"></script>
 </body>
 </html>
