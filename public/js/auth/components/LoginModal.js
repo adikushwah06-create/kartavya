@@ -1,12 +1,10 @@
 /**
- * LoginModal - Authentication & Role Selection Modal
- * Displays the Role Selection tabs directly in place of the previous intermediate popup
+ * LoginModal - Authentication modal overlay matching the Kartavya design system
  */
 class LoginModal {
   constructor() {
     this.container = null;
     this.isOpen = false;
-    this.selectedRoles = new Set(['Student']);
     this._unsubscribe = null;
   }
 
@@ -15,7 +13,7 @@ class LoginModal {
 
     this.container = document.createElement('div');
     this.container.id = 'kartavya-login-modal';
-    this.container.className = 'fixed inset-0 z-[120] flex items-center justify-center p-4 sm:p-6 bg-slate-950/70 backdrop-blur-md transition-all duration-300 opacity-0 pointer-events-none overflow-y-auto';
+    this.container.className = 'fixed inset-0 z-[120] flex items-center justify-center p-4 sm:p-6 bg-slate-950/70 backdrop-blur-md transition-all duration-300 opacity-0 pointer-events-none';
     
     // Close modal when clicking backdrop
     this.container.addEventListener('click', (e) => {
@@ -27,7 +25,7 @@ class LoginModal {
     rootElement.appendChild(this.container);
 
     // Subscribe to auth state updates to render loading/error
-    this._unsubscribe = window.KartavyaAuthStore?.subscribe?.((state) => {
+    this._unsubscribe = window.KartavyaAuthStore.subscribe((state) => {
       if (this.isOpen) {
         this.render(state);
       }
@@ -37,7 +35,7 @@ class LoginModal {
   open() {
     if (!this.container) return;
     this.isOpen = true;
-    this.render(window.KartavyaAuthStore?.getState?.() || {});
+    this.render(window.KartavyaAuthStore.getState());
     
     // Trigger transition
     requestAnimationFrame(() => {
@@ -58,34 +56,6 @@ class LoginModal {
     }
   }
 
-  toggleRole(roleId) {
-    if (this.selectedRoles.has(roleId)) {
-      if (this.selectedRoles.size > 1) {
-        this.selectedRoles.delete(roleId);
-      } else {
-        window.showToast?.('Please select at least one role to continue.', 'warning');
-        return;
-      }
-    } else {
-      this.selectedRoles.add(roleId);
-    }
-    this.render();
-  }
-
-  submitSelectedRoles() {
-    let target = 'Student';
-    if (this.selectedRoles.has('Student')) {
-      target = 'Student';
-    } else if (this.selectedRoles.has('Citizen / Community Member')) {
-      target = 'Citizen';
-    } else if (this.selectedRoles.has('Industry / Organization')) {
-      target = 'Industry';
-    } else if (this.selectedRoles.has('University / Researcher')) {
-      target = 'Student';
-    }
-    this.loginWithRole(target);
-  }
-
   async loginWithRole(role) {
     const defaultProfiles = {
       'Student': {
@@ -102,7 +72,7 @@ class LoginModal {
         name: 'Aditi Kushwah',
         email: 'aditi.citizen@gmail.com',
         photoURL: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-        roles: ['Citizen / Community Member'],
+        roles: ['Citizen'],
         adhaar: '1234-5678-9012',
         profileCompleted: true
       },
@@ -117,7 +87,6 @@ class LoginModal {
         uid: 'industry-partner',
         name: 'Tata Power R&D Lead',
         email: 'cleanwater.rnd@tatapower.com',
-        photoURL: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
         roles: ['Industry / Organization'],
         profileCompleted: true
       }
@@ -192,46 +161,9 @@ class LoginModal {
 
   render(state) {
     if (!this.container) return;
-    const authState = window.KartavyaAuthStore?.getState?.() || {};
-    const rolesConfig = [
-      {
-        id: 'Student',
-        title: 'Student',
-        desc: 'Build solutions and work on real-world challenges.',
-        icon: 'fa-graduation-cap',
-        color: 'text-sky-600',
-        activeBorder: 'border-sky-500 bg-sky-50/60'
-      },
-      {
-        id: 'Citizen / Community Member',
-        title: 'Citizen / Community Member',
-        desc: 'Report challenges and contribute local knowledge.',
-        icon: 'fa-users',
-        color: 'text-amber-600',
-        activeBorder: 'border-amber-500 bg-amber-50/60'
-      },
-      {
-        id: 'University / Researcher',
-        title: 'University / Researcher',
-        desc: 'Share expertise, research and institutional capabilities.',
-        icon: 'fa-microscope',
-        color: 'text-emerald-600',
-        activeBorder: 'border-emerald-500 bg-emerald-50/60'
-      },
-      {
-        id: 'Industry / Organization',
-        title: 'Industry / Organization',
-        desc: 'Mentor, fund, prototype and help scale solutions.',
-        icon: 'fa-building-columns',
-        color: 'text-purple-600',
-        activeBorder: 'border-purple-500 bg-purple-50/60'
-      }
-    ];
-
-    const canContinue = this.selectedRoles.size > 0;
 
     this.container.innerHTML = `
-      <div class="w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-slate-150 p-6 sm:p-9 relative my-auto font-sans transition-all duration-300">
+      <div class="w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-slate-150 p-6 sm:p-8 relative overflow-hidden transition-all duration-300 transform scale-100 font-sans my-auto">
         
         <!-- Close Button -->
         <button id="login-modal-close-btn" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition focus:outline-none" title="Close">
@@ -243,85 +175,126 @@ class LoginModal {
           <div class="h-12 w-12 mx-auto rounded-2xl overflow-hidden flex items-center justify-center shadow-md border border-slate-200 mb-3">
             <img src="/sun-icon.jpg" class="h-full w-full object-cover" alt="Kartavya Sun Logo">
           </div>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-outfit tracking-tight">
-            How do you want to contribute to Kartavya?
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-outfit">
+            Welcome to Kartavya
           </h2>
-          <p class="text-xs sm:text-sm text-slate-500 mt-2 font-medium leading-relaxed">
-            Select one or multiple roles that match your involvement. Roles are not mutually exclusive.
+          <p class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed font-medium">
+            One platform. One community. A better India. Choose your portal to proceed.
           </p>
         </div>
 
-        <!-- Error Alert Banner (if any) -->
+        <!-- Error Alert Banner -->
         ${
-          authState.error
+          state.error
             ? `
           <div class="mb-5 p-3.5 bg-rose-50 border border-rose-200 rounded-xl flex items-start gap-2.5 text-xs text-rose-700 font-medium animate-shake">
             <i class="fa-solid fa-circle-exclamation text-rose-500 text-sm mt-0.5 flex-shrink-0"></i>
-            <span>${authState.error}</span>
+            <span>${state.error}</span>
           </div>
         `
             : ''
         }
 
-        <!-- Roles Selection Grid (Direct selection tabs) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-7">
-          ${rolesConfig
-            .map((role) => {
-              const isSelected = this.selectedRoles.has(role.id);
-              return `
-              <div 
-                onclick="window.KartavyaLoginModal.toggleRole('${role.id}')"
-                class="p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between relative group ${
-                  isSelected
-                    ? `${role.activeBorder} shadow-sm ring-1 ring-offset-1 ring-slate-300`
-                    : 'border-slate-200 hover:border-slate-300 bg-white'
-                }"
-              >
-                <div>
-                  <div class="flex items-center justify-between mb-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-white shadow-xs border border-slate-200 flex items-center justify-center">
-                      <i class="fa-solid ${role.icon} text-base ${role.color}"></i>
-                    </div>
-                    <!-- Custom Checkbox Indicator -->
-                    <div class="w-5 h-5 rounded-md border flex items-center justify-center transition ${
-                      isSelected
-                        ? 'bg-slate-900 border-slate-900 text-white'
-                        : 'border-slate-300 bg-white group-hover:border-slate-400'
-                    }">
-                      ${isSelected ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
-                    </div>
-                  </div>
-                  <h3 class="text-sm font-bold text-slate-800 font-outfit mb-1">${role.title}</h3>
-                  <p class="text-xs text-slate-500 leading-relaxed font-normal">${role.desc}</p>
-                </div>
+        <!-- Portal Role Selector Grid -->
+        <div class="space-y-3 mb-6">
+          <span class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider text-center">
+            Choose Your Portal
+          </span>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            
+            <!-- Option 1: Student Portal -->
+            <button 
+              onclick="window.KartavyaLoginModal.loginWithRole('Student')"
+              class="p-4 rounded-2xl border-2 border-brand-200 hover:border-brand-500 bg-brand-50/40 hover:bg-brand-50 text-left transition-all duration-200 group flex items-start gap-3.5"
+            >
+              <div class="w-10 h-10 rounded-xl bg-brand-500 text-white flex items-center justify-center text-lg font-bold shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+                <i class="fa-solid fa-graduation-cap"></i>
               </div>
-            `;
-            })
-            .join('')}
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 font-outfit">Student Portal</h4>
+                  <span class="text-[9px] px-1.5 py-0.2 bg-brand-100 text-brand-700 font-bold rounded">Innovator</span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5 leading-snug">Solve citizen problems, apply for milestone grants & build prototypes.</p>
+              </div>
+            </button>
+
+            <!-- Option 2: Citizen Portal -->
+            <button 
+              onclick="window.KartavyaLoginModal.loginWithRole('Citizen')"
+              class="p-4 rounded-2xl border-2 border-blue-200 hover:border-blue-500 bg-blue-50/40 hover:bg-blue-50 text-left transition-all duration-200 group flex items-start gap-3.5"
+            >
+              <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-lg font-bold shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+                <i class="fa-solid fa-users"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 font-outfit">Citizen Portal</h4>
+                  <span class="text-[9px] px-1.5 py-0.2 bg-blue-100 text-blue-700 font-bold rounded">Community</span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5 leading-snug">Report civic challenges, track ward budgets & earn Karma perks.</p>
+              </div>
+            </button>
+
+            <!-- Option 3: Municipal Admin -->
+            <button 
+              onclick="window.KartavyaLoginModal.loginWithRole('Admin')"
+              class="p-4 rounded-2xl border-2 border-slate-200 hover:border-slate-700 bg-slate-50 hover:bg-slate-100 text-left transition-all duration-200 group flex items-start gap-3.5"
+            >
+              <div class="w-10 h-10 rounded-xl bg-slate-800 text-white flex items-center justify-center text-lg font-bold shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+                <i class="fa-solid fa-building-shield"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 font-outfit">Municipal Admin</h4>
+                  <span class="text-[9px] px-1.5 py-0.2 bg-slate-200 text-slate-700 font-bold rounded">Official</span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5 leading-snug">Triage reports, inspect telemetry proofs & dispatch municipal repairs.</p>
+              </div>
+            </button>
+
+            <!-- Option 4: Industry & R&D Partner -->
+            <button 
+              onclick="window.KartavyaLoginModal.loginWithRole('Industry')"
+              class="p-4 rounded-2xl border-2 border-emerald-200 hover:border-emerald-500 bg-emerald-50/40 hover:bg-emerald-50 text-left transition-all duration-200 group flex items-start gap-3.5"
+            >
+              <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-lg font-bold shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+                <i class="fa-solid fa-handshake-angle"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 font-outfit">Industry & R&D</h4>
+                  <span class="text-[9px] px-1.5 py-0.2 bg-emerald-100 text-emerald-700 font-bold rounded">Sponsor</span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5 leading-snug">Sponsor citizen challenges, review student proposals & fund grants.</p>
+              </div>
+            </button>
+
+          </div>
         </div>
 
-        <!-- Continue Button -->
-        <button 
-          id="login-role-continue-btn"
-          onclick="window.KartavyaLoginModal.submitSelectedRoles()"
-          ${!canContinue ? 'disabled' : ''}
-          class="w-full py-4 bg-brand-500 hover:bg-brand-600 active:scale-[0.99] text-white font-extrabold text-sm rounded-xl shadow-md shadow-brand-500/20 transition flex items-center justify-center gap-2 font-outfit disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <span>Continue</span>
-          <i class="fa-solid fa-arrow-right text-xs"></i>
-        </button>
+        <!-- Divider: Or Google -->
+        <div class="relative flex py-2 items-center mb-4">
+          <div class="flex-grow border-t border-slate-200"></div>
+          <span class="flex-shrink mx-4 text-[10px] font-bold uppercase tracking-wider text-slate-400">Or Continue With Google</span>
+          <div class="flex-grow border-t border-slate-200"></div>
+        </div>
 
-        <!-- Footer -->
-        <div class="pt-4 mt-6 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
-          <div class="flex items-center gap-1.5 text-[11px]">
+        <!-- Primary Action: Google Authentication Button -->
+        <div id="google-btn-container" class="mb-5"></div>
+
+        <!-- Explanatory Trust Footer -->
+        <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+          <div class="flex items-center gap-1.5 text-[11px] text-slate-400 font-medium">
             <i class="fa-solid fa-shield-halved text-emerald-600"></i>
-            <span>Google Authentication &bull; Secure & Private</span>
+            <span>Encrypted Identity &bull; Smart India Hackathon 2026</span>
           </div>
           <button 
             onclick="window.KartavyaLoginModal.close(); window.showAboutPage?.()" 
             class="text-[11px] text-brand-600 hover:text-brand-700 font-bold transition underline underline-offset-2"
           >
-            About Initiative
+            Explore About Initiative
           </button>
         </div>
 
@@ -332,6 +305,30 @@ class LoginModal {
     const closeBtn = this.container.querySelector('#login-modal-close-btn');
     if (closeBtn) {
       closeBtn.addEventListener('click', () => this.close());
+    }
+
+    // Mount GoogleAuthButton into the container
+    const btnSlot = this.container.querySelector('#google-btn-container');
+    if (btnSlot) {
+      const googleBtn = window.KartavyaGoogleAuthButton({
+        isLoading: state.isLoading,
+        disabled: state.isLoading,
+        onClick: async () => {
+          try {
+            const { user, isNewUser } = await window.KartavyaAuthStore.loginWithGoogle();
+            this.close();
+
+            if (isNewUser || !user.profileCompleted) {
+              window.KartavyaRouter.navigate('/onboarding');
+            } else {
+              window.KartavyaRouter.navigate('/dashboard');
+            }
+          } catch (err) {
+            // Error is handled in store state
+          }
+        }
+      });
+      btnSlot.appendChild(googleBtn);
     }
   }
 }
