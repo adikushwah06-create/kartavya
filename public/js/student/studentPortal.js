@@ -6,6 +6,7 @@
 const studentChallengesData = [
   {
     id: 'cit-waterlogged-roads',
+    reportId: 'rep-101',
     title: 'Roads become waterlogged after heavy rain',
     category: 'Urban Drainage & Infrastructure',
     subCategories: ['Civil & Materials', 'CleanTech & Water'],
@@ -95,6 +96,7 @@ Student engineering teams will work in collaboration with L&T Urban Infrastructu
   },
   {
     id: 'cit-crop-disease',
+    reportId: 'rep-102',
     title: 'Farmers struggle to identify crop disease',
     category: 'AgriTech & AI',
     subCategories: ['CleanTech & Water', 'AI & Mobility'],
@@ -184,6 +186,7 @@ Student innovators will partner with Mahindra Agri Solutions & Edge AI Labs to:
   },
   {
     id: 'cit-bus-overcrowding',
+    reportId: 'rep-103',
     title: 'Bus overcrowding during morning hours',
     category: 'Smart Mobility & Transit',
     subCategories: ['AI & Mobility', 'IoT & Sanitation'],
@@ -275,24 +278,59 @@ Student engineering teams will collaborate with Infosys Smart Cities & Urban Mob
 
 class StudentPortal {
   constructor() {
-    // Retain only user-submitted citizen reports from the new submit form
+    // Load citizen-submitted problems from localStorage
     let savedCitizen = [];
     try {
       savedCitizen = JSON.parse(localStorage.getItem('kartavya_citizen_challenges') || '[]')
-        .filter(item => item && item.id && item.id.startsWith('cit-user-'));
-      // Clean up legacy stale cache in localStorage
-      localStorage.setItem('kartavya_citizen_challenges', JSON.stringify(savedCitizen));
+        .filter(item => item && item.id);
     } catch (e) {
       savedCitizen = [];
     }
 
-    this.challenges = [...studentChallengesData, ...savedCitizen];
+    // Citizen-submitted challenges appear at the top
+    this.challenges = [...savedCitizen, ...studentChallengesData];
     this.searchQuery = '';
     this.industryQuery = '';
     this.activeCategory = 'All';
-    this.currentSubTab = 'browse'; // 'browse' | 'applications' | 'submit-problem'
+    this.currentSubTab = 'browse'; // 'browse' | 'applications'
     this.myApplications = JSON.parse(localStorage.getItem('kartavya_student_applications') || '[]');
     this.syncWithServerReports();
+  }
+
+  addCitizenChallenge(challenge) {
+    if (!challenge || !challenge.id) return;
+    const exists = this.challenges.some(c => c.id === challenge.id || (c.reportId && challenge.reportId && c.reportId === challenge.reportId));
+    if (!exists) {
+      this.challenges.unshift(challenge);
+    }
+    try {
+      const saved = JSON.parse(localStorage.getItem('kartavya_citizen_challenges') || '[]');
+      if (!saved.some(c => c.id === challenge.id)) {
+        saved.unshift(challenge);
+        localStorage.setItem('kartavya_citizen_challenges', JSON.stringify(saved));
+      }
+    } catch (e) {}
+
+    const view = document.getElementById('view-student');
+    if (view && !view.classList.contains('hidden')) {
+      this.render();
+    }
+  }
+
+  refreshChallenges() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('kartavya_citizen_challenges') || '[]');
+      saved.forEach(s => {
+        if (!this.challenges.some(c => c.id === s.id)) {
+          this.challenges.unshift(s);
+        }
+      });
+    } catch (e) {}
+    this.syncWithServerReports();
+    const view = document.getElementById('view-student');
+    if (view && !view.classList.contains('hidden')) {
+      this.renderCardsGrid();
+    }
   }
 
   async syncWithServerReports() {
@@ -300,9 +338,10 @@ class StudentPortal {
       const res = await fetch('/api/reports');
       if (res.ok) {
         const reports = await res.json();
-        const existingCodes = new Set(this.challenges.map(c => c.reportId));
+        const existingCodes = new Set(this.challenges.map(c => c.reportId || c.id));
+        let addedCount = 0;
         reports.forEach(r => {
-          if (!existingCodes.has(r.id)) {
+          if (!existingCodes.has(r.id) && !existingCodes.has(`cit-${r.id}`)) {
             // Transform newly found reports from server into challenge if not already mapped
             const categoryMapping = {
               'Waterlogging': 'Urban Drainage & Infrastructure',
@@ -413,9 +452,17 @@ Student Deliverables:
               industry: industryMapping[domain] || industryMapping['Civil & Materials'],
               skills: ['Civic Engineering', 'Field Prototyping', 'IoT Telemetry', 'Sustainable Materials']
             };
-            this.challenges.push(challengeItem);
+            this.challenges.unshift(challengeItem);
+            addedCount++;
           }
         });
+
+        if (addedCount > 0) {
+          const view = document.getElementById('view-student');
+          if (view && !view.classList.contains('hidden')) {
+            this.renderCardsGrid();
+          }
+        }
       }
     } catch (e) {
       // Ignore network sync errors

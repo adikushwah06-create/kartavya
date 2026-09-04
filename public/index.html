@@ -1731,6 +1731,7 @@
       }
 
       if (tabId === 'student' && window.KartavyaStudentPortal) {
+        window.KartavyaStudentPortal.refreshChallenges?.();
         window.KartavyaStudentPortal.render();
       }
 
@@ -1942,7 +1943,105 @@
           saveProfilesDB();
         }
 
-        showToast('Report Logged! +50 Civic Karma in Escrow', 'success');
+        // Publish directly into Student Portal challenges
+        if (window.KartavyaStudentPortal) {
+          const categoryMapping = {
+            'Waterlogging': 'Urban Drainage & Infrastructure',
+            'Pothole': 'Urban Drainage & Infrastructure',
+            'Crop Disease': 'AgriTech & AI',
+            'Bus Transit': 'Smart Mobility & Transit',
+            'Overflowing Trash': 'CleanTech & Water',
+            'Broken Streetlight': 'Clean Energy',
+            'Sewage Blockage': 'IoT & Sanitation'
+          };
+          const domain = categoryMapping[loggedReport.category] || 'Urban Drainage & Infrastructure';
+          const industryMapping = {
+            'Urban Drainage & Infrastructure': {
+              name: 'L&T Urban Infrastructure & Construction Tech',
+              initial: 'L',
+              color: 'bg-amber-600',
+              mentor: 'Dr. Rajesh Sharma, Head of Materials & Urban Drainage R&D',
+              email: 'rd.materials@lt-infra.com',
+              sector: 'Civil Infrastructure & Climate-Resilient Urban Systems'
+            },
+            'AgriTech & AI': {
+              name: 'Mahindra Agri Solutions & Edge AI Labs',
+              initial: 'M',
+              color: 'bg-emerald-600',
+              mentor: 'Dr. Anand Swaminathan, Chief Agronomist & Plant Pathology Director',
+              email: 'agritech.rnd@mahindra.com',
+              sector: 'Precision Agriculture, Agronomy AI & Rural Tech'
+            },
+            'Smart Mobility & Transit': {
+              name: 'Infosys Smart Cities & Urban Mobility Labs',
+              initial: 'I',
+              color: 'bg-indigo-600',
+              mentor: 'Priya Venkat, Director of Urban Edge AI & Transit Telematics',
+              email: 'urbanmobility.ai@infosys.com',
+              sector: 'Intelligent Transportation Systems & Fleet Optimization'
+            },
+            'Civil & Materials': {
+              name: 'L&T Urban Infrastructure & Construction Tech',
+              initial: 'L',
+              color: 'bg-amber-600',
+              mentor: 'Dr. Rajesh Sharma, Head of Materials R&D',
+              email: 'rd.materials@lt-infra.com',
+              sector: 'Civil Infrastructure & Low-Carbon Materials'
+            },
+            'CleanTech & Water': {
+              name: 'Tata Power Clean Energy & Water Labs',
+              initial: 'T',
+              color: 'bg-blue-600',
+              mentor: 'Er. S. Ramanathan, VP CleanTech Engineering',
+              email: 'cleanwater.rnd@tatapower.com',
+              sector: 'Environmental Engineering & Industrial Water R&D'
+            },
+            'Clean Energy': {
+              name: 'Infosys Smart Cities & Urban IoT Labs',
+              initial: 'I',
+              color: 'bg-indigo-600',
+              mentor: 'Priya Venkat, Director of Urban Edge AI',
+              email: 'smartcities.ai@infosys.com',
+              sector: 'Smart Grid, Edge IoT & Urban Illumination'
+            },
+            'IoT & Sanitation': {
+              name: 'Mahindra Susten & Municipal IoT Solutions',
+              initial: 'M',
+              color: 'bg-red-600',
+              mentor: 'Vikramaditya Rao, Chief IoT Architect',
+              email: 'iot.solutions@mahindrasusten.com',
+              sector: 'Municipal Sanitation & Worker Safety Technologies'
+            }
+          };
+
+          const newStudentChallenge = {
+            id: `cit-${loggedReport.id}`,
+            reportId: loggedReport.id,
+            title: loggedReport.title,
+            category: domain,
+            ay: 'AY2026-27',
+            status: 'PUBLISHED',
+            isCitizenSubmitted: true,
+            citizenReporter: `Citizen (${sessionAdhaar || 'Verified Citizen'})`,
+            ward: `Bengaluru Ward (GPS: ${loggedReport.lat}, ${loggedReport.lng})`,
+            gps: `${loggedReport.lat}, ${loggedReport.lng}`,
+            image: loggedReport.image,
+            applicants: 0,
+            vacancies: 2,
+            selected: 0,
+            grant: `₹${(loggedReport.allocatedBudget || 150000).toLocaleString()} Milestone Grant`,
+            code: `KV2026-${loggedReport.id.toUpperCase()}`,
+            snippet: `Citizen Report: ${loggedReport.description.slice(0, 130)}...`,
+            citizenDescription: loggedReport.description,
+            description: `[CITIZEN PROBLEM SUBMISSION]\nLocation: Bengaluru Ward (GPS: ${loggedReport.lat}, ${loggedReport.lng})\n\nCitizen Statement:\n${loggedReport.description}`,
+            industry: industryMapping[domain] || industryMapping['Urban Drainage & Infrastructure'],
+            skills: ['Civic Engineering', 'Field Prototyping', 'IoT Telemetry', 'Sustainable Materials']
+          };
+
+          window.KartavyaStudentPortal.addCitizenChallenge(newStudentChallenge);
+        }
+
+        showToast('Report Logged! Published live to Student Innovation Portal.', 'success');
 
         document.getElementById('report-form').reset();
         document.getElementById('camera-lens-sight').classList.remove('hidden');

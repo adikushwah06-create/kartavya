@@ -151,6 +151,8 @@ class LoginModal {
         window.switchTab('student');
       } else if (role === 'Admin') {
         window.switchTab('triage');
+      } else if (role === 'Citizen') {
+        window.switchTab('report');
       } else {
         window.switchTab('map');
       }
