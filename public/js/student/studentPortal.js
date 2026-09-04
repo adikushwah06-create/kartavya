@@ -5,257 +5,288 @@
 
 const studentChallengesData = [
   {
-    id: 'cit-101',
-    title: 'Hazardous Deep Potholes & Road Surface Degradation at Indiranagar Metro Gate',
-    category: 'Civil & Materials',
+    id: 'cit-waterlogged-roads',
+    title: 'Roads become waterlogged after heavy rain',
+    category: 'Urban Drainage & Infrastructure',
+    subCategories: ['Civil & Materials', 'CleanTech & Water'],
     ay: 'AY2026-27',
     status: 'PUBLISHED',
     isCitizenSubmitted: true,
-    citizenReporter: 'Aditi Kushwah (Ward 150 Citizen)',
-    ward: 'Ward 150 - Indiranagar Metro Gate, Bengaluru',
-    gps: '12.9784, 77.6408',
-    image: 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80',
+    citizenReporter: 'Ramesh Kumar (Ward 174 Resident Welfare Association)',
+    ward: 'Outer Ring Road & Silk Board Arterial Belt, Bengaluru',
+    gps: '12.9177, 77.6238',
+    image: 'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=800&q=80',
     applicants: 14,
     vacancies: 2,
     selected: 1,
-    grant: '₹2,20,000 Milestone Grant',
-    code: 'KV2026-CIT101',
-    snippet: 'Citizen Report: A massive 2-foot pothole directly in front of the metro gate causes severe two-wheeler skids. Students are invited to deploy rapid-setting geopolymer concrete and IoT telemetry...',
-    citizenDescription: 'A massive pothole has formed right in front of the main entry gate of the metro station. It is a major hazard for two-wheelers, especially during heavy rains. Rainwater pools in the crater making it invisible at night, leading to 3 serious two-wheeler accidents.',
+    grant: '₹2,50,000 Milestone Grant',
+    code: 'KV2026-CIT01',
+    snippet: 'Citizen Report: Arterial roads become flooded 2.5 feet deep within 20 minutes of rain due to choked culverts and non-porous asphalt. Student teams needed to engineer porous pavement prototypes and IoT drainage telemetry...',
+    citizenDescription: 'Every time it rains moderately, water builds up over 2.5 feet deep within 20 minutes because the side drains are choked with construction silt and plastic debris. Vehicles stall, ambulances are stranded for hours, and water enters basement shops along the main road.',
     description: `[CITIZEN PROBLEM SUBMISSION]
-Ward: Ward 150 - Indiranagar Metro Arrival Gate 2, Bengaluru (GPS: 12.9784, 77.6408)
-Reported by Citizen: Aditi Kushwah (Ward 150 Resident)
+Location: Outer Ring Road & Silk Board Arterial Belt, Bengaluru (GPS: 12.9177, 77.6238)
+Reported by Citizen: Ramesh Kumar (Ward 174 Resident Welfare Association)
 
-Problem Overview:
-A massive 2-foot wide crater has opened directly on the main vehicular lane outside the metro station. Water pooling during evening showers obscures the hazard, causing severe two-wheeler skids and traffic bottlenecks.
+Problem Statement:
+Arterial roads and intersections suffer chronic waterlogging immediately following rainfall. Inadequate drainage gradient, undersized stormwater culverts, silt blockages, and impermeable bitumen surfaces prevent natural water absorption, causing flash flooding, traffic standstills, and structural road deterioration.
 
 Student Innovation Scope:
-Student engineering teams are invited to develop a permanent, low-carbon pavement repair:
-1. Formulate high-durability, alkali-activated geopolymer concrete mix using fly-ash and blast furnace slag with >45 MPa compressive strength and rapid 4-hour traffic curing.
-2. Embed an IoT vibration and ultrasonic depth telemetry sensor node to monitor subsequent subsidence.
-3. Conduct pilot durability testing under heavy vehicular shear on Indiranagar arterial stretches.`,
+Student engineering teams will work in collaboration with L&T Urban Infrastructure to:
+1. Develop high-permeability porous pavement or geopolymer drainage tiles capable of draining >1,500 L/m²/hour into subterranean recharge wells.
+2. Design and deploy solar-powered IoT ultrasonic water-level nodes that transmit real-time street drainage status to the municipal control room via LoRaWAN.
+3. Construct a self-cleaning vortex silt/debris separator to prevent storm culverts from choking.`,
     industry: {
       name: 'L&T Urban Infrastructure & Construction Tech',
       initial: 'L',
       color: 'bg-amber-600',
-      mentor: 'Dr. Rajesh Sharma, Head of Materials R&D',
+      mentor: 'Dr. Rajesh Sharma, Head of Materials & Urban Drainage R&D',
       email: 'rd.materials@lt-infra.com',
-      sector: 'Civil Infrastructure & Low-Carbon Materials',
+      sector: 'Civil Infrastructure & Climate-Resilient Urban Systems',
       phone: '+91 (022) 6752-5656'
     },
-    skills: ['Geopolymer Concrete', 'Fly Ash Recycling', 'AI Mixture Optimization', 'Civil Engineering', 'Compressive Testing']
+    skills: [
+      'Urban Stormwater Hydrology',
+      'Porous & Permeable Concrete',
+      'IoT Water Level Telemetry',
+      'GIS Runoff & Elevation Mapping',
+      'Culvert Hydraulic Modeling',
+      'LoRaWAN / ESP32 Firmware'
+    ],
+    requiredSkillDetails: {
+      overview: 'Student innovators must possess interdisciplinary skills spanning civil engineering, IoT hardware telemetry, and urban hydrological modeling.',
+      competencyGroups: [
+        {
+          title: 'Core Civil & Material Engineering',
+          icon: 'fa-solid fa-layer-group',
+          color: 'text-amber-600',
+          items: [
+            'Hydrologic & Hydraulic Culvert Modeling (HEC-RAS / SWMM)',
+            'Porous Asphalt & Alkali-Activated Geopolymer Concrete Mix Design',
+            'Permeability & Compressive Strength Material Testing (>30 MPa)'
+          ]
+        },
+        {
+          title: 'IoT Sensors & Embedded Firmware',
+          icon: 'fa-solid fa-microchip',
+          color: 'text-blue-600',
+          items: [
+            'IP68 Submersible Ultrasonic Water-Depth Sensor Nodes',
+            'LoRaWAN / NB-IoT Long-Range Low-Power Wireless Mesh',
+            'Solar PV Harvesting & Power Management for Field Nodes'
+          ]
+        },
+        {
+          title: 'Software, GIS & Predictive Analytics',
+          icon: 'fa-solid fa-laptop-code',
+          color: 'text-emerald-600',
+          items: [
+            'GIS Topographic Elevation & Runoff Mapping (QGIS / ArcGIS)',
+            'Real-Time Water-Level Dashboard & Municipal Alert Webhooks',
+            'Predictive Rainfall Inflow Modeling with Python'
+          ]
+        }
+      ],
+      deliverables: [
+        'Lab-verified 1m² permeable pavement slab prototype with documented flow throughput.',
+        'Operational IP68 IoT sensor telemetry node transmitting water level data to BBMP API.',
+        'Field pilot deployment report at designated Silk Board flood-prone test site.'
+      ]
+    }
   },
   {
-    id: 'cit-102',
-    title: 'Persistent Garbage Dumpster Spillage & Unsegregated Waste Overflow on 80 Feet Road',
-    category: 'CleanTech & Water',
+    id: 'cit-crop-disease',
+    title: 'Farmers struggle to identify crop disease',
+    category: 'AgriTech & AI',
+    subCategories: ['CleanTech & Water', 'AI & Mobility'],
     ay: 'AY2026-27',
     status: 'PUBLISHED',
     isCitizenSubmitted: true,
-    citizenReporter: 'Kiran Rao (80 Feet Road Residents Welfare Association)',
-    ward: '80 Feet Road Sidewalk, Indiranagar, Bengaluru',
-    gps: '12.9698, 77.6414',
-    image: 'https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?auto=format&fit=crop&w=800&q=80',
+    citizenReporter: 'Shivanna Gowda (Kolar Farmers Producer Organization)',
+    ward: 'Kolar & Devanahalli Farming Belt, Karnataka',
+    gps: '13.1362, 78.1291',
+    image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=800&q=80',
     applicants: 21,
     vacancies: 3,
     selected: 2,
-    grant: '₹1,80,000 Milestone Grant',
-    code: 'KV2026-CIT102',
-    snippet: 'Citizen Report: Municipal dumpsters are perpetually overflowing onto sidewalks. Students are tasked with building smart ultrasonic fill sensors and bio-enzyme odor neutralization systems...',
-    citizenDescription: 'Municipal garbage dumpsters on 80 Feet Road are overflowing continuously, spilling rotten kitchen and plastic waste across 50 meters of sidewalk. Foul odor and stray dogs create an acute hazard for children walking to school.',
+    grant: '₹2,20,000 Milestone Grant',
+    code: 'KV2026-CIT02',
+    snippet: 'Citizen Report: Smallholder farmers suffer devastating crop losses due to unidentifiable leaf blights, fungal infections, and pest attacks. Student teams needed to build offline-first Edge AI diagnostic tools and soil sensors...',
+    citizenDescription: 'Last month my entire 3-acre tomato harvest turned black within 5 days from a leaf fungus I could not recognize. Government agricultural extension officers take weeks to visit our village. By the time we know what pesticide to spray, the crop is already ruined.',
     description: `[CITIZEN PROBLEM SUBMISSION]
-Ward: 80 Feet Road, Indiranagar, Bengaluru (GPS: 12.9698, 77.6414)
-Reported by Citizen: Kiran Rao (80 Feet Road Residents Welfare Association)
+Location: Kolar & Devanahalli Rural Farming Belt, Karnataka (GPS: 13.1362, 78.1291)
+Reported by Citizen: Shivanna Gowda (Kolar Farmers Producer Organization)
 
-Problem Overview:
-Municipal dumpster units overflow before scheduled truck arrivals. Organic leachate and microplastics contaminate the open sidewalk and ward storm drains, creating an acute public health hazard and foul odor.
+Problem Statement:
+Smallholder and marginal farmers face sudden, devastating crop damage caused by bacterial, fungal, and viral plant pathogens. Due to a severe shortage of localized agricultural extension officers, farmers often apply incorrect, expensive chemical pesticides or delay intervention, leading to 40-60% yield wipeouts and soil contamination.
 
 Student Innovation Scope:
-Student innovators will collaborate with Tata Power Clean Energy Labs:
-1. Engineer solar-powered, weather-sealed ultrasonic fill-level telemetry nodes sending real-time capacity alerts to BBMP garbage collection trucks.
-2. Develop micro-aerobic bio-enzyme spray formulation that accelerates organic decomposition and neutralizes hydrogen sulfide and ammonia odors within 15 minutes.
-3. Deploy smart compaction or segregated drop chutes for pilot community adoption.`,
+Student innovators will partner with Mahindra Agri Solutions & Edge AI Labs to:
+1. Train an edge-quantized deep learning computer vision model to diagnose 35+ common Indian crop foliar diseases (Tomato Early Blight, Paddy Blast, Cotton Bollworm, etc.) with >92% field accuracy.
+2. Build an offline-first mobile app in regional Indian languages (Kannada, Hindi, Telugu, Tamil) with voice-guided organic treatment remedies.
+3. Develop an ultra-low-cost optical clip-on lens or handheld multispectral leaf scanner.`,
     industry: {
-      name: 'Tata Power Clean Energy & Waste Tech Labs',
-      initial: 'T',
-      color: 'bg-blue-600',
-      mentor: 'Er. S. Ramanathan, VP CleanTech Engineering',
-      email: 'cleanwater.rnd@tatapower.com',
-      sector: 'Environmental Engineering & Waste Management R&D',
-      phone: '+91 (022) 6665-8282'
-    },
-    skills: ['Ultrasonic IoT Sensors', 'Biomethanation', 'Waste Segregation', 'Environmental Engineering', 'LoRaWAN Telemetry']
-  },
-  {
-    id: 'cit-103',
-    title: 'Broken Streetlights & Hazardous Dark Corridor around Koramangala Children’s Park',
-    category: 'Clean Energy',
-    ay: 'AY2026-27',
-    status: 'PUBLISHED',
-    isCitizenSubmitted: true,
-    citizenReporter: 'Meera Sen (Koramangala 4th Block Resident)',
-    ward: 'Children’s Park Perimeter, Koramangala 4th Block, Bengaluru',
-    gps: '12.9344, 77.6244',
-    image: 'https://images.unsplash.com/photo-1509024644558-2f56ce76c490?auto=format&fit=crop&w=800&q=80',
-    applicants: 12,
-    vacancies: 2,
-    selected: 0,
-    grant: '₹1,50,000 Milestone Grant',
-    code: 'KV2026-CIT103',
-    snippet: 'Citizen Report: Three consecutive streetlights around the public park have been pitch dark for over 10 days. Students will prototype solar micro-inverter LED fixtures with autonomous LoRaWAN fault detection...',
-    citizenDescription: 'Three key streetlights surrounding the children\'s park have been completely dark for a week. It becomes unsafe for pedestrians, evening women joggers, and elderly citizens after dark. Power surges keep causing outages.',
-    description: `[CITIZEN PROBLEM SUBMISSION]
-Ward: Koramangala 4th Block Park Perimeter, Bengaluru (GPS: 12.9344, 77.6244)
-Reported by Citizen: Meera Sen (Koramangala Resident)
-
-Problem Overview:
-Critical public streetlights around the ward park fail repeatedly due to underground line faults and voltage spikes, creating an unsafe dark pocket frequented by evening walkers and school children.
-
-Student Innovation Scope:
-Students will engineer autonomous, off-grid or hybrid street illumination:
-1. Design decentralized, pole-mountable solar PV-battery micro-inverter units delivering >12 hours continuous illumination without drawing from municipal line power.
-2. Build an intelligent LoRaWAN mesh communication node that automatically reports bulb burnouts, low battery reserves, or wire-tampering to the municipal action centre.
-3. Optimize PIR motion-dimming algorithms to extend battery lifespan during low-traffic midnight hours.`,
-    industry: {
-      name: 'Infosys Smart Cities & Urban IoT Labs',
-      initial: 'I',
-      color: 'bg-indigo-600',
-      mentor: 'Priya Venkat, Director of Urban Edge IoT',
-      email: 'smartcities.ai@infosys.com',
-      sector: 'Smart Grid, Edge IoT & Urban Illumination',
-      phone: '+91 (080) 2852-0261'
-    },
-    skills: ['Solar PV Inverters', 'LoRaWAN Mesh', 'Smart LED Drivers', 'Power Electronics', 'Battery Management']
-  },
-  {
-    id: 'cit-104',
-    title: 'Toxic Sewer Line Overflow & Dangerous Manhole Back-Pressure on HSR Sector 3',
-    category: 'IoT & Sanitation',
-    ay: 'AY2026-27',
-    status: 'PUBLISHED',
-    isCitizenSubmitted: true,
-    citizenReporter: 'Harish Venkatesh (HSR Layout Sector 3)',
-    ward: '14th Main, HSR Layout Sector 3, Bengaluru',
-    gps: '12.9118, 77.6385',
-    image: 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?auto=format&fit=crop&w=800&q=80',
-    applicants: 18,
-    vacancies: 3,
-    selected: 1,
-    grant: '₹2,00,000 Milestone Grant',
-    code: 'KV2026-CIT104',
-    snippet: 'Citizen Report: Underground sewage line choked, causing toxic black effluent and noxious gases to overflow onto main road. Students will develop submersible acoustic clog sensors and bio-desilting systems...',
-    citizenDescription: 'Clogged underground manhole causing black sewage water to bubble up and flow onto the main road. The puddle is growing and emitting a terrible stench of hydrogen sulfide gas right near a residential preschool.',
-    description: `[CITIZEN PROBLEM SUBMISSION]
-Ward: 14th Main Road, HSR Layout Sector 3, Bengaluru (GPS: 12.9118, 77.6385)
-Reported by Citizen: Harish Venkatesh (HSR Resident)
-
-Problem Overview:
-Subterranean sewer pipe blockages cause regular backflow through manhole lids during rainfall. Sanitation workers face severe toxic gas hazards when manually inspecting the line.
-
-Student Innovation Scope:
-Engineering teams will build an autonomous sewer monitoring and hazard mitigation system:
-1. Construct IP68-rated submersible acoustic level and multi-gas sensor nodes (H2S, Methane, Ammonia) powered by kinetic wastewater micro-generators.
-2. Transmit real-time blockage alerts to BBMP sanitation engineers before street-level overflow occurs.
-3. Design a robotic or non-invasive fluid jet desilting prototype to eliminate hazardous manual scavenging.`,
-    industry: {
-      name: 'Mahindra Susten & Municipal IoT Solutions',
+      name: 'Mahindra Agri Solutions & Edge AI Labs',
       initial: 'M',
-      color: 'bg-red-600',
-      mentor: 'Vikramaditya Rao, Chief IoT Architect',
-      email: 'iot.solutions@mahindrasusten.com',
-      sector: 'Municipal Sanitation & Worker Safety Technologies',
+      color: 'bg-emerald-600',
+      mentor: 'Dr. Anand Swaminathan, Chief Agronomist & Plant Pathology Director',
+      email: 'agritech.rnd@mahindra.com',
+      sector: 'Precision Agriculture, Agronomy AI & Rural Tech',
       phone: '+91 (022) 2490-1441'
     },
-    skills: ['Submersible Gas Sensors', 'Acoustic Clog Sensing', 'Robotic Desilting', 'Embedded C', 'LoRaWAN Telemetry']
+    skills: [
+      'Computer Vision (CNNs / YOLO)',
+      'Edge AI & Model Quantization (TFLite)',
+      'Mobile App Dev (Flutter / React Native)',
+      'Plant Pathology & Agronomy',
+      'Multilingual Voice UI (Bhashini API)',
+      'Soil Moisture & NPK Sensing'
+    ],
+    requiredSkillDetails: {
+      overview: 'Student innovators must bring combined expertise in applied computer vision, mobile app engineering for low-bandwidth rural environments, and agronomy/plant biology.',
+      competencyGroups: [
+        {
+          title: 'Deep Learning & Computer Vision',
+          icon: 'fa-solid fa-brain',
+          color: 'text-emerald-600',
+          items: [
+            'Convolutional Neural Networks (MobileNetV3, EfficientNet, YOLOv8)',
+            'Edge Model Quantization (INT8 / FP16 TFLite & ONNX Runtime)',
+            'Dataset Augmentation for High/Low-Light Agricultural Field Conditions'
+          ]
+        },
+        {
+          title: 'Mobile App & Voice UX Engineering',
+          icon: 'fa-solid fa-mobile-screen',
+          color: 'text-blue-600',
+          items: [
+            'Offline-First Local Inference Architecture (Flutter / React Native)',
+            'Multilingual Audio/Voice UX Integration (Bhashini AI / Whisper)',
+            'Low-Bandwidth Cloud Sync for Agronomist Second Opinions'
+          ]
+        },
+        {
+          title: 'Agronomy, Botany & Field Hardware',
+          icon: 'fa-solid fa-seedling',
+          color: 'text-amber-600',
+          items: [
+            'Plant Pathology Diagnosis (Fungal, Bacterial, Viral & Nutrient Deficiencies)',
+            'Micro-Climate & Soil NPK Sensor Telematics Integration',
+            'Organic & Chemical Dosage Recommendation Decision Trees'
+          ]
+        }
+      ],
+      deliverables: [
+        'Functional Android/iOS app performing real-time offline leaf disease classification.',
+        'Dataset benchmark report validating >92% diagnostic accuracy across 20+ disease classes.',
+        'Field pilot demonstration with 50 local farmers in Kolar Farming Belt.'
+      ]
+    }
   },
   {
-    id: 'cit-105',
-    title: 'Catastrophic Monsoon Waterlogging & Culvert Choke at Silk Board Flyover Junction',
-    category: 'AI & Mobility',
+    id: 'cit-bus-overcrowding',
+    title: 'Bus overcrowding during morning hours',
+    category: 'Smart Mobility & Transit',
+    subCategories: ['AI & Mobility', 'IoT & Sanitation'],
     ay: 'AY2026-27',
     status: 'PUBLISHED',
     isCitizenSubmitted: true,
-    citizenReporter: 'Bangalore Commuters Forum (Ward 174)',
-    ward: 'Central Silk Board Junction, Hosur Road, Bengaluru',
-    gps: '12.9177, 77.6238',
-    image: 'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=800&q=80',
-    applicants: 28,
+    citizenReporter: 'Pooja Nair (Bengaluru Public Transport Commuters Forum)',
+    ward: 'Majestic – Outer Ring Road & ITPL Bus Corridor, Bengaluru',
+    gps: '12.9767, 77.5713',
+    image: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80',
+    applicants: 18,
     vacancies: 2,
-    selected: 2,
-    grant: '₹2,50,000 Milestone Grant',
-    code: 'KV2026-CIT105',
-    snippet: 'Citizen Report: Stormwater culverts choked with silt and trash cause 2-foot waterlogging every monsoon downpour, stranding thousands of daily commuters for hours...',
-    citizenDescription: 'Stormwater culverts are severely choked with plastic debris. A 30-minute evening shower causes 2.5 feet of waterlogging, paralyzing Silk Board junction for over 4 hours and halting emergency ambulances.',
+    selected: 1,
+    grant: '₹1,80,000 Milestone Grant',
+    code: 'KV2026-CIT03',
+    snippet: 'Citizen Report: Extreme bus crowding between 8:00 AM - 10:30 AM causes severe commuter safety hazards and endless delays. Student teams invited to build automated passenger counting and dynamic fleet dispatch algorithms...',
+    citizenDescription: 'Buses arrive packed beyond maximum capacity during morning rush hours. Commuters hang dangerously from open footboards, senior citizens are unable to board, and people wait over 45 minutes as 3 consecutive full buses skip the stop without stopping.',
     description: `[CITIZEN PROBLEM SUBMISSION]
-Ward: Central Silk Board Junction, Bengaluru (GPS: 12.9177, 77.6238)
-Reported by Citizen: Bangalore Commuters Forum
+Location: Majestic to ITPL & Whitefield Arterial Transit Corridor, Bengaluru (GPS: 12.9767, 77.5713)
+Reported by Citizen: Pooja Nair (Bengaluru Public Transport Commuters Forum)
 
-Problem Overview:
-Silk Board intersection suffers from chronic stormwater drainage failure due to accumulated construction silt and single-use plastic blocking the main underground canal leading to Agara lake.
+Problem Statement:
+Urban public transit buses on high-density corridors experience peak-hour passenger overloading reaching 180-200% of rated capacity between 7:30 AM and 10:30 AM. Lack of real-time passenger occupancy telemetry prevents transit authorities from dynamically deploying auxiliary standby buses or adjusting headway intervals, leading to severe safety risks, footboard accidents, and prolonged commuter wait times.
 
 Student Innovation Scope:
-Students will collaborate with Reliance Smart Infrastructure:
-1. Develop an automated self-clearing trash-rack screen that prevents solid debris accumulation at the culvert mouth.
-2. Deploy edge AI camera nodes to detect water level rises and dynamically interface with smart traffic signals to re-route commuters before gridlock sets in.
-3. Deliver a high-capacity mobile siphon pump powered by solar battery backup.`,
+Student engineering teams will collaborate with Infosys Smart Cities & Urban Mobility Labs to:
+1. Construct an Automated Passenger Counting (APC) prototype using dual overhead stereo vision / time-of-flight (ToF) sensors or air-suspension load sensors achieving >95% accuracy.
+2. Develop dynamic headway adjustment and AI dispatch algorithms that recommend express feeder routing when upstream stop queues cross threshold density.
+3. Deliver a lightweight commuter mobile web widget displaying live bus occupancy level (Green/Yellow/Red) and predicted wait time.`,
     industry: {
-      name: 'Reliance Smart Infrastructure & Materials',
-      initial: 'R',
-      color: 'bg-rose-600',
-      mentor: 'Dr. Abhilash Pullanchiyodan, Lead Research Scientist',
-      email: 'smarttextiles@ril-innovate.com',
-      sector: 'Urban Infrastructure & Smart Drainage Systems',
-      phone: '+91 (022) 3555-5000'
+      name: 'Infosys Smart Cities & Urban Mobility Labs',
+      initial: 'I',
+      color: 'bg-indigo-600',
+      mentor: 'Priya Venkat, Director of Urban Edge AI & Transit Telematics',
+      email: 'urbanmobility.ai@infosys.com',
+      sector: 'Intelligent Transportation Systems & Fleet Optimization',
+      phone: '+91 (080) 2852-0261'
     },
-    skills: ['Urban Flood Modeling', 'Trash-Rack Mechanics', 'Edge AI Vision', 'Traffic Signal API', 'Hydraulics']
-  },
-  {
-    id: 'cit-106',
-    title: 'Severe Particulate Dust & Toxic Air Quality Spikes along Whitefield Metro Corridor',
-    category: 'Wearable Tech',
-    ay: 'AY2026-27',
-    status: 'PUBLISHED',
-    isCitizenSubmitted: true,
-    citizenReporter: 'Pooja Nair (Whitefield Residents Association)',
-    ward: 'ITPL Main Road, Whitefield, Bengaluru',
-    gps: '12.9866, 77.7345',
-    image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80',
-    applicants: 9,
-    vacancies: 2,
-    selected: 0,
-    grant: '₹1,75,000 Milestone Grant',
-    code: 'KV2026-CIT106',
-    snippet: 'Citizen Report: Uncovered road construction and truck movement cause PM2.5 levels to spike over 350 µg/m³. Sanitation workers and school pedestrians suffer severe respiratory distress...',
-    citizenDescription: 'Uncovered road construction and debris have caused PM2.5 levels to breach hazardous thresholds (380+ µg/m³). Municipal street sweepers and children walking to school have no protection from fine silica dust.',
-    description: `[CITIZEN PROBLEM SUBMISSION]
-Ward: ITPL Main Road & Construction Belt, Whitefield, Bengaluru (GPS: 12.9866, 77.7345)
-Reported by Citizen: Pooja Nair (Whitefield Residents Association)
-
-Problem Overview:
-Arterial road construction produces intense PM2.5 and PM10 particulate dust plumes that linger in the air throughout business hours, endangering sanitation personnel, traffic constables, and local residents.
-
-Student Innovation Scope:
-Research teams will partner with BHEL Clean Energy & Environmental Engineering:
-1. Design wearable smart N95-grade respirator uniforms with integrated electrostatic micro-filtration and vital signs monitoring for municipal road workers.
-2. Develop low-water ultrasonic misting nozzles that precipitate road dust with 80% less water usage than municipal water tankers.
-3. Deploy real-time optical PM2.5/PM10 air quality telemetry sensors with public LED billboard alerts.`,
-    industry: {
-      name: 'BHEL Clean Energy & Environmental Engineering',
-      initial: 'B',
-      color: 'bg-emerald-700',
-      mentor: 'K. Sundaram, General Manager EV Infrastructure',
-      email: 'ev.grid@bhel.in',
-      sector: 'Renewable Energy & Environmental Protection Systems',
-      phone: '+91 (011) 6633-7000'
-    },
-    skills: ['Electrostatic Filtration', 'Optical Dust Telemetry', 'Wearable Electronics', 'Fluid Mechanics', 'CleanTech']
+    skills: [
+      'Automated Passenger Counting (APC)',
+      'Edge AI Computer Vision (YOLO / ToF)',
+      'Dynamic Fleet Dispatch Algorithms',
+      'Transit Telematics & GPS Tracking',
+      'Queueing Theory & Transit GTFS APIs',
+      'Real-Time WebSockets / Microservices'
+    ],
+    requiredSkillDetails: {
+      overview: 'Student innovators should combine computer vision sensing, transit data engineering, and optimization algorithms to build an end-to-end crowding mitigation prototype.',
+      competencyGroups: [
+        {
+          title: 'Sensor Hardware & Edge Vision',
+          icon: 'fa-solid fa-camera',
+          color: 'text-indigo-600',
+          items: [
+            'Overhead Stereo-Vision / Time-of-Flight (ToF) Bi-Directional Passenger Counting',
+            'Vehicle Air-Bellow Suspension Pressure & Load Cell Interfacing',
+            'Embedded Edge Hardware (Raspberry Pi 5 / NVIDIA Jetson Orin Nano)'
+          ]
+        },
+        {
+          title: 'Transit Optimization & Dispatch Algorithms',
+          icon: 'fa-solid fa-route',
+          color: 'text-amber-600',
+          items: [
+            'Dynamic Vehicle Routing & Headway Adjustment (Operations Research / Queueing Theory)',
+            'GTFS-Realtime (General Transit Feed Specification) Protocol Integration',
+            'Spatio-Temporal Commuter Surge Prediction with Time-Series Models'
+          ]
+        },
+        {
+          title: 'Cloud Telematics & Commuter UI',
+          icon: 'fa-solid fa-network-wired',
+          color: 'text-emerald-600',
+          items: [
+            'Low-Latency WebSockets & MQTT Telemetry Streaming',
+            'Real-Time Bus Crowding Indicator (Green/Yellow/Red) UI for Commuters',
+            'Depot Control Dashboard with Automated Feeder Bus Dispatch Triggers'
+          ]
+        }
+      ],
+      deliverables: [
+        'Functional hardware prototype demonstrating >95% accurate bi-directional passenger count.',
+        'Live transit simulation running dynamic headway dispatch algorithms on BMTC Route 500D data.',
+        'Mobile/web dashboard displaying live bus occupancy to commuters and fleet managers.'
+      ]
+    }
   }
 ];
 
 class StudentPortal {
   constructor() {
-    const savedCitizen = JSON.parse(localStorage.getItem('kartavya_citizen_challenges') || '[]');
-    this.challenges = [...savedCitizen, ...studentChallengesData];
+    // Retain only user-submitted citizen reports from the new submit form
+    let savedCitizen = [];
+    try {
+      savedCitizen = JSON.parse(localStorage.getItem('kartavya_citizen_challenges') || '[]')
+        .filter(item => item && item.id && item.id.startsWith('cit-user-'));
+      // Clean up legacy stale cache in localStorage
+      localStorage.setItem('kartavya_citizen_challenges', JSON.stringify(savedCitizen));
+    } catch (e) {
+      savedCitizen = [];
+    }
+
+    this.challenges = [...studentChallengesData, ...savedCitizen];
     this.searchQuery = '';
     this.industryQuery = '';
     this.activeCategory = 'All';
@@ -274,13 +305,43 @@ class StudentPortal {
           if (!existingCodes.has(r.id)) {
             // Transform newly found reports from server into challenge if not already mapped
             const categoryMapping = {
-              'Pothole': 'Civil & Materials',
+              'Waterlogging': 'Urban Drainage & Infrastructure',
+              'Pothole': 'Urban Drainage & Infrastructure',
+              'Crop Disease': 'AgriTech & AI',
+              'Bus Transit': 'Smart Mobility & Transit',
               'Overflowing Trash': 'CleanTech & Water',
               'Broken Streetlight': 'Clean Energy',
               'Sewage Blockage': 'IoT & Sanitation'
             };
-            const domain = categoryMapping[r.category] || 'Civil & Materials';
+            const domain = categoryMapping[r.category] || 'Urban Drainage & Infrastructure';
             const industryMapping = {
+              'Urban Drainage & Infrastructure': {
+                name: 'L&T Urban Infrastructure & Construction Tech',
+                initial: 'L',
+                color: 'bg-amber-600',
+                mentor: 'Dr. Rajesh Sharma, Head of Materials & Urban Drainage R&D',
+                email: 'rd.materials@lt-infra.com',
+                sector: 'Civil Infrastructure & Climate-Resilient Urban Systems',
+                phone: '+91 (022) 6752-5656'
+              },
+              'AgriTech & AI': {
+                name: 'Mahindra Agri Solutions & Edge AI Labs',
+                initial: 'M',
+                color: 'bg-emerald-600',
+                mentor: 'Dr. Anand Swaminathan, Chief Agronomist & Plant Pathology Director',
+                email: 'agritech.rnd@mahindra.com',
+                sector: 'Precision Agriculture, Agronomy AI & Rural Tech',
+                phone: '+91 (022) 2490-1441'
+              },
+              'Smart Mobility & Transit': {
+                name: 'Infosys Smart Cities & Urban Mobility Labs',
+                initial: 'I',
+                color: 'bg-indigo-600',
+                mentor: 'Priya Venkat, Director of Urban Edge AI & Transit Telematics',
+                email: 'urbanmobility.ai@infosys.com',
+                sector: 'Intelligent Transportation Systems & Fleet Optimization',
+                phone: '+91 (080) 2852-0261'
+              },
               'Civil & Materials': {
                 name: 'L&T Urban Infrastructure & Construction Tech',
                 initial: 'L',
@@ -387,7 +448,9 @@ Student Deliverables:
 
   getFilteredChallenges() {
     return this.challenges.filter(item => {
-      const matchCategory = this.activeCategory === 'All' || item.category === this.activeCategory;
+      const matchCategory = this.activeCategory === 'All' || 
+        item.category === this.activeCategory ||
+        (item.subCategories && item.subCategories.includes(this.activeCategory));
       const matchSearch = !this.searchQuery || 
         item.title.toLowerCase().includes(this.searchQuery) ||
         item.snippet.toLowerCase().includes(this.searchQuery) ||
@@ -549,7 +612,7 @@ Student Deliverables:
   }
 
   renderBrowseView() {
-    const categories = ['All', 'CleanTech & Water', 'Civil & Materials', 'Wearable Tech', 'AI & Mobility', 'IoT & Sanitation', 'Clean Energy'];
+    const categories = ['All', 'Urban Drainage & Infrastructure', 'AgriTech & AI', 'Smart Mobility & Transit', 'Civil & Materials', 'CleanTech & Water'];
 
     return `
       <!-- Header Section -->
@@ -737,10 +800,29 @@ Student Deliverables:
                 </div>
               </div>
 
-              <!-- Skills Tags -->
-              <div class="flex items-center gap-1.5 text-[10px] text-slate-500 pt-1">
-                <i class="fa-solid fa-book-bookmark text-[10px] text-slate-400"></i>
-                <span class="truncate font-medium">${item.skills.join(', ')}</span>
+              <!-- Required Skills Preview on Card -->
+              <div class="p-2.5 rounded-xl bg-amber-50/60 border border-amber-200/80 space-y-1.5">
+                <div class="flex items-center justify-between text-[11px]">
+                  <span class="font-bold text-slate-800 flex items-center gap-1.5 font-outfit">
+                    <i class="fa-solid fa-graduation-cap text-brand-600 text-xs"></i>
+                    <span>Required Student Skills</span>
+                  </span>
+                  <span class="text-[10px] text-amber-800 font-bold bg-amber-100/90 px-2 py-0.5 rounded-md">
+                    ${item.skills.length} skills needed
+                  </span>
+                </div>
+                <div class="flex flex-wrap gap-1">
+                  ${item.skills.slice(0, 3).map(s => `
+                    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-white text-slate-700 border border-amber-200/70 shadow-2xs">
+                      ${s}
+                    </span>
+                  `).join('')}
+                  ${item.skills.length > 3 ? `
+                    <span class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-white/80 text-slate-500 border border-slate-200">
+                      +${item.skills.length - 3} more in details
+                    </span>
+                  ` : ''}
+                </div>
               </div>
             </div>
 
@@ -1114,7 +1196,7 @@ Student Deliverables:
       if (match) assignedIndustry = match;
     }
 
-    const uniqueId = `cit-${Date.now()}`;
+    const uniqueId = `cit-user-${Date.now()}`;
     const uniqueCode = `KV2026-CIT${Math.floor(100 + Math.random() * 900)}`;
 
     const newChallenge = {
@@ -1275,18 +1357,82 @@ Student Innovation Deliverables:
             </div>
           </div>
 
-          <!-- Required Skills Section (Matching Image 2 layout) -->
-          <div class="space-y-3 mb-6">
-            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">
-              Required Skills
-            </h4>
-            <div class="flex flex-wrap gap-2">
+          <!-- Required Student Skill Set & Technical Competencies Section -->
+          <div class="space-y-4 mb-6 p-5 rounded-2xl bg-gradient-to-br from-amber-50/80 via-slate-50 to-blue-50/50 border border-amber-200/80 shadow-xs">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-500 to-amber-600 text-white flex items-center justify-center text-sm shadow-xs">
+                  <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 font-outfit uppercase tracking-wider">
+                    Required Student Skill Set & Technical Competencies
+                  </h4>
+                  <p class="text-[11px] text-slate-500 font-medium">Domain knowledge and technical capabilities needed to research, prototype & deploy this solution</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-extrabold px-3 py-1 bg-amber-100/90 text-amber-800 rounded-full border border-amber-200">
+                ${challenge.skills.length} Required Skills
+              </span>
+            </div>
+
+            <!-- Interactive Skill Pills with Verification Badges -->
+            <div class="flex flex-wrap gap-1.5 pt-1">
               ${challenge.skills.map(s => `
-                <span class="px-3 py-1.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-100">
-                  ${s}
+                <span class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-800 border border-slate-200/90 shadow-2xs flex items-center gap-1.5 hover:border-brand-500 transition">
+                  <i class="fa-solid fa-circle-check text-emerald-600 text-[11px]"></i>
+                  <span>${s}</span>
                 </span>
               `).join('')}
             </div>
+
+            <!-- Structured Competency Breakdown -->
+            ${
+              challenge.requiredSkillDetails?.competencyGroups
+                ? `
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                ${challenge.requiredSkillDetails.competencyGroups.map(grp => `
+                  <div class="p-3 bg-white/90 rounded-xl border border-slate-200/80 space-y-1.5 shadow-2xs">
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-slate-800 font-outfit">
+                      <i class="${grp.icon} ${grp.color} text-xs"></i>
+                      <span class="truncate">${grp.title}</span>
+                    </div>
+                    <ul class="text-[11px] text-slate-600 space-y-1">
+                      ${grp.items.map(item => `
+                        <li class="flex items-start gap-1 leading-snug">
+                          <span class="text-amber-500 font-bold">&bull;</span>
+                          <span>${item}</span>
+                        </li>
+                      `).join('')}
+                    </ul>
+                  </div>
+                `).join('')}
+              </div>
+            `
+                : ''
+            }
+
+            <!-- Deliverables Expected from Student Team -->
+            ${
+              challenge.requiredSkillDetails?.deliverables
+                ? `
+              <div class="p-3.5 bg-white/90 rounded-xl border border-slate-200/80 shadow-2xs">
+                <span class="block text-[11px] font-bold text-slate-800 uppercase tracking-wider mb-2 font-outfit flex items-center gap-1.5">
+                  <i class="fa-solid fa-list-check text-brand-500"></i>
+                  <span>Deliverables Expected from Student Team (for Milestone Grants):</span>
+                </span>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  ${challenge.requiredSkillDetails.deliverables.map((deliv, idx) => `
+                    <div class="flex items-start gap-2 p-2 bg-slate-50/80 rounded-lg border border-slate-100 text-[11px] text-slate-600 leading-tight">
+                      <span class="w-4 h-4 rounded-full bg-brand-500 text-white text-[10px] font-extrabold flex items-center justify-center shrink-0 mt-0.5">${idx + 1}</span>
+                      <span>${deliv}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            `
+                : ''
+            }
           </div>
 
           <!-- Metadata Row (Year, Code, Grant) -->

@@ -16,8 +16,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Helper to assign department based on category
 function getDepartmentByCategory(category) {
   switch (category) {
+    case 'Waterlogging':
     case 'Pothole':
       return 'Public Works';
+    case 'Crop Disease':
+      return 'Agriculture & Rural Dev';
+    case 'Bus Transit':
+    case 'Overcrowding':
+      return 'Transport & Mobility';
     case 'Overflowing Trash':
       return 'Sanitation';
     case 'Broken Streetlight':
@@ -34,12 +40,12 @@ function getDepartmentByCategory(category) {
 let reports = [
   {
     id: 'rep-101',
-    title: 'Deep Hazardous Pothole near Indiranagar Metro',
-    category: 'Pothole',
-    description: 'A massive pothole has formed right in front of the main entry gate of the metro station. It is a major hazard for two-wheelers, especially during heavy rains.',
-    lat: 12.9784,
-    lng: 77.6408,
-    image: 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=600&q=80',
+    title: 'Roads become waterlogged after heavy rain',
+    category: 'Waterlogging',
+    description: 'Every time it rains moderately, arterial roads become waterlogged over 2.5 feet deep within 20 minutes due to choked culverts and non-porous asphalt, paralyzing commuter movement and damaging road foundations.',
+    lat: 12.9177,
+    lng: 77.6238,
+    image: 'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=800&q=80',
     status: 'Pending',
     department: 'Public Works',
     upvotes: 24,
@@ -48,65 +54,64 @@ let reports = [
     karmaAwarded: false,
     resolutionProof: null,
     resolvedAt: null,
-    reporterAdhaar: '1234-5678-9012', // Linked to default citizen demo account
-    // Financial and AI telemetry parameters
-    estimatedBudget: 25000,
-    allocatedBudget: 240000, // Large overestimate discrepancy
+    reporterAdhaar: '1234-5678-9012',
+    estimatedBudget: 45000,
+    allocatedBudget: 250000,
     aiFactCheckScore: 98,
     aiFactCheckStatus: 'Verified',
-    aiFactCheckSummary: 'AI Triage matches complaints with BBMP road maintenance ledger for 2026. news search confirms 3 reported accidents at this junction. Plausibility: High.',
+    aiFactCheckSummary: 'AI Weather and municipal elevation data confirms severe runoff accumulation at Silk Board & Outer Ring Road during precipitation >15mm/h.',
     corruptionFlagged: false,
     bulletinReported: false,
     rtiFiledCount: 0
   },
   {
     id: 'rep-102',
-    title: 'Overflowing Garbage Bin on 80 Feet Road',
-    category: 'Overflowing Trash',
-    description: 'Municipal garbage dumpsters are overflowing, and trash has spilled across the entire sidewalk. Stray dogs are dragging it around, causing a severe odor.',
-    lat: 12.9698,
-    lng: 77.6414,
-    image: 'https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?auto=format&fit=crop&w=600&q=80',
+    title: 'Farmers struggle to identify crop disease',
+    category: 'Crop Disease',
+    description: 'Smallholder farmers in the peri-urban farming belt struggle to identify foliar plant diseases and pest infestations early. Yield losses reach 50% because government agricultural officers take weeks to visit.',
+    lat: 13.1362,
+    lng: 78.1291,
+    image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&w=800&q=80',
     status: 'In Progress',
-    department: 'Sanitation',
-    upvotes: 12,
-    verifiedBy: ['user-1', 'user-4'],
-    createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    department: 'Agriculture & Rural Dev',
+    upvotes: 31,
+    verifiedBy: ['user-1', 'user-4', 'user-5'],
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
     karmaAwarded: false,
     resolutionProof: null,
     resolvedAt: null,
     reporterAdhaar: '9876-5432-1098',
-    estimatedBudget: 8000,
-    allocatedBudget: 8500, // Normal
-    aiFactCheckScore: 92,
+    estimatedBudget: 35000,
+    allocatedBudget: 220000,
+    aiFactCheckScore: 96,
     aiFactCheckStatus: 'Verified',
-    aiFactCheckSummary: 'AI Weather and news log confirms garbage truck mechanical failure delayed waste collections in Indiranagar Ward 150 on August 23.',
+    aiFactCheckSummary: 'Agronomy satellite multispectral telemetry detects chlorophyll index drop across 120 hectares of tomato & pulse plots in Kolar cluster.',
     corruptionFlagged: false,
     bulletinReported: false,
     rtiFiledCount: 0
   },
   {
     id: 'rep-103',
-    title: 'Non-Functional Streetlights around Koramangala Park',
-    category: 'Broken Streetlight',
-    description: 'Three key streetlights surrounding the children\'s park have been completely dark for a week. It becomes unsafe for pedestrians and joggers after dark.',
-    lat: 12.9344,
-    lng: 77.6244,
-    image: 'https://images.unsplash.com/photo-1509024644558-2f56ce76c490?auto=format&fit=crop&w=600&q=80',
+    title: 'Bus overcrowding during morning hours',
+    category: 'Bus Transit',
+    description: 'Severe bus overcrowding during peak morning rush hours (8:00 AM - 10:30 AM) on high-density corridors causes acute safety risks, dangerous footboard travel, and unmanageable delays for office commuters and students.',
+    lat: 12.9767,
+    lng: 77.5713,
+    image: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80',
     status: 'Pending',
-    department: 'Electrical',
-    upvotes: 8,
-    verifiedBy: ['user-2'],
+    department: 'Transport & Mobility',
+    upvotes: 42,
+    verifiedBy: ['user-2', 'user-3'],
     createdAt: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
     karmaAwarded: false,
     resolutionProof: null,
     resolvedAt: null,
-    reporterAdhaar: '1234-5678-9012', // Linked to default citizen demo account
-    estimatedBudget: 15000,
-    allocatedBudget: 98000, // Discrepancy
-    aiFactCheckScore: 88,
+    reporterAdhaar: '1234-5678-9012',
+    estimatedBudget: 20000,
+    allocatedBudget: 180000,
+    aiFactCheckScore: 94,
     aiFactCheckStatus: 'Verified',
-    aiFactCheckSummary: 'AI Sensor grid checks reveal zero electricity draw from targeted street node nodes over the past 7 days. Local news mentions electrical grid repairs.',
+    aiFactCheckSummary: 'Transit cell-tower and commuter density telemetry confirms 195% load capacity on BMTC Majestic-Whitefield route during peak hours.',
     corruptionFlagged: false,
     bulletinReported: false,
     rtiFiledCount: 0
