@@ -1387,9 +1387,11 @@
       sessionAdhaar = null;
       localStorage.removeItem('kartavya_session_role');
       localStorage.removeItem('kartavya_session_adhaar');
+      localStorage.removeItem('kartavya_auth_user');
+      localStorage.removeItem('kartavya_user_name');
 
-      if (window.KartavyaAuth) {
-        window.KartavyaAuth.logout();
+      if (window.KartavyaAuthStore) {
+        window.KartavyaAuthStore.logout();
       }
       
       if (leafletMap) {
@@ -1398,13 +1400,38 @@
       }
       stopRealCamera();
       
-      document.getElementById('citizen-adhaar').value = '';
-      document.getElementById('citizen-pin').value = '';
-      document.getElementById('admin-user').value = '';
-      document.getElementById('admin-pass').value = '';
+      const citizenAdhaar = document.getElementById('citizen-adhaar');
+      if (citizenAdhaar) citizenAdhaar.value = '';
+      const citizenPin = document.getElementById('citizen-pin');
+      if (citizenPin) citizenPin.value = '';
+      const adminUser = document.getElementById('admin-user');
+      if (adminUser) adminUser.value = '';
+      const adminPass = document.getElementById('admin-pass');
+      if (adminPass) adminPass.value = '';
 
-      evalSessionState();
-      showToast('Logged out of Kartavya secure portal.', 'success');
+      // Hide all tabs and dashboard nav/footer
+      const appNav = document.getElementById('app-nav');
+      if (appNav) appNav.classList.add('hidden');
+      const appFooter = document.getElementById('app-footer');
+      if (appFooter) appFooter.classList.add('hidden');
+      document.querySelectorAll('.tab-view').forEach(view => {
+        view.classList.add('hidden');
+        view.classList.remove('flex', 'flex-col', 'grid', 'lg:grid');
+      });
+
+      // Show landing page under the modal
+      const about = document.getElementById('about-page');
+      if (about) about.classList.remove('hidden');
+
+      showToast('Logged out of Kartavya portal.', 'info');
+
+      // Open Login Modal with portal role options
+      if (window.KartavyaLoginModal) {
+        window.KartavyaLoginModal.open();
+      }
+      if (window.KartavyaRouter) {
+        window.history.pushState(null, '', '/login');
+      }
     }
 
     function showAboutPage() {

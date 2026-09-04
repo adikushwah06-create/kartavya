@@ -5,51 +5,35 @@
 
 const studentChallengesData = [
   {
-    id: 'proj-101',
-    title: 'Waste-Derived Magnetic Nanocomposites for Water Filtration & Industrial Effluent Treatment',
-    category: 'CleanTech & Water',
-    ay: 'AY2026-27',
-    status: 'PUBLISHED',
-    applicants: 14,
-    vacancies: 2,
-    selected: 1,
-    grant: '₹1,50,000 Milestone Grant',
-    code: 'KV2026-IND378',
-    snippet: 'Develop sustainable magnetic nanocomposites from agro-industrial and plastic waste for high-throughput removal of dyes, micro-pollutants, and emerging water contaminants...',
-    description: `Develop sustainable magnetic nanocomposites from agro-industrial and plastic waste.
-Prepare N-doped activated carbon and magnetic metal-oxide composites for high-throughput removal of industrial effluents.
-Study removal of toxic dyes, pharmaceuticals, and emerging municipal water contaminants.
-Investigate adsorption kinetics and catalytic degradation mechanisms.
-Characterize materials using BET, XPS, FTIR, SEM, TEM, and Raman spectroscopy.
-Evaluate regeneration cycles, magnetic recovery efficiency, reusability, and practical pilot water-treatment potential in municipal ward drains.`,
-    industry: {
-      name: 'Tata Power Clean Energy & Water Labs',
-      initial: 'T',
-      color: 'bg-blue-600',
-      mentor: 'Er. S. Ramanathan, VP CleanTech Engineering',
-      email: 'cleanwater.rnd@tatapower.com',
-      sector: 'Environmental Engineering & Industrial Water R&D',
-      phone: '+91 (022) 6665-8282'
-    },
-    skills: ['Nanomaterials', 'Activated Carbon', 'Adsorption', 'Photocatalysis', 'Materials Characterization']
-  },
-  {
-    id: 'proj-102',
-    title: 'Sustainable Materials 4.0: AI-Driven Optimization for Green Concrete in Highway Pavements',
+    id: 'cit-101',
+    title: 'Hazardous Deep Potholes & Road Surface Degradation at Indiranagar Metro Gate',
     category: 'Civil & Materials',
     ay: 'AY2026-27',
     status: 'PUBLISHED',
-    applicants: 21,
-    vacancies: 3,
-    selected: 2,
+    isCitizenSubmitted: true,
+    citizenReporter: 'Aditi Kushwah (Ward 150 Citizen)',
+    ward: 'Ward 150 - Indiranagar Metro Gate, Bengaluru',
+    gps: '12.9784, 77.6408',
+    image: 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80',
+    applicants: 14,
+    vacancies: 2,
+    selected: 1,
     grant: '₹2,20,000 Milestone Grant',
-    code: 'KV2026-IND412',
-    snippet: 'The proposed research aims to develop a new generation of sustainable alkali-activated geopolymer concrete for heavy-duty municipal roads using AI predictive models...',
-    description: `The proposed research aims to develop a new generation of sustainable alkali-activated geopolymer concrete for heavy-duty municipal roads.
-Innovators will formulate machine-learning predictive models to optimize binder-to-aggregate ratios from industrial fly-ash and blast-furnace slag.
-Minimize embodied carbon emissions by over 60% compared to conventional Portland cement.
-Deliver >45 MPa compressive strength tested on Bengaluru Smart City pilot stretches.
-Conduct lifecycle durability testing against heavy monsoon leaching and vehicular shear.`,
+    code: 'KV2026-CIT101',
+    snippet: 'Citizen Report: A massive 2-foot pothole directly in front of the metro gate causes severe two-wheeler skids. Students are invited to deploy rapid-setting geopolymer concrete and IoT telemetry...',
+    citizenDescription: 'A massive pothole has formed right in front of the main entry gate of the metro station. It is a major hazard for two-wheelers, especially during heavy rains. Rainwater pools in the crater making it invisible at night, leading to 3 serious two-wheeler accidents.',
+    description: `[CITIZEN PROBLEM SUBMISSION]
+Ward: Ward 150 - Indiranagar Metro Arrival Gate 2, Bengaluru (GPS: 12.9784, 77.6408)
+Reported by Citizen: Aditi Kushwah (Ward 150 Resident)
+
+Problem Overview:
+A massive 2-foot wide crater has opened directly on the main vehicular lane outside the metro station. Water pooling during evening showers obscures the hazard, causing severe two-wheeler skids and traffic bottlenecks.
+
+Student Innovation Scope:
+Student engineering teams are invited to develop a permanent, low-carbon pavement repair:
+1. Formulate high-durability, alkali-activated geopolymer concrete mix using fly-ash and blast furnace slag with >45 MPa compressive strength and rapid 4-hour traffic curing.
+2. Embed an IoT vibration and ultrasonic depth telemetry sensor node to monitor subsequent subsidence.
+3. Conduct pilot durability testing under heavy vehicular shear on Indiranagar arterial stretches.`,
     industry: {
       name: 'L&T Urban Infrastructure & Construction Tech',
       initial: 'L',
@@ -59,81 +43,120 @@ Conduct lifecycle durability testing against heavy monsoon leaching and vehicula
       sector: 'Civil Infrastructure & Low-Carbon Materials',
       phone: '+91 (022) 6752-5656'
     },
-    skills: ['Geopolymer Concrete', 'Fly Ash Recycling', 'AI Mixture Optimization', 'Compressive Testing', 'Civil Engineering']
+    skills: ['Geopolymer Concrete', 'Fly Ash Recycling', 'AI Mixture Optimization', 'Civil Engineering', 'Compressive Testing']
   },
   {
-    id: 'proj-103',
-    title: 'Textile Integrated Metal-Ion Hybrid Supercapacitor for Smart Civic Street Wear',
-    category: 'Wearable Tech',
+    id: 'cit-102',
+    title: 'Persistent Garbage Dumpster Spillage & Unsegregated Waste Overflow on 80 Feet Road',
+    category: 'CleanTech & Water',
     ay: 'AY2026-27',
     status: 'PUBLISHED',
-    applicants: 9,
+    isCitizenSubmitted: true,
+    citizenReporter: 'Kiran Rao (80 Feet Road Residents Welfare Association)',
+    ward: '80 Feet Road Sidewalk, Indiranagar, Bengaluru',
+    gps: '12.9698, 77.6414',
+    image: 'https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?auto=format&fit=crop&w=800&q=80',
+    applicants: 21,
+    vacancies: 3,
+    selected: 2,
+    grant: '₹1,80,000 Milestone Grant',
+    code: 'KV2026-CIT102',
+    snippet: 'Citizen Report: Municipal dumpsters are perpetually overflowing onto sidewalks. Students are tasked with building smart ultrasonic fill sensors and bio-enzyme odor neutralization systems...',
+    citizenDescription: 'Municipal garbage dumpsters on 80 Feet Road are overflowing continuously, spilling rotten kitchen and plastic waste across 50 meters of sidewalk. Foul odor and stray dogs create an acute hazard for children walking to school.',
+    description: `[CITIZEN PROBLEM SUBMISSION]
+Ward: 80 Feet Road, Indiranagar, Bengaluru (GPS: 12.9698, 77.6414)
+Reported by Citizen: Kiran Rao (80 Feet Road Residents Welfare Association)
+
+Problem Overview:
+Municipal dumpster units overflow before scheduled truck arrivals. Organic leachate and microplastics contaminate the open sidewalk and ward storm drains, creating an acute public health hazard and foul odor.
+
+Student Innovation Scope:
+Student innovators will collaborate with Tata Power Clean Energy Labs:
+1. Engineer solar-powered, weather-sealed ultrasonic fill-level telemetry nodes sending real-time capacity alerts to BBMP garbage collection trucks.
+2. Develop micro-aerobic bio-enzyme spray formulation that accelerates organic decomposition and neutralizes hydrogen sulfide and ammonia odors within 15 minutes.
+3. Deploy smart compaction or segregated drop chutes for pilot community adoption.`,
+    industry: {
+      name: 'Tata Power Clean Energy & Waste Tech Labs',
+      initial: 'T',
+      color: 'bg-blue-600',
+      mentor: 'Er. S. Ramanathan, VP CleanTech Engineering',
+      email: 'cleanwater.rnd@tatapower.com',
+      sector: 'Environmental Engineering & Waste Management R&D',
+      phone: '+91 (022) 6665-8282'
+    },
+    skills: ['Ultrasonic IoT Sensors', 'Biomethanation', 'Waste Segregation', 'Environmental Engineering', 'LoRaWAN Telemetry']
+  },
+  {
+    id: 'cit-103',
+    title: 'Broken Streetlights & Hazardous Dark Corridor around Koramangala Children’s Park',
+    category: 'Clean Energy',
+    ay: 'AY2026-27',
+    status: 'PUBLISHED',
+    isCitizenSubmitted: true,
+    citizenReporter: 'Meera Sen (Koramangala 4th Block Resident)',
+    ward: 'Children’s Park Perimeter, Koramangala 4th Block, Bengaluru',
+    gps: '12.9344, 77.6244',
+    image: 'https://images.unsplash.com/photo-1509024644558-2f56ce76c490?auto=format&fit=crop&w=800&q=80',
+    applicants: 12,
     vacancies: 2,
     selected: 0,
-    grant: '₹1,80,000 Milestone Grant',
-    code: 'KV2026-IND194',
-    snippet: 'The rapid convergence of electronics and wearable technology requires autonomous, flexible energy storage embedded into uniforms for municipal night workers...',
-    description: `The rapid convergence of electronics and wearable technology requires autonomous, flexible energy storage.
-Students will engineer breathable, wash-resistant conductive fabric electrodes embedded with hybrid metal-ion supercapacitors.
-The smart textiles will power emergency beacons, geolocation telemetry, and vital signs monitoring for municipal sanitation workers.
-Investigate electrodeposition of metal oxides on carbonized natural cotton.
-Achieve high areal capacitance (>350 mF/cm²) and maintain performance over 5,000 bending cycles.`,
+    grant: '₹1,50,000 Milestone Grant',
+    code: 'KV2026-CIT103',
+    snippet: 'Citizen Report: Three consecutive streetlights around the public park have been pitch dark for over 10 days. Students will prototype solar micro-inverter LED fixtures with autonomous LoRaWAN fault detection...',
+    citizenDescription: 'Three key streetlights surrounding the children\'s park have been completely dark for a week. It becomes unsafe for pedestrians, evening women joggers, and elderly citizens after dark. Power surges keep causing outages.',
+    description: `[CITIZEN PROBLEM SUBMISSION]
+Ward: Koramangala 4th Block Park Perimeter, Bengaluru (GPS: 12.9344, 77.6244)
+Reported by Citizen: Meera Sen (Koramangala Resident)
+
+Problem Overview:
+Critical public streetlights around the ward park fail repeatedly due to underground line faults and voltage spikes, creating an unsafe dark pocket frequented by evening walkers and school children.
+
+Student Innovation Scope:
+Students will engineer autonomous, off-grid or hybrid street illumination:
+1. Design decentralized, pole-mountable solar PV-battery micro-inverter units delivering >12 hours continuous illumination without drawing from municipal line power.
+2. Build an intelligent LoRaWAN mesh communication node that automatically reports bulb burnouts, low battery reserves, or wire-tampering to the municipal action centre.
+3. Optimize PIR motion-dimming algorithms to extend battery lifespan during low-traffic midnight hours.`,
     industry: {
-      name: 'Reliance Smart Textiles & Energy Systems',
-      initial: 'R',
-      color: 'bg-rose-600',
-      mentor: 'Dr. Abhilash Pullanchiyodan, Lead Research Scientist',
-      email: 'smarttextiles@ril-innovate.com',
-      sector: 'Wearable Tech & Electrochemical Energy Storage',
-      phone: '+91 (022) 3555-5000'
-    },
-    skills: ['Electrodeposition', 'Material Synthesis', 'Flexible Supercapacitors', 'Smart Fabrics', 'Conductive Polymers']
-  },
-  {
-    id: 'proj-104',
-    title: 'AI-Powered Automated Pothole & Road Fault Detection System using Mobile Edge Telemetry',
-    category: 'AI & Mobility',
-    ay: 'AY2026-27',
-    status: 'PUBLISHED',
-    applicants: 28,
-    vacancies: 2,
-    selected: 2,
-    grant: '₹2,50,000 Milestone Grant',
-    code: 'KV2026-IND550',
-    snippet: 'Develop an on-device computer vision pipeline that processes live camera frames from municipal inspection vehicles to detect road fissures and potholes in real-time...',
-    description: `Develop an on-device computer vision pipeline that processes live camera frames from municipal inspection vehicles to detect road fissures, potholes, and broken curbs.
-The system must perform sub-second inference on edge hardware (Jetson Nano / Mobile GPU), automatically generating GPS-verified incident packets matching Kartavya's telemetry format.
-Deploy lightweight YOLOv8 models optimized via quantization and TensorRT.
-Implement automated depth estimation to prioritize high-risk potholes before monsoon degradation occurs.
-Pilot testing across BBMP arterial highways.`,
-    industry: {
-      name: 'Infosys Smart Cities & Urban Mobility Labs',
+      name: 'Infosys Smart Cities & Urban IoT Labs',
       initial: 'I',
       color: 'bg-indigo-600',
-      mentor: 'Priya Venkat, Director of Urban Edge AI',
+      mentor: 'Priya Venkat, Director of Urban Edge IoT',
       email: 'smartcities.ai@infosys.com',
-      sector: 'Computer Vision & Urban Edge Computing',
+      sector: 'Smart Grid, Edge IoT & Urban Illumination',
       phone: '+91 (080) 2852-0261'
     },
-    skills: ['YOLOv8 Edge AI', 'Geospatial Telemetry', 'Computer Vision', 'React Native', 'Sensor Fusion']
+    skills: ['Solar PV Inverters', 'LoRaWAN Mesh', 'Smart LED Drivers', 'Power Electronics', 'Battery Management']
   },
   {
-    id: 'proj-105',
-    title: 'IoT-Enabled Autonomous Drainage Overflow & Toxic Sewer Gas Detection Grid',
+    id: 'cit-104',
+    title: 'Toxic Sewer Line Overflow & Dangerous Manhole Back-Pressure on HSR Sector 3',
     category: 'IoT & Sanitation',
     ay: 'AY2026-27',
     status: 'PUBLISHED',
+    isCitizenSubmitted: true,
+    citizenReporter: 'Harish Venkatesh (HSR Layout Sector 3)',
+    ward: '14th Main, HSR Layout Sector 3, Bengaluru',
+    gps: '12.9118, 77.6385',
+    image: 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f7?auto=format&fit=crop&w=800&q=80',
     applicants: 18,
     vacancies: 3,
     selected: 1,
-    grant: '₹1,75,000 Milestone Grant',
-    code: 'KV2026-IND623',
-    snippet: 'Design robust, low-power submersible IoT nodes for subterranean stormwater drains measuring toxic gases (H2S, Methane) and water level spikes...',
-    description: `Design robust, low-power submersible IoT nodes for subterranean stormwater drains.
-The nodes measure water level changes and detect hazardous hydrogen sulfide (H2S) and methane concentrations to protect municipal sanitary personnel.
-Transmit real-time telemetry over LoRaWAN to Kartavya's municipal dispatch board.
-Solar-assisted battery harvesting with 3+ years autonomous deployment.
-IP68 submersible waterproof enclosure design and multi-sensor calibration against false triggers.`,
+    grant: '₹2,00,000 Milestone Grant',
+    code: 'KV2026-CIT104',
+    snippet: 'Citizen Report: Underground sewage line choked, causing toxic black effluent and noxious gases to overflow onto main road. Students will develop submersible acoustic clog sensors and bio-desilting systems...',
+    citizenDescription: 'Clogged underground manhole causing black sewage water to bubble up and flow onto the main road. The puddle is growing and emitting a terrible stench of hydrogen sulfide gas right near a residential preschool.',
+    description: `[CITIZEN PROBLEM SUBMISSION]
+Ward: 14th Main Road, HSR Layout Sector 3, Bengaluru (GPS: 12.9118, 77.6385)
+Reported by Citizen: Harish Venkatesh (HSR Resident)
+
+Problem Overview:
+Subterranean sewer pipe blockages cause regular backflow through manhole lids during rainfall. Sanitation workers face severe toxic gas hazards when manually inspecting the line.
+
+Student Innovation Scope:
+Engineering teams will build an autonomous sewer monitoring and hazard mitigation system:
+1. Construct IP68-rated submersible acoustic level and multi-gas sensor nodes (H2S, Methane, Ammonia) powered by kinetic wastewater micro-generators.
+2. Transmit real-time blockage alerts to BBMP sanitation engineers before street-level overflow occurs.
+3. Design a robotic or non-invasive fluid jet desilting prototype to eliminate hazardous manual scavenging.`,
     industry: {
       name: 'Mahindra Susten & Municipal IoT Solutions',
       initial: 'M',
@@ -143,46 +166,199 @@ IP68 submersible waterproof enclosure design and multi-sensor calibration agains
       sector: 'Municipal Sanitation & Worker Safety Technologies',
       phone: '+91 (022) 2490-1441'
     },
-    skills: ['LoRaWAN Sensors', 'MQ-136 Gas Detection', 'Ultrasonic Sensing', 'Embedded C', 'Telemetry API']
+    skills: ['Submersible Gas Sensors', 'Acoustic Clog Sensing', 'Robotic Desilting', 'Embedded C', 'LoRaWAN Telemetry']
   },
   {
-    id: 'proj-106',
-    title: 'Decentralized Solar-Powered EV Micro-Grid Charging Station for Urban Public Transit',
-    category: 'Clean Energy',
+    id: 'cit-105',
+    title: 'Catastrophic Monsoon Waterlogging & Culvert Choke at Silk Board Flyover Junction',
+    category: 'AI & Mobility',
     ay: 'AY2026-27',
     status: 'PUBLISHED',
-    applicants: 12,
+    isCitizenSubmitted: true,
+    citizenReporter: 'Bangalore Commuters Forum (Ward 174)',
+    ward: 'Central Silk Board Junction, Hosur Road, Bengaluru',
+    gps: '12.9177, 77.6238',
+    image: 'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=800&q=80',
+    applicants: 28,
+    vacancies: 2,
+    selected: 2,
+    grant: '₹2,50,000 Milestone Grant',
+    code: 'KV2026-CIT105',
+    snippet: 'Citizen Report: Stormwater culverts choked with silt and trash cause 2-foot waterlogging every monsoon downpour, stranding thousands of daily commuters for hours...',
+    citizenDescription: 'Stormwater culverts are severely choked with plastic debris. A 30-minute evening shower causes 2.5 feet of waterlogging, paralyzing Silk Board junction for over 4 hours and halting emergency ambulances.',
+    description: `[CITIZEN PROBLEM SUBMISSION]
+Ward: Central Silk Board Junction, Bengaluru (GPS: 12.9177, 77.6238)
+Reported by Citizen: Bangalore Commuters Forum
+
+Problem Overview:
+Silk Board intersection suffers from chronic stormwater drainage failure due to accumulated construction silt and single-use plastic blocking the main underground canal leading to Agara lake.
+
+Student Innovation Scope:
+Students will collaborate with Reliance Smart Infrastructure:
+1. Develop an automated self-clearing trash-rack screen that prevents solid debris accumulation at the culvert mouth.
+2. Deploy edge AI camera nodes to detect water level rises and dynamically interface with smart traffic signals to re-route commuters before gridlock sets in.
+3. Deliver a high-capacity mobile siphon pump powered by solar battery backup.`,
+    industry: {
+      name: 'Reliance Smart Infrastructure & Materials',
+      initial: 'R',
+      color: 'bg-rose-600',
+      mentor: 'Dr. Abhilash Pullanchiyodan, Lead Research Scientist',
+      email: 'smarttextiles@ril-innovate.com',
+      sector: 'Urban Infrastructure & Smart Drainage Systems',
+      phone: '+91 (022) 3555-5000'
+    },
+    skills: ['Urban Flood Modeling', 'Trash-Rack Mechanics', 'Edge AI Vision', 'Traffic Signal API', 'Hydraulics']
+  },
+  {
+    id: 'cit-106',
+    title: 'Severe Particulate Dust & Toxic Air Quality Spikes along Whitefield Metro Corridor',
+    category: 'Wearable Tech',
+    ay: 'AY2026-27',
+    status: 'PUBLISHED',
+    isCitizenSubmitted: true,
+    citizenReporter: 'Pooja Nair (Whitefield Residents Association)',
+    ward: 'ITPL Main Road, Whitefield, Bengaluru',
+    gps: '12.9866, 77.7345',
+    image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80',
+    applicants: 9,
     vacancies: 2,
     selected: 0,
-    grant: '₹3,00,000 Milestone Grant',
-    code: 'KV2026-IND709',
-    snippet: 'Prototype a fast-charging DC microgrid dynamically balancing rooftop solar generation with municipal grid power to charge electric public feeder buses...',
-    description: `Prototype a fast-charging DC microgrid that dynamically balances rooftop solar generation with municipal grid power to charge electric public feeder buses.
-The project includes smart telemetry communication to balance load spikes during peak urban transit hours.
-Incorporate second-life LiFePO4 battery storage banks to minimize peak grid draw.
-Develop predictive dispatch software based on bus timetables and regional solar irradiance forecasts.
-Collaborative engineering with state road transport corporations.`,
+    grant: '₹1,75,000 Milestone Grant',
+    code: 'KV2026-CIT106',
+    snippet: 'Citizen Report: Uncovered road construction and truck movement cause PM2.5 levels to spike over 350 µg/m³. Sanitation workers and school pedestrians suffer severe respiratory distress...',
+    citizenDescription: 'Uncovered road construction and debris have caused PM2.5 levels to breach hazardous thresholds (380+ µg/m³). Municipal street sweepers and children walking to school have no protection from fine silica dust.',
+    description: `[CITIZEN PROBLEM SUBMISSION]
+Ward: ITPL Main Road & Construction Belt, Whitefield, Bengaluru (GPS: 12.9866, 77.7345)
+Reported by Citizen: Pooja Nair (Whitefield Residents Association)
+
+Problem Overview:
+Arterial road construction produces intense PM2.5 and PM10 particulate dust plumes that linger in the air throughout business hours, endangering sanitation personnel, traffic constables, and local residents.
+
+Student Innovation Scope:
+Research teams will partner with BHEL Clean Energy & Environmental Engineering:
+1. Design wearable smart N95-grade respirator uniforms with integrated electrostatic micro-filtration and vital signs monitoring for municipal road workers.
+2. Develop low-water ultrasonic misting nozzles that precipitate road dust with 80% less water usage than municipal water tankers.
+3. Deploy real-time optical PM2.5/PM10 air quality telemetry sensors with public LED billboard alerts.`,
     industry: {
-      name: 'BHEL Renewable Energy & Green Mobility Division',
+      name: 'BHEL Clean Energy & Environmental Engineering',
       initial: 'B',
       color: 'bg-emerald-700',
       mentor: 'K. Sundaram, General Manager EV Infrastructure',
       email: 'ev.grid@bhel.in',
-      sector: 'Renewable Energy & Public Transit Microgrids',
+      sector: 'Renewable Energy & Environmental Protection Systems',
       phone: '+91 (011) 6633-7000'
     },
-    skills: ['Solar Inverters', 'BMS Protocols', 'Microgrid Balancing', 'Power Electronics', 'Smart Metering']
+    skills: ['Electrostatic Filtration', 'Optical Dust Telemetry', 'Wearable Electronics', 'Fluid Mechanics', 'CleanTech']
   }
 ];
 
 class StudentPortal {
   constructor() {
-    this.challenges = [...studentChallengesData];
+    const savedCitizen = JSON.parse(localStorage.getItem('kartavya_citizen_challenges') || '[]');
+    this.challenges = [...savedCitizen, ...studentChallengesData];
     this.searchQuery = '';
     this.industryQuery = '';
     this.activeCategory = 'All';
-    this.currentSubTab = 'browse'; // 'browse' | 'applications'
+    this.currentSubTab = 'browse'; // 'browse' | 'applications' | 'submit-problem'
     this.myApplications = JSON.parse(localStorage.getItem('kartavya_student_applications') || '[]');
+    this.syncWithServerReports();
+  }
+
+  async syncWithServerReports() {
+    try {
+      const res = await fetch('/api/reports');
+      if (res.ok) {
+        const reports = await res.json();
+        const existingCodes = new Set(this.challenges.map(c => c.reportId));
+        reports.forEach(r => {
+          if (!existingCodes.has(r.id)) {
+            // Transform newly found reports from server into challenge if not already mapped
+            const categoryMapping = {
+              'Pothole': 'Civil & Materials',
+              'Overflowing Trash': 'CleanTech & Water',
+              'Broken Streetlight': 'Clean Energy',
+              'Sewage Blockage': 'IoT & Sanitation'
+            };
+            const domain = categoryMapping[r.category] || 'Civil & Materials';
+            const industryMapping = {
+              'Civil & Materials': {
+                name: 'L&T Urban Infrastructure & Construction Tech',
+                initial: 'L',
+                color: 'bg-amber-600',
+                mentor: 'Dr. Rajesh Sharma, Head of Materials R&D',
+                email: 'rd.materials@lt-infra.com',
+                sector: 'Civil Infrastructure & Low-Carbon Materials',
+                phone: '+91 (022) 6752-5656'
+              },
+              'CleanTech & Water': {
+                name: 'Tata Power Clean Energy & Water Labs',
+                initial: 'T',
+                color: 'bg-blue-600',
+                mentor: 'Er. S. Ramanathan, VP CleanTech Engineering',
+                email: 'cleanwater.rnd@tatapower.com',
+                sector: 'Environmental Engineering & Industrial Water R&D',
+                phone: '+91 (022) 6665-8282'
+              },
+              'Clean Energy': {
+                name: 'Infosys Smart Cities & Urban IoT Labs',
+                initial: 'I',
+                color: 'bg-indigo-600',
+                mentor: 'Priya Venkat, Director of Urban Edge AI',
+                email: 'smartcities.ai@infosys.com',
+                sector: 'Smart Grid, Edge IoT & Urban Illumination',
+                phone: '+91 (080) 2852-0261'
+              },
+              'IoT & Sanitation': {
+                name: 'Mahindra Susten & Municipal IoT Solutions',
+                initial: 'M',
+                color: 'bg-red-600',
+                mentor: 'Vikramaditya Rao, Chief IoT Architect',
+                email: 'iot.solutions@mahindrasusten.com',
+                sector: 'Municipal Sanitation & Worker Safety Technologies',
+                phone: '+91 (022) 2490-1441'
+              }
+            };
+
+            const challengeItem = {
+              id: `cit-${r.id}`,
+              reportId: r.id,
+              title: r.title,
+              category: domain,
+              ay: 'AY2026-27',
+              status: 'PUBLISHED',
+              isCitizenSubmitted: true,
+              citizenReporter: `Citizen (${r.reporterAdhaar || 'Adhaar Verified'})`,
+              ward: `Bengaluru Ward (GPS: ${r.lat?.toFixed?.(4) || r.lat}, ${r.lng?.toFixed?.(4) || r.lng})`,
+              gps: `${r.lat}, ${r.lng}`,
+              image: r.image || 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80',
+              applicants: 0,
+              vacancies: 2,
+              selected: 0,
+              grant: `₹${(r.allocatedBudget || 150000).toLocaleString()} Milestone Grant`,
+              code: `KV2026-${r.id.toUpperCase()}`,
+              snippet: `Citizen Report: ${r.description.slice(0, 130)}...`,
+              citizenDescription: r.description,
+              description: `[CITIZEN PROBLEM SUBMISSION]
+Location: Bengaluru Ward (GPS: ${r.lat}, ${r.lng})
+Department: ${r.department}
+
+Citizen Statement:
+${r.description}
+
+Student Deliverables:
+1. Conduct root-cause technical diagnosis and propose engineered solution.
+2. Build functional hardware/software prototype supported by industry milestone grant.
+3. Deploy prototype for field verification under municipal supervision.`,
+              industry: industryMapping[domain] || industryMapping['Civil & Materials'],
+              skills: ['Civic Engineering', 'Field Prototyping', 'IoT Telemetry', 'Sustainable Materials']
+            };
+            this.challenges.push(challengeItem);
+          }
+        });
+      }
+    } catch (e) {
+      // Ignore network sync errors
+    }
   }
 
   init() {
@@ -300,6 +476,26 @@ class StudentPortal {
                 <i class="fa-solid fa-chart-line text-sm"></i>
                 <span>Grant Progress</span>
               </button>
+
+              <!-- Problem Submission: Citizen Issue Submission -->
+              <button 
+                onclick="window.KartavyaStudentPortal.setSubTab('submit-problem')"
+                class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                  this.currentSubTab === 'submit-problem'
+                    ? 'bg-brand-500 text-white shadow-sm'
+                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                }"
+              >
+                <div class="flex items-center gap-3">
+                  <i class="fa-solid fa-circle-plus text-sm"></i>
+                  <span>Submit Problem</span>
+                </div>
+                <span class="text-[9px] px-2 py-0.5 rounded-full ${
+                  this.currentSubTab === 'submit-problem' ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-800'
+                } font-bold uppercase tracking-wider">
+                  Citizen
+                </span>
+              </button>
             </nav>
           </div>
 
@@ -316,7 +512,7 @@ class StudentPortal {
             </div>
 
             <button 
-              onclick="window.KartavyaAuth.logout()"
+              onclick="window.handleLogout ? window.handleLogout() : window.KartavyaAuth.logout()"
               class="w-full text-left flex items-center gap-2 px-2 py-1.5 text-xs font-bold text-rose-500 hover:text-rose-600 transition"
             >
               <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -327,7 +523,13 @@ class StudentPortal {
 
         <!-- Right Main Content Area -->
         <main class="flex-1 w-full space-y-6">
-          ${this.currentSubTab === 'browse' ? this.renderBrowseView() : this.renderApplicationsView()}
+          ${
+            this.currentSubTab === 'browse'
+              ? this.renderBrowseView()
+              : this.currentSubTab === 'applications'
+              ? this.renderApplicationsView()
+              : this.renderSubmitProblemView()
+          }
         </main>
 
       </div>
@@ -457,10 +659,20 @@ class StudentPortal {
             <div class="space-y-3">
               <!-- Top Badges Row -->
               <div class="flex items-center justify-between gap-2">
-                <div class="flex items-center gap-1.5">
-                  <span class="text-[10px] font-bold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-md uppercase tracking-wider">
-                    ${item.status}
-                  </span>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  ${
+                    item.isCitizenSubmitted
+                      ? `
+                    <span class="text-[10px] font-extrabold text-emerald-800 bg-emerald-100/80 border border-emerald-200 px-2 py-0.5 rounded-md flex items-center gap-1">
+                      <i class="fa-solid fa-users text-[9px] text-emerald-700"></i> Citizen Problem
+                    </span>
+                  `
+                      : `
+                    <span class="text-[10px] font-bold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-md uppercase tracking-wider">
+                      ${item.status}
+                    </span>
+                  `
+                  }
                   <span class="text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-100 px-2.5 py-0.5 rounded-md flex items-center gap-1">
                     <i class="fa-regular fa-calendar text-[9px]"></i> ${item.ay}
                   </span>
@@ -474,6 +686,12 @@ class StudentPortal {
               <h3 class="text-sm sm:text-base font-extrabold text-slate-800 font-outfit line-clamp-2 leading-snug group-hover:text-brand-600 transition">
                 ${item.title}
               </h3>
+
+              <!-- Ward Location & Citizen Reporter -->
+              <div class="flex items-center gap-1.5 text-[11px] text-slate-500 font-medium">
+                <i class="fa-solid fa-location-dot text-brand-500 text-[10px] shrink-0"></i>
+                <span class="truncate">${item.ward || 'Bengaluru Community Ward'}</span>
+              </div>
 
               <!-- Stats Counters (Applicants, Vacancies, Selected) -->
               <div class="grid grid-cols-3 gap-2 p-2.5 bg-slate-50/80 rounded-xl border border-slate-100 text-center">
@@ -623,6 +841,347 @@ class StudentPortal {
     this.render();
   }
 
+  renderSubmitProblemView() {
+    return `
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-9 space-y-8 font-sans">
+        
+        <!-- Header -->
+        <div class="space-y-2 border-b border-slate-150 pb-6">
+          <div class="flex items-center gap-2 text-brand-600 text-xs font-bold uppercase tracking-wider">
+            <i class="fa-solid fa-bullhorn"></i>
+            <span>Citizen Problem Portal</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-outfit">
+            Submit a Civic Problem for Student Innovation
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500 leading-relaxed max-w-2xl">
+            Are you a citizen or community representative facing a recurring ward problem? Submit the details below. Kartavya links your real-world challenge with student research teams and industry milestone grants.
+          </p>
+        </div>
+
+        <!-- Submission Form -->
+        <form id="citizen-submit-problem-form" class="space-y-6" onsubmit="window.KartavyaStudentPortal.handleProblemSubmit(event)">
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Problem Title -->
+            <div class="md:col-span-2 space-y-1.5">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                Problem Title <span class="text-rose-500">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="prob-title" 
+                required 
+                placeholder="e.g., Severe Potholes & Waterlogging at BTM 2nd Stage Underpass"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:bg-white transition"
+              />
+            </div>
+
+            <!-- Domain / Category -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                Civic Domain <span class="text-rose-500">*</span>
+              </label>
+              <select 
+                id="prob-category" 
+                required 
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-brand-500 focus:bg-white transition"
+              >
+                <option value="Civil & Materials">Civil & Materials (Roads, Potholes, Bridges)</option>
+                <option value="CleanTech & Water">CleanTech & Water (Effluents, Waste, Lakes)</option>
+                <option value="IoT & Sanitation">IoT & Sanitation (Sewage, Toxic Gases, Manholes)</option>
+                <option value="AI & Mobility">AI & Mobility (Traffic Flow, Edge Vision, Safety)</option>
+                <option value="Clean Energy">Clean Energy (Solar Streetlights, Grid Outages)</option>
+                <option value="Wearable Tech">Wearable Tech (Sanitation Worker Safety)</option>
+              </select>
+            </div>
+
+            <!-- Ward / Locality -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                Ward / City Locality <span class="text-rose-500">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="prob-ward" 
+                required 
+                placeholder="e.g., Ward 150 - Indiranagar, Bengaluru"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:bg-white transition"
+              />
+            </div>
+
+            <!-- GPS Location -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between">
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                  GPS Coordinates (Optional)
+                </label>
+                <button 
+                  type="button" 
+                  onclick="window.KartavyaStudentPortal.detectLocation()"
+                  class="text-[10px] text-brand-600 hover:text-brand-700 font-bold flex items-center gap-1 transition"
+                >
+                  <i class="fa-solid fa-location-crosshairs"></i> Auto-Detect GPS
+                </button>
+              </div>
+              <input 
+                type="text" 
+                id="prob-gps" 
+                placeholder="e.g., 12.9784, 77.6408"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-slate-800 font-mono placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:bg-white transition"
+              />
+            </div>
+
+            <!-- Preferred Industry Partner -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                Sponsoring Industry Partner Preference
+              </label>
+              <select 
+                id="prob-industry" 
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-brand-500 focus:bg-white transition"
+              >
+                <option value="auto">Auto-Match based on Domain (Recommended)</option>
+                <option value="L&T Urban Infrastructure & Construction Tech">L&T Urban Infrastructure & Construction Tech</option>
+                <option value="Tata Power Clean Energy & Water Labs">Tata Power Clean Energy & Water Labs</option>
+                <option value="Infosys Smart Cities & Urban Mobility Labs">Infosys Smart Cities & Urban Mobility Labs</option>
+                <option value="Mahindra Susten & Municipal IoT Solutions">Mahindra Susten & Municipal IoT Solutions</option>
+                <option value="Reliance Smart Infrastructure & Materials">Reliance Smart Infrastructure & Materials</option>
+                <option value="BHEL Clean Energy & Environmental Engineering">BHEL Clean Energy & Environmental Engineering</option>
+              </select>
+            </div>
+
+            <!-- Citizen Name & Contact -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                Citizen / Community Reporter Name <span class="text-rose-500">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="prob-reporter" 
+                required 
+                value="${(window.KartavyaAuthStore?.getState()?.user?.name) || 'Aditi Kushwah'}"
+                placeholder="e.g., Aditi Kushwah"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:bg-white transition"
+              />
+            </div>
+
+            <!-- Photo URL or Evidence -->
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                Evidence Photo (URL or Upload)
+              </label>
+              <input 
+                type="text" 
+                id="prob-image" 
+                placeholder="https://images.unsplash.com/... or paste image URL"
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:bg-white transition"
+              />
+            </div>
+
+            <!-- Detailed Problem Description -->
+            <div class="md:col-span-2 space-y-1.5">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                Detailed Problem Description & Daily Impact <span class="text-rose-500">*</span>
+              </label>
+              <textarea 
+                id="prob-desc" 
+                required 
+                rows="4" 
+                placeholder="Describe the issue clearly: what causes it, how citizens in your community are affected, why previous municipal quick-fixes failed, and what technological solution students should aim to deliver..."
+                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:bg-white transition"
+              ></textarea>
+            </div>
+
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-4 border-t border-slate-150 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p class="text-[11px] text-slate-500">
+              <i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i>
+              Your submission will be immediately posted to the Student Portal & linked to an Industry mentor.
+            </p>
+            <button 
+              type="submit" 
+              id="submit-prob-btn"
+              class="w-full sm:w-auto px-7 py-3.5 bg-brand-500 hover:bg-brand-600 active:scale-95 text-white font-extrabold text-xs sm:text-sm rounded-xl transition shadow-md shadow-brand-500/20 flex items-center justify-center gap-2 font-outfit"
+            >
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Publish Problem to Students</span>
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    `;
+  }
+
+  detectLocation() {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude.toFixed(4);
+          const lng = pos.coords.longitude.toFixed(4);
+          const gpsEl = document.getElementById('prob-gps');
+          if (gpsEl) gpsEl.value = `${lat}, ${lng}`;
+          window.showToast?.(`GPS locked: ${lat}, ${lng}`, 'success');
+        },
+        () => {
+          window.showToast?.('Could not acquire GPS. Please enter coordinates manually.', 'warning');
+        }
+      );
+    }
+  }
+
+  async handleProblemSubmit(e) {
+    e.preventDefault();
+    const title = document.getElementById('prob-title')?.value?.trim();
+    const category = document.getElementById('prob-category')?.value;
+    const ward = document.getElementById('prob-ward')?.value?.trim();
+    const gps = document.getElementById('prob-gps')?.value?.trim() || '12.9716, 77.5946';
+    const industryPref = document.getElementById('prob-industry')?.value;
+    const reporter = document.getElementById('prob-reporter')?.value?.trim() || 'Ward Resident';
+    const image = document.getElementById('prob-image')?.value?.trim() || 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80';
+    const desc = document.getElementById('prob-desc')?.value?.trim();
+
+    if (!title || !desc) {
+      window.showToast?.('Please fill out all required fields.', 'warning');
+      return;
+    }
+
+    const industryDirectory = {
+      'Civil & Materials': {
+        name: 'L&T Urban Infrastructure & Construction Tech',
+        initial: 'L',
+        color: 'bg-amber-600',
+        mentor: 'Dr. Rajesh Sharma, Head of Materials R&D',
+        email: 'rd.materials@lt-infra.com',
+        sector: 'Civil Infrastructure & Low-Carbon Materials',
+        phone: '+91 (022) 6752-5656'
+      },
+      'CleanTech & Water': {
+        name: 'Tata Power Clean Energy & Water Labs',
+        initial: 'T',
+        color: 'bg-blue-600',
+        mentor: 'Er. S. Ramanathan, VP CleanTech Engineering',
+        email: 'cleanwater.rnd@tatapower.com',
+        sector: 'Environmental Engineering & Industrial Water R&D',
+        phone: '+91 (022) 6665-8282'
+      },
+      'Clean Energy': {
+        name: 'Infosys Smart Cities & Urban IoT Labs',
+        initial: 'I',
+        color: 'bg-indigo-600',
+        mentor: 'Priya Venkat, Director of Urban Edge AI',
+        email: 'smartcities.ai@infosys.com',
+        sector: 'Smart Grid, Edge IoT & Urban Illumination',
+        phone: '+91 (080) 2852-0261'
+      },
+      'IoT & Sanitation': {
+        name: 'Mahindra Susten & Municipal IoT Solutions',
+        initial: 'M',
+        color: 'bg-red-600',
+        mentor: 'Vikramaditya Rao, Chief IoT Architect',
+        email: 'iot.solutions@mahindrasusten.com',
+        sector: 'Municipal Sanitation & Worker Safety Technologies',
+        phone: '+91 (022) 2490-1441'
+      },
+      'AI & Mobility': {
+        name: 'Reliance Smart Infrastructure & Materials',
+        initial: 'R',
+        color: 'bg-rose-600',
+        mentor: 'Dr. Abhilash Pullanchiyodan, Lead Research Scientist',
+        email: 'smarttextiles@ril-innovate.com',
+        sector: 'Urban Infrastructure & Smart Mobility',
+        phone: '+91 (022) 3555-5000'
+      },
+      'Wearable Tech': {
+        name: 'BHEL Clean Energy & Environmental Engineering',
+        initial: 'B',
+        color: 'bg-emerald-700',
+        mentor: 'K. Sundaram, General Manager EV Infrastructure',
+        email: 'ev.grid@bhel.in',
+        sector: 'Environmental Protection Systems',
+        phone: '+91 (011) 6633-7000'
+      }
+    };
+
+    let assignedIndustry = industryDirectory[category] || industryDirectory['Civil & Materials'];
+    if (industryPref && industryPref !== 'auto') {
+      const match = Object.values(industryDirectory).find(ind => ind.name === industryPref);
+      if (match) assignedIndustry = match;
+    }
+
+    const uniqueId = `cit-${Date.now()}`;
+    const uniqueCode = `KV2026-CIT${Math.floor(100 + Math.random() * 900)}`;
+
+    const newChallenge = {
+      id: uniqueId,
+      title,
+      category,
+      ay: 'AY2026-27',
+      status: 'PUBLISHED',
+      isCitizenSubmitted: true,
+      citizenReporter: `${reporter} (Verified Citizen)`,
+      ward: ward || 'Bengaluru Community Ward',
+      gps,
+      image,
+      applicants: 0,
+      vacancies: 2,
+      selected: 0,
+      grant: '₹1,75,000 Milestone Grant',
+      code: uniqueCode,
+      snippet: `Citizen Report: ${desc.slice(0, 140)}...`,
+      citizenDescription: desc,
+      description: `[CITIZEN PROBLEM SUBMISSION]
+Ward: ${ward || 'Bengaluru Local Ward'} (GPS: ${gps})
+Reported by Citizen: ${reporter}
+
+Problem Overview:
+${desc}
+
+Student Innovation Deliverables:
+1. Conduct root-cause field assessment in collaboration with ward residents.
+2. Formulate and engineer a functional prototype backed by ${assignedIndustry.name}.
+3. Deploy prototype for municipal evaluation under Kartavya guidelines.`,
+      industry: assignedIndustry,
+      skills: ['Civic Engineering', 'Rapid Prototyping', 'IoT Telemetry', 'Field Verification']
+    };
+
+    // Prepend to active challenges list
+    this.challenges.unshift(newChallenge);
+
+    // Save to localStorage
+    const saved = JSON.parse(localStorage.getItem('kartavya_citizen_challenges') || '[]');
+    saved.unshift(newChallenge);
+    localStorage.setItem('kartavya_citizen_challenges', JSON.stringify(saved));
+
+    // Also sync to /api/reports if coordinates present
+    try {
+      const parts = gps.split(',');
+      const latVal = parseFloat(parts[0]?.trim()) || 12.9716;
+      const lngVal = parseFloat(parts[1]?.trim()) || 77.5946;
+      fetch('/api/reports', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title,
+          category: category === 'Civil & Materials' ? 'Pothole' : (category === 'CleanTech & Water' ? 'Overflowing Trash' : 'Broken Streetlight'),
+          description: desc,
+          lat: latVal,
+          lng: lngVal,
+          image,
+          reporterAdhaar: '1234-5678-9012'
+        })
+      }).catch(() => {});
+    } catch (err) {}
+
+    window.showToast?.('Citizen problem submitted! It is now live for student innovation teams.', 'success');
+    this.setSubTab('browse');
+  }
+
   // --- MODAL: Challenge Details (Matching Image 2 Reference) ---
   openDetailsModal(challengeId) {
     const challenge = this.challenges.find(c => c.id === challengeId);
@@ -643,10 +1202,25 @@ class StudentPortal {
             <i class="fa-solid fa-xmark text-sm"></i>
           </button>
 
+          <!-- Citizen Badge & Context -->
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-[10px] font-extrabold text-emerald-800 bg-emerald-100/90 border border-emerald-200 px-3 py-1 rounded-full flex items-center gap-1.5 uppercase tracking-wider">
+              <i class="fa-solid fa-users text-emerald-700"></i> Citizen-Reported Civic Issue
+            </span>
+            <span class="text-[11px] text-slate-500 font-medium truncate">
+              Reported by ${challenge.citizenReporter || 'Ward Resident'}
+            </span>
+          </div>
+
           <!-- Modal Title -->
-          <h2 class="text-2xl font-extrabold text-slate-900 font-outfit tracking-tight mb-5">
-            Project Details
+          <h2 class="text-2xl font-extrabold text-slate-900 font-outfit tracking-tight mb-2">
+            ${challenge.title}
           </h2>
+
+          <div class="flex items-center gap-2 text-xs text-slate-500 mb-6">
+            <i class="fa-solid fa-location-dot text-brand-500"></i>
+            <span>${challenge.ward || 'Bengaluru Community Ward'}</span>
+          </div>
 
           <!-- TOP INDUSTRY CARD (Replacing Faculty per user requirement) -->
           <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
@@ -675,11 +1249,26 @@ class StudentPortal {
             </button>
           </div>
 
+          <!-- Telemetry Photo if available -->
+          ${
+            challenge.image
+              ? `
+            <div class="mb-6 rounded-2xl overflow-hidden border border-slate-200 max-h-52 relative">
+              <img src="${challenge.image}" alt="${challenge.title}" class="w-full h-full object-cover">
+              <div class="absolute bottom-2.5 left-2.5 bg-slate-950/70 backdrop-blur-xs text-white text-[10px] font-bold px-3 py-1 rounded-lg flex items-center gap-1.5">
+                <i class="fa-solid fa-camera text-emerald-400"></i>
+                <span>Citizen Telemetry Evidence</span>
+              </div>
+            </div>
+          `
+              : ''
+          }
+
           <!-- Description Section (Matching Image 2 layout) -->
           <div class="space-y-3 mb-6">
             <div class="flex items-center gap-2 text-slate-800 font-bold text-sm font-outfit">
               <i class="fa-solid fa-book-open text-brand-500"></i>
-              <span>Description</span>
+              <span>Description & Scope</span>
             </div>
             <div class="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-2 whitespace-pre-line text-justify">
               ${challenge.description}
@@ -716,7 +1305,7 @@ class StudentPortal {
             </div>
             <div class="flex items-center gap-2">
               <i class="fa-solid fa-city text-slate-400"></i>
-              <span>Pilot Ward: <strong>Ward 150 & Bengaluru Smart City</strong></span>
+              <span>Pilot Ward: <strong>${challenge.ward || 'Bengaluru Ward 150'}</strong></span>
             </div>
           </div>
 

@@ -33,9 +33,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       window.KartavyaRouter.navigate('/onboarding');
     },
     logout: async () => {
-      await window.KartavyaAuthStore.logout();
-      window.showToast?.('Logged out successfully.', 'success');
-      window.KartavyaRouter.navigate('/');
+      if (window.handleLogout) {
+        window.handleLogout();
+      } else {
+        await window.KartavyaAuthStore.logout();
+        window.showToast?.('Logged out successfully.', 'info');
+        window.KartavyaRouter.navigate('/login');
+      }
     },
     getState: () => window.KartavyaAuthStore.getState()
   };
