@@ -516,8 +516,9 @@ Student Deliverables:
     if (!container) return;
 
     const user = window.KartavyaAuthStore?.getState()?.user || {
-      name: 'Aditi Kushwah',
-      email: 'ak5617@srmist.edu.in'
+      name: 'Ammodita',
+      email: 'ammodita@kartavya.gov.in',
+      photoURL: '/ammodita/ammodita-3.jpg'
     };
 
     container.innerHTML = `
@@ -538,34 +539,41 @@ Student Deliverables:
               </div>
             </div>
 
-            <!-- Sidebar Navigation Links -->
+            <!-- Main Portal Tabs Navigation -->
             <nav class="space-y-1">
               <button 
-                onclick="window.KartavyaStudentPortal.setSubTab('browse')"
-                class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                onclick="window.KartavyaStudentPortal.switchSubTab('browse')"
+                class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition ${
                   this.currentSubTab === 'browse'
-                    ? 'bg-brand-500 text-white shadow-sm'
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                }"
-              >
-                <i class="fa-solid fa-compass text-sm"></i>
-                <span>Browse Projects</span>
-              </button>
-
-              <button 
-                onclick="window.KartavyaStudentPortal.setSubTab('applications')"
-                class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                  this.currentSubTab === 'applications'
-                    ? 'bg-brand-500 text-white shadow-sm'
+                    ? 'bg-brand-50 text-brand-700 border border-brand-200 shadow-xs'
                     : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                 }"
               >
                 <div class="flex items-center gap-3">
-                  <i class="fa-solid fa-file-signature text-sm"></i>
+                  <i class="fa-solid fa-list-check text-sm ${this.currentSubTab === 'browse' ? 'text-brand-600' : 'text-slate-400'}"></i>
+                  <span>Browse Projects</span>
+                </div>
+                <span class="text-[10px] px-2 py-0.5 rounded-full ${
+                  this.currentSubTab === 'browse' ? 'bg-brand-200 text-brand-800 font-extrabold' : 'bg-slate-100 text-slate-500'
+                }">
+                  ${this.challenges.length}
+                </span>
+              </button>
+
+              <button 
+                onclick="window.KartavyaStudentPortal.switchSubTab('applications')"
+                class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition ${
+                  this.currentSubTab === 'applications'
+                    ? 'bg-brand-50 text-brand-700 border border-brand-200 shadow-xs'
+                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                }"
+              >
+                <div class="flex items-center gap-3">
+                  <i class="fa-solid fa-file-signature text-sm ${this.currentSubTab === 'applications' ? 'text-brand-600' : 'text-slate-400'}"></i>
                   <span>My Applications</span>
                 </div>
                 <span class="text-[10px] px-2 py-0.5 rounded-full ${
-                  this.currentSubTab === 'applications' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
+                  this.currentSubTab === 'applications' ? 'bg-brand-200 text-brand-800 font-extrabold' : 'bg-slate-100 text-slate-500'
                 }">
                   ${this.myApplications.length}
                 </span>
@@ -591,10 +599,8 @@ Student Deliverables:
 
           <!-- Bottom Student Profile Card -->
           <div class="pt-6 mt-6 border-t border-slate-100 space-y-3">
-            <div class="flex items-center gap-2.5 p-2 bg-slate-50 rounded-xl border border-slate-100">
-              <div class="w-8 h-8 rounded-full bg-brand-500/10 text-brand-600 flex items-center justify-center font-bold text-xs">
-                <i class="fa-solid fa-graduation-cap"></i>
-              </div>
+            <div class="flex items-center gap-2.5 p-2 bg-pink-50/40 rounded-xl border border-pink-100">
+              <img src="${user.photoURL || user.profilePhoto || '/ammodita/ammodita-3.jpg'}" alt="${user.name}" class="w-8 h-8 rounded-full object-cover border border-white shadow-xs">
               <div class="min-w-0 flex-1">
                 <p class="text-xs font-bold text-slate-800 truncate font-outfit">${user.name}</p>
                 <p class="text-[10px] text-slate-400 truncate">${user.email}</p>
@@ -645,6 +651,11 @@ Student Deliverables:
       <!-- Header Section -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-5">
         <div>
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gradient-to-r from-pink-50 via-rose-50 to-amber-50 border border-pink-200 text-pink-700 text-xs font-bold mb-3 shadow-2xs">
+            <span class="animate-bounce">🎂</span>
+            <span>Happy Birthday Ammodita!</span>
+            <span>✨🎉</span>
+          </div>
           <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-outfit tracking-tight">
             Browse Projects & Challenges
           </h1>
@@ -1070,8 +1081,8 @@ Student Deliverables:
                 type="text" 
                 id="prob-reporter" 
                 required 
-                value="${(window.KartavyaAuthStore?.getState()?.user?.name) || 'Aditi Kushwah'}"
-                placeholder="e.g., Aditi Kushwah"
+                value="${(window.KartavyaAuthStore?.getState()?.user?.name) || 'Ammodita'}"
+                placeholder="e.g., Ammodita"
                 class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:bg-white transition"
               />
             </div>
@@ -1424,8 +1435,9 @@ Student Innovation Deliverables:
     if (!modal) return;
 
     const user = window.KartavyaAuthStore?.getState()?.user || {
-      name: 'Aditi Kushwah',
-      email: 'ak5617@srmist.edu.in'
+      name: 'Ammodita',
+      email: 'ammodita@kartavya.gov.in',
+      photoURL: '/ammodita/ammodita-3.jpg'
     };
 
     modal.innerHTML = `

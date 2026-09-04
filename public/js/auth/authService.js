@@ -64,9 +64,9 @@ class AuthService {
           // Check if there is an existing demo user stored in localStorage to simulate returning user
           const savedSession = localStorage.getItem('kartavya_auth_user');
           let demoUid = 'google_demo_101';
-          let demoName = 'Aditi Kushwah';
-          let demoEmail = 'aditi.kushwah@gmail.com';
-          let demoPhoto = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80';
+          let demoName = 'Ammodita';
+          let demoEmail = 'ammodita@kartavya.gov.in';
+          let demoPhoto = '/ammodita/ammodita-3.jpg';
 
           if (savedSession) {
             try {

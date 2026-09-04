@@ -180,19 +180,68 @@
     }
   </style>
 </head>
-<body class="bg-patriotic-lightbg text-patriotic-textDark min-h-screen flex flex-col selection:bg-brand-500 selection:text-white overflow-x-hidden tricolor-border">
+<body class="bg-patriotic-lightbg text-patriotic-textDark min-h-screen flex flex-col selection:bg-brand-500 selection:text-white overflow-x-hidden tricolor-border relative">
+
+  <!-- ================= FIXED AMBIENT AMMODITA BACKGROUND PHOTO LAYER (DASHBOARD) ================= -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-20 transition-opacity">
+    <div class="absolute -top-12 -left-12 w-64 md:w-80 h-80 md:h-96 rounded-3xl overflow-hidden shadow-xl border border-slate-300/40 -rotate-6">
+      <img src="/ammodita/ammodita-1.jpg" alt="Ammodita" class="w-full h-full object-cover">
+    </div>
+    <div class="absolute -top-10 -right-12 w-60 md:w-76 h-80 md:h-96 rounded-3xl overflow-hidden shadow-xl border border-slate-300/40 rotate-6">
+      <img src="/ammodita/ammodita-2.jpg" alt="Ammodita" class="w-full h-full object-cover">
+    </div>
+    <div class="absolute -bottom-16 -left-10 w-60 md:w-76 h-80 md:h-96 rounded-3xl overflow-hidden shadow-xl border border-slate-300/40 rotate-3">
+      <img src="/ammodita/ammodita-3.jpg" alt="Ammodita" class="w-full h-full object-cover">
+    </div>
+    <div class="absolute -bottom-14 -right-10 w-64 md:w-80 h-80 md:h-96 rounded-3xl overflow-hidden shadow-xl border border-slate-300/40 -rotate-3">
+      <img src="/ammodita/ammodita-4.jpg" alt="Ammodita" class="w-full h-full object-cover">
+    </div>
+  </div>
 
   <!-- ================= ABOUT PAGE (DEFAULT VISITOR LANDING SCREEN) ================= -->
-  <div id="about-page" class="fixed inset-0 z-[110] flex flex-col overflow-y-auto font-sans" style="background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.65)), url('/india-hero-bg.png') no-repeat center center / cover;">
+  <div id="about-page" class="fixed inset-0 z-[110] flex flex-col overflow-y-auto font-sans relative" style="background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.65)), url('/india-hero-bg.png') no-repeat center center / cover;">
+    
+    <!-- Ambient Birthday Photos Layer (Light Opacity, Good Visibility) -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      <!-- Photo 1: Top-Left (Sunglasses in car) -->
+      <div class="absolute -top-6 -left-8 w-60 sm:w-72 md:w-84 h-72 sm:h-88 md:h-96 rounded-3xl overflow-hidden border-2 border-white/20 shadow-2xl opacity-35 sm:opacity-40 -rotate-6 transform transition-all duration-500 hover:opacity-75 hover:scale-105 pointer-events-auto">
+        <img src="/ammodita/ammodita-1.jpg" alt="Ammodita" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+        <span class="absolute bottom-3 left-4 text-[11px] font-bold text-white/95 bg-black/50 px-2.5 py-0.5 rounded-lg backdrop-blur-xs font-outfit">✨ Ammodita</span>
+      </div>
+
+      <!-- Photo 2: Top-Right (Dinner with pizza & wine) -->
+      <div class="absolute -top-6 -right-8 w-56 sm:w-68 md:w-80 h-72 sm:h-88 md:h-96 rounded-3xl overflow-hidden border-2 border-white/20 shadow-2xl opacity-35 sm:opacity-40 rotate-6 transform transition-all duration-500 hover:opacity-75 hover:scale-105 pointer-events-auto">
+        <img src="/ammodita/ammodita-2.jpg" alt="Ammodita" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+        <span class="absolute bottom-3 right-4 text-[11px] font-bold text-white/95 bg-black/50 px-2.5 py-0.5 rounded-lg backdrop-blur-xs font-outfit">🎂 Happy Birthday</span>
+      </div>
+
+      <!-- Photo 3: Bottom-Left (Portrait selfie) -->
+      <div class="absolute -bottom-10 -left-6 w-56 sm:w-68 md:w-80 h-72 sm:h-88 md:h-96 rounded-3xl overflow-hidden border-2 border-white/20 shadow-2xl opacity-35 sm:opacity-40 rotate-3 transform transition-all duration-500 hover:opacity-75 hover:scale-105 pointer-events-auto">
+        <img src="/ammodita/ammodita-3.jpg" alt="Ammodita" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+        <span class="absolute bottom-3 left-4 text-[11px] font-bold text-white/95 bg-black/50 px-2.5 py-0.5 rounded-lg backdrop-blur-xs font-outfit">✨ Ammodita</span>
+      </div>
+
+      <!-- Photo 4: Bottom-Right (Red cardigan standing) -->
+      <div class="absolute -bottom-8 -right-6 w-60 sm:w-72 md:w-84 h-72 sm:h-88 md:h-96 rounded-3xl overflow-hidden border-2 border-white/20 shadow-2xl opacity-35 sm:opacity-40 -rotate-3 transform transition-all duration-500 hover:opacity-75 hover:scale-105 pointer-events-auto">
+        <img src="/ammodita/ammodita-4.jpg" alt="Ammodita" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+        <span class="absolute bottom-3 right-4 text-[11px] font-bold text-white/95 bg-black/50 px-2.5 py-0.5 rounded-lg backdrop-blur-xs font-outfit">🎉 Celebrations</span>
+      </div>
+    </div>
+
     <!-- Navbar inside About Page -->
-    <header class="backdrop-blur-md border-b border-slate-800 sticky top-0 z-30" style="background: linear-gradient(135deg, #1f0d1b 0%, #4a192c 45%, #b45309 85%, #d97706 100%);">
+    <header class="backdrop-blur-md border-b border-slate-800 sticky top-0 z-30 relative" style="background: linear-gradient(135deg, #1f0d1b 0%, #4a192c 45%, #b45309 85%, #d97706 100%);">
       <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
         <div class="flex items-center space-x-3">
           <div class="h-9 w-9 rounded-xl overflow-hidden flex items-center justify-center shadow-md border border-slate-800">
             <img src="/sun-icon-black.jpg" class="h-full w-full object-cover" alt="Sun Logo">
           </div>
-          <div>
+          <div class="flex items-center gap-2.5">
             <span class="text-xl font-bold tracking-tight text-white font-outfit">Kartavya</span>
+            <span class="hidden sm:inline-flex text-[11px] px-2.5 py-0.5 rounded-full bg-pink-500/25 border border-pink-400/40 text-pink-200 font-bold">🎂 Happy Birthday Ammodita!</span>
           </div>
         </div>
         <button id="about-access-portals-btn" onclick="window.KartavyaAuth ? window.KartavyaAuth.openLoginModal() : transitionToAuthGate()" class="px-5 py-2 bg-brand-500 hover:bg-brand-600 text-white text-xs font-extrabold rounded-xl transition shadow-sm font-outfit uppercase tracking-wider flex items-center gap-1.5">
@@ -202,9 +251,18 @@
     </header>
 
     <!-- Main Content Area -->
-    <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-12 flex flex-col justify-between space-y-12">
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-12 flex flex-col justify-between space-y-12 relative z-10">
       <!-- Hero Header Section -->
       <div class="text-center space-y-4 max-w-3xl mx-auto">
+        <!-- Birthday Celebration Pill -->
+        <div class="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-r from-pink-500/30 via-amber-500/30 to-purple-500/30 border border-pink-300/50 text-white shadow-2xl backdrop-blur-md animate-pulse-slow">
+          <span class="text-lg">🎂</span>
+          <span class="text-sm sm:text-base font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-pink-200 to-rose-200 font-outfit tracking-wide">
+            Happy Birthday Ammodita!
+          </span>
+          <span class="text-lg">✨🎉</span>
+        </div>
+
         <h1 class="text-6xl sm:text-7xl font-extrabold text-white font-outfit tracking-tight leading-none drop-shadow-md">
           Kartavya
         </h1>
@@ -275,7 +333,7 @@
             <span class="block text-[10px] font-bold text-brand-600 uppercase tracking-wider mb-2"><i class="fa-solid fa-user-plus"></i> New Adhaar Registration Setup</span>
             <div>
               <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Full Legal Name</label>
-              <input type="text" id="reg-name" placeholder="e.g. Aditi Kushwah" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:border-brand-500">
+              <input type="text" id="reg-name" placeholder="e.g. Ammodita" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:border-brand-500">
             </div>
             <div>
               <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Phone Number</label>
@@ -350,6 +408,11 @@
       <!-- Tab Switchers -->
       <div id="navbar-tabs-container" class="flex bg-blue-950/60 p-1 rounded-xl max-w-full overflow-x-auto">
         <!-- Injected via JS based on role -->
+      </div>
+
+      <!-- Birthday Celebration Pill -->
+      <div class="hidden lg:flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-pink-500/20 border border-pink-400/30 text-pink-200 text-xs font-bold font-outfit shadow-2xs">
+        <span>🎂 Happy Birthday Ammodita! ✨</span>
       </div>
 
       <!-- User Active Session and Logout -->
@@ -1135,7 +1198,7 @@
     // Local Storage database for Citizen Profiles
     let profilesDatabase = {
       '1234-5678-9012': {
-        name: 'Aditi Kushwah',
+        name: 'Ammodita',
         pin: '1234',
         phone: '+91 98765 43210',
         ward: 'Ward 150 - Indiranagar, Bengaluru',
@@ -1147,6 +1210,10 @@
     if (localStorage.getItem('kartavya_profiles')) {
       try {
         profilesDatabase = JSON.parse(localStorage.getItem('kartavya_profiles'));
+        if (profilesDatabase['1234-5678-9012']) {
+          profilesDatabase['1234-5678-9012'].name = 'Ammodita';
+          localStorage.setItem('kartavya_profiles', JSON.stringify(profilesDatabase));
+        }
       } catch (e) {
         console.error('Failed to load profiles local DB', e);
       }
@@ -1181,6 +1248,17 @@
 
     // --- APPLICATION BOOTSTRAP ---
     window.addEventListener('DOMContentLoaded', () => {
+      // Auto-migrate any existing local storage session name to Ammodita
+      try {
+        if (localStorage.getItem('kartavya_user_name') === 'Aditi Kushwah' || !localStorage.getItem('kartavya_user_name')) {
+          localStorage.setItem('kartavya_user_name', 'Ammodita');
+        }
+        const savedAuth = localStorage.getItem('kartavya_auth_user');
+        if (savedAuth && savedAuth.includes('Aditi')) {
+          localStorage.setItem('kartavya_auth_user', savedAuth.replace(/Aditi Kushwah/g, 'Ammodita').replace(/Aditi/g, 'Ammodita').replace(/ak5617@srmist.edu.in/g, 'ammodita@kartavya.gov.in').replace(/aditi.citizen@gmail.com/g, 'ammodita.citizen@gmail.com'));
+        }
+      } catch (e) {}
+
       evalSessionState();
       requestUserLocation();
       
@@ -1339,7 +1417,7 @@
 
         const nameLabel = document.getElementById('nav-session-name');
         const roleLabel = document.getElementById('nav-session-role');
-        if (nameLabel) nameLabel.innerText = googleUser.name || 'Member';
+        if (nameLabel) nameLabel.innerText = googleUser.name || 'Ammodita';
         if (roleLabel) {
           const roles = googleUser.roles || ['Citizen'];
           roleLabel.innerText = roles.length > 1 ? `${roles[0]} +${roles.length - 1}` : (roles[0] || 'Member');
@@ -1363,7 +1441,7 @@
         
         if (sessionRole === 'citizen') {
           const profile = profilesDatabase[sessionAdhaar];
-          nameLabel.innerText = profile ? profile.name : 'Citizen';
+          nameLabel.innerText = profile ? profile.name : 'Ammodita';
           roleLabel.innerText = 'Citizen';
           
           switchTab('map');
@@ -2832,7 +2910,7 @@
       }
 
       // Generate RTI Draft
-      const profile = profilesDatabase[sessionAdhaar] || { name: 'Aditi Kushwah', address: 'Ward 150, Bengaluru' };
+      const profile = profilesDatabase[sessionAdhaar] || { name: 'Ammodita', address: 'Ward 150, Bengaluru' };
       const draftedLetter = `
 To,
 The Public Information Officer (PIO),
