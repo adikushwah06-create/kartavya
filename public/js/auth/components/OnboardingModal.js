@@ -74,9 +74,9 @@ class OnboardingModal {
     if (!this.container) return;
     const authState = window.KartavyaAuthStore.getState();
     const user = authState.user || {
-      name: 'Ammodita',
-      email: 'ammodita@kartavya.gov.in',
-      profilePhoto: '/ammodita/ammodita-3.jpg'
+      name: 'Pioneer Citizen',
+      email: 'citizen@kartavya.gov.in',
+      profilePhoto: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
     };
 
     if (this.currentStep === 1) {
@@ -136,7 +136,7 @@ class OnboardingModal {
         <!-- Google User Header Badge -->
         <div class="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-200 mb-6">
           <div class="flex items-center gap-3">
-            <img src="${user.profilePhoto || '/ammodita/ammodita-3.jpg'}" alt="${user.name}" class="w-10 h-10 rounded-full object-cover border border-white shadow-sm">
+            <img src="${user.profilePhoto}" alt="${user.name}" class="w-10 h-10 rounded-full object-cover border border-white shadow-sm">
             <div>
               <p class="text-xs font-bold text-slate-800 font-outfit leading-tight">${user.name}</p>
               <p class="text-[11px] text-slate-500 truncate max-w-[220px]">${user.email}</p>
@@ -149,11 +149,6 @@ class OnboardingModal {
 
         <!-- Title & Subtitle -->
         <div class="text-center mb-6">
-          <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gradient-to-r from-pink-50 via-rose-50 to-amber-50 border border-pink-200 text-pink-700 text-xs font-bold mb-3 shadow-xs">
-            <span class="animate-bounce">🎂</span>
-            <span>Happy Birthday Ammodita!</span>
-            <span>✨🎉</span>
-          </div>
           <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-outfit tracking-tight">
             How do you want to contribute to Kartavya?
           </h2>
@@ -579,9 +574,6 @@ class OnboardingModal {
 
         <!-- Title -->
         <div class="mb-5">
-          <div class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-pink-50 border border-pink-200 text-pink-700 text-xs font-bold mb-2">
-            <span>🎂 Happy Birthday Ammodita! ✨</span>
-          </div>
           <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-outfit tracking-tight">
             Submit a Civic Problem
           </h2>
@@ -772,9 +764,8 @@ class OnboardingModal {
 
     const authState = window.KartavyaAuthStore.getState();
     const user = authState.user || {
-      name: 'Ammodita',
-      email: 'ammodita.citizen@gmail.com',
-      profilePhoto: '/ammodita/ammodita-3.jpg'
+      name: 'Aditi Kushwah',
+      email: 'aditi.citizen@gmail.com'
     };
 
     const industryDirectory = {

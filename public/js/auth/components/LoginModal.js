@@ -59,19 +59,19 @@ class LoginModal {
   async loginWithRole(role) {
     const defaultProfiles = {
       'Student': {
-        uid: 'student-ammodita',
-        name: 'Ammodita',
-        email: 'ammodita@kartavya.gov.in',
-        photoURL: '/ammodita/ammodita-3.jpg',
+        uid: 'student-aditi',
+        name: 'Aditi Kushwah',
+        email: 'ak5617@srmist.edu.in',
+        photoURL: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
         roles: ['Student'],
         profileCompleted: true,
         skills: ['Edge AI', 'Geopolymer Concrete', 'IoT Sensors', 'CleanTech']
       },
       'Citizen': {
-        uid: 'citizen-ammodita',
-        name: 'Ammodita',
-        email: 'ammodita.citizen@gmail.com',
-        photoURL: '/ammodita/ammodita-3.jpg',
+        uid: 'citizen-aditi',
+        name: 'Aditi Kushwah',
+        email: 'aditi.citizen@gmail.com',
+        photoURL: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
         roles: ['Citizen'],
         adhaar: '1234-5678-9012',
         profileCompleted: true
@@ -174,11 +174,6 @@ class LoginModal {
 
         <!-- Brand Sun Icon & Header -->
         <div class="text-center mb-6">
-          <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gradient-to-r from-pink-50 via-rose-50 to-amber-50 border border-pink-200 text-pink-700 text-xs font-bold mb-3 shadow-xs">
-            <span class="animate-bounce">🎂</span>
-            <span>Happy Birthday Ammodita!</span>
-            <span>✨🎉</span>
-          </div>
           <div class="h-12 w-12 mx-auto rounded-2xl overflow-hidden flex items-center justify-center shadow-md border border-slate-200 mb-3">
             <img src="/sun-icon.jpg" class="h-full w-full object-cover" alt="Kartavya Sun Logo">
           </div>
