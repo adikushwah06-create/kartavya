@@ -539,26 +539,6 @@ Student Deliverables:
                 <i class="fa-solid fa-chart-line text-sm"></i>
                 <span>Grant Progress</span>
               </button>
-
-              <!-- Problem Submission: Citizen Issue Submission -->
-              <button 
-                onclick="window.KartavyaStudentPortal.setSubTab('submit-problem')"
-                class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                  this.currentSubTab === 'submit-problem'
-                    ? 'bg-brand-500 text-white shadow-sm'
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                }"
-              >
-                <div class="flex items-center gap-3">
-                  <i class="fa-solid fa-circle-plus text-sm"></i>
-                  <span>Submit Problem</span>
-                </div>
-                <span class="text-[9px] px-2 py-0.5 rounded-full ${
-                  this.currentSubTab === 'submit-problem' ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-800'
-                } font-bold uppercase tracking-wider">
-                  Citizen
-                </span>
-              </button>
             </nav>
           </div>
 
