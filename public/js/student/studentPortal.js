@@ -1264,7 +1264,7 @@ Student Innovation Deliverables:
     this.setSubTab('browse');
   }
 
-  // --- MODAL: Challenge Details (Matching Image 2 Reference) ---
+  // --- MODAL: Challenge Details (Clean, Uncluttered with Technical Skill Set) ---
   openDetailsModal(challengeId) {
     const challenge = this.challenges.find(c => c.id === challengeId);
     if (!challenge) return;
@@ -1274,7 +1274,7 @@ Student Innovation Deliverables:
 
     modal.innerHTML = `
       <div class="fixed inset-0 z-[130] flex items-center justify-center p-4 sm:p-6 bg-slate-950/75 backdrop-blur-md transition-all duration-300">
-        <div class="w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-slate-100 p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto font-sans">
+        <div class="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-100 p-6 sm:p-7 relative max-h-[88vh] overflow-y-auto font-sans">
           
           <!-- Close Button (X) -->
           <button 
@@ -1284,191 +1284,92 @@ Student Innovation Deliverables:
             <i class="fa-solid fa-xmark text-sm"></i>
           </button>
 
-          <!-- Citizen Badge & Context -->
-          <div class="flex items-center gap-2 mb-2">
-            <span class="text-[10px] font-extrabold text-emerald-800 bg-emerald-100/90 border border-emerald-200 px-3 py-1 rounded-full flex items-center gap-1.5 uppercase tracking-wider">
-              <i class="fa-solid fa-users text-emerald-700"></i> Citizen-Reported Civic Issue
+          <!-- Top Category & Grant Badges -->
+          <div class="flex items-center gap-2 mb-2.5">
+            <span class="text-[10px] font-extrabold text-brand-700 bg-brand-50 border border-brand-200 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+              ${challenge.category}
             </span>
-            <span class="text-[11px] text-slate-500 font-medium truncate">
-              Reported by ${challenge.citizenReporter || 'Ward Resident'}
+            <span class="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+              ${challenge.grant}
             </span>
           </div>
 
-          <!-- Modal Title -->
-          <h2 class="text-2xl font-extrabold text-slate-900 font-outfit tracking-tight mb-2">
+          <!-- Problem Title -->
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 font-outfit tracking-tight leading-snug mb-2 pr-6">
             ${challenge.title}
           </h2>
 
-          <div class="flex items-center gap-2 text-xs text-slate-500 mb-6">
-            <i class="fa-solid fa-location-dot text-brand-500"></i>
-            <span>${challenge.ward || 'Bengaluru Community Ward'}</span>
+          <!-- Subtitle / Mentor & Location -->
+          <div class="flex items-center gap-2 text-xs text-slate-500 mb-5 flex-wrap">
+            <span class="flex items-center gap-1 text-slate-700 font-medium">
+              <i class="fa-solid fa-building text-slate-400 text-[11px]"></i>
+              <span>${challenge.industry.name}</span>
+            </span>
+            <span class="text-slate-300">&bull;</span>
+            <span class="flex items-center gap-1 text-slate-500 font-medium">
+              <i class="fa-solid fa-location-dot text-brand-500 text-[11px]"></i>
+              <span>${challenge.ward}</span>
+            </span>
           </div>
 
-          <!-- TOP INDUSTRY CARD (Replacing Faculty per user requirement) -->
-          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-            <div class="flex items-center gap-3.5 min-w-0">
-              <div class="w-12 h-12 rounded-full ${challenge.industry.color} text-white flex items-center justify-center font-outfit font-extrabold text-base shadow-sm shrink-0">
-                ${challenge.industry.initial}
-              </div>
-              <div class="min-w-0">
-                <div class="flex items-center gap-1.5">
-                  <span class="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Industry Responsible</span>
-                </div>
-                <h3 class="text-sm sm:text-base font-bold text-slate-900 font-outfit truncate">
-                  ${challenge.industry.name}
-                </h3>
-                <p class="text-xs text-slate-600 truncate">${challenge.industry.email}</p>
-                <p class="text-[11px] text-slate-500 truncate mt-0.5">${challenge.industry.mentor} &bull; ${challenge.industry.sector}</p>
-              </div>
+          <!-- Problem Summary -->
+          <div class="space-y-1.5 mb-5 p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70">
+            <div class="text-[11px] font-bold text-slate-700 uppercase tracking-wider font-outfit flex items-center gap-1.5">
+              <i class="fa-solid fa-circle-info text-brand-500"></i> Problem Summary
             </div>
-
-            <button 
-              onclick="window.open('mailto:${challenge.industry.email}?subject=Inquiry regarding Kartavya Challenge ${challenge.code}')"
-              class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl flex items-center gap-2 shadow-xs transition shrink-0 font-outfit"
-            >
-              <i class="fa-solid fa-phone text-[11px]"></i>
-              <span>Contact Industry</span>
-            </button>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              ${challenge.citizenDescription || challenge.snippet}
+            </p>
           </div>
 
-          <!-- Telemetry Photo if available -->
-          ${
-            challenge.image
-              ? `
-            <div class="mb-6 rounded-2xl overflow-hidden border border-slate-200 max-h-52 relative">
-              <img src="${challenge.image}" alt="${challenge.title}" class="w-full h-full object-cover">
-              <div class="absolute bottom-2.5 left-2.5 bg-slate-950/70 backdrop-blur-xs text-white text-[10px] font-bold px-3 py-1 rounded-lg flex items-center gap-1.5">
-                <i class="fa-solid fa-camera text-emerald-400"></i>
-                <span>Citizen Telemetry Evidence</span>
-              </div>
-            </div>
-          `
-              : ''
-          }
-
-          <!-- Description Section (Matching Image 2 layout) -->
-          <div class="space-y-3 mb-6">
-            <div class="flex items-center gap-2 text-slate-800 font-bold text-sm font-outfit">
-              <i class="fa-solid fa-book-open text-brand-500"></i>
-              <span>Description & Scope</span>
-            </div>
-            <div class="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-2 whitespace-pre-line text-justify">
-              ${challenge.description}
-            </div>
-          </div>
-
-          <!-- Required Student Skill Set & Technical Competencies Section -->
-          <div class="space-y-4 mb-6 p-5 rounded-2xl bg-gradient-to-br from-amber-50/80 via-slate-50 to-blue-50/50 border border-amber-200/80 shadow-xs">
-            <div class="flex items-center justify-between flex-wrap gap-2">
-              <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-500 to-amber-600 text-white flex items-center justify-center text-sm shadow-xs">
-                  <i class="fa-solid fa-graduation-cap"></i>
-                </div>
-                <div>
-                  <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 font-outfit uppercase tracking-wider">
-                    Required Student Skill Set & Technical Competencies
-                  </h4>
-                  <p class="text-[11px] text-slate-500 font-medium">Domain knowledge and technical capabilities needed to research, prototype & deploy this solution</p>
-                </div>
-              </div>
-              <span class="text-[10px] font-extrabold px-3 py-1 bg-amber-100/90 text-amber-800 rounded-full border border-amber-200">
-                ${challenge.skills.length} Required Skills
+          <!-- Technical Skill Set Required (Clear & Prominent) -->
+          <div class="space-y-3 mb-6 p-4 rounded-2xl bg-gradient-to-br from-blue-50/60 to-indigo-50/40 border border-blue-200/80">
+            <div class="flex items-center justify-between">
+              <h4 class="text-xs font-bold text-slate-900 font-outfit uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-graduation-cap text-blue-600 text-sm"></i>
+                <span>Required Technical Skill Set</span>
+              </h4>
+              <span class="text-[10px] font-extrabold text-blue-700 bg-white px-2.5 py-0.5 rounded-full border border-blue-200 shadow-2xs">
+                ${challenge.skills.length} Skills
               </span>
             </div>
 
-            <!-- Interactive Skill Pills with Verification Badges -->
-            <div class="flex flex-wrap gap-1.5 pt-1">
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+              Proficiency and technical capabilities needed to research & prototype this solution:
+            </p>
+
+            <div class="flex flex-wrap gap-2 pt-0.5">
               ${challenge.skills.map(s => `
-                <span class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-800 border border-slate-200/90 shadow-2xs flex items-center gap-1.5 hover:border-brand-500 transition">
+                <span class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-slate-800 border border-blue-200/90 shadow-2xs flex items-center gap-1.5 hover:border-blue-400 transition">
                   <i class="fa-solid fa-circle-check text-emerald-600 text-[11px]"></i>
                   <span>${s}</span>
                 </span>
               `).join('')}
             </div>
-
-            <!-- Structured Competency Breakdown -->
-            ${
-              challenge.requiredSkillDetails?.competencyGroups
-                ? `
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                ${challenge.requiredSkillDetails.competencyGroups.map(grp => `
-                  <div class="p-3 bg-white/90 rounded-xl border border-slate-200/80 space-y-1.5 shadow-2xs">
-                    <div class="flex items-center gap-1.5 text-xs font-bold text-slate-800 font-outfit">
-                      <i class="${grp.icon} ${grp.color} text-xs"></i>
-                      <span class="truncate">${grp.title}</span>
-                    </div>
-                    <ul class="text-[11px] text-slate-600 space-y-1">
-                      ${grp.items.map(item => `
-                        <li class="flex items-start gap-1 leading-snug">
-                          <span class="text-amber-500 font-bold">&bull;</span>
-                          <span>${item}</span>
-                        </li>
-                      `).join('')}
-                    </ul>
-                  </div>
-                `).join('')}
-              </div>
-            `
-                : ''
-            }
-
-            <!-- Deliverables Expected from Student Team -->
-            ${
-              challenge.requiredSkillDetails?.deliverables
-                ? `
-              <div class="p-3.5 bg-white/90 rounded-xl border border-slate-200/80 shadow-2xs">
-                <span class="block text-[11px] font-bold text-slate-800 uppercase tracking-wider mb-2 font-outfit flex items-center gap-1.5">
-                  <i class="fa-solid fa-list-check text-brand-500"></i>
-                  <span>Deliverables Expected from Student Team (for Milestone Grants):</span>
-                </span>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  ${challenge.requiredSkillDetails.deliverables.map((deliv, idx) => `
-                    <div class="flex items-start gap-2 p-2 bg-slate-50/80 rounded-lg border border-slate-100 text-[11px] text-slate-600 leading-tight">
-                      <span class="w-4 h-4 rounded-full bg-brand-500 text-white text-[10px] font-extrabold flex items-center justify-center shrink-0 mt-0.5">${idx + 1}</span>
-                      <span>${deliv}</span>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            `
-                : ''
-            }
           </div>
 
-          <!-- Metadata Row (Year, Code, Grant) -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600 mb-6 font-medium">
-            <div class="flex items-center gap-2">
-              <i class="fa-regular fa-calendar text-slate-400"></i>
-              <span>Year: <strong>${challenge.ay}</strong></span>
+          <!-- Modal Footer: Meta & Action Buttons -->
+          <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="text-[11px] text-slate-400 font-medium">
+              <span>Code: <strong class="text-slate-700 font-mono">${challenge.code}</strong></span>
+              <span class="mx-1.5">&bull;</span>
+              <span>Year: <strong class="text-slate-700">${challenge.ay}</strong></span>
             </div>
-            <div class="flex items-center gap-2">
-              <i class="fa-solid fa-id-card text-slate-400"></i>
-              <span>Code: <strong>${challenge.code}</strong></span>
-            </div>
-            <div class="flex items-center gap-2">
-              <i class="fa-solid fa-indian-rupee-sign text-slate-400"></i>
-              <span>Funding: <strong class="text-emerald-700">${challenge.grant}</strong></span>
-            </div>
-            <div class="flex items-center gap-2">
-              <i class="fa-solid fa-city text-slate-400"></i>
-              <span>Pilot Ward: <strong>${challenge.ward || 'Bengaluru Ward 150'}</strong></span>
-            </div>
-          </div>
 
-          <!-- Modal Action Buttons (Matching Image 2 layout) -->
-          <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
-            <button 
-              onclick="window.KartavyaStudentPortal.closeDetailsModal()" 
-              class="px-5 py-3 border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-xl transition font-outfit"
-            >
-              Close
-            </button>
-            <button 
-              onclick="window.KartavyaStudentPortal.openApplyModal('${challenge.id}')" 
-              class="px-7 py-3 bg-brand-500 hover:bg-brand-600 text-white text-xs font-extrabold rounded-xl transition shadow-md shadow-brand-500/20 font-outfit"
-            >
-              Apply Now
-            </button>
+            <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+              <button 
+                onclick="window.KartavyaStudentPortal.closeDetailsModal()" 
+                class="px-4 py-2 border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-xl transition font-outfit"
+              >
+                Close
+              </button>
+              <button 
+                onclick="window.KartavyaStudentPortal.openApplyModal('${challenge.id}')" 
+                class="px-6 py-2 bg-brand-500 hover:bg-brand-600 text-white text-xs font-extrabold rounded-xl transition shadow-sm font-outfit"
+              >
+                Apply Now
+              </button>
+            </div>
           </div>
 
         </div>
