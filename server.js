@@ -296,6 +296,121 @@ app.patch('/api/reports/:id', (req, res) => {
   });
 });
 
+// In-Memory Users Database
+const users = {};
+
+// --- AUTHENTICATION ENDPOINTS ---
+
+// 1. GET /api/auth/config - Provide public Firebase client config or mock mode indicator
+app.get('/api/auth/config', (req, res) => {
+  const isConfigured = Boolean(process.env.FIREBASE_API_KEY && process.env.FIREBASE_PROJECT_ID);
+  res.json({
+    mockMode: !isConfigured,
+    firebaseConfig: isConfigured ? {
+      apiKey: process.env.FIREBASE_API_KEY,
+      authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+      appId: process.env.FIREBASE_APP_ID
+    } : null
+  });
+});
+
+// 2. POST /api/auth/google - Authenticate with Google
+app.post('/api/auth/google', (req, res) => {
+  const { uid, name, email, profilePhoto } = req.body;
+
+  if (!uid || !email) {
+    return res.status(400).json({ error: 'User ID and email are required.' });
+  }
+
+  let user = users[uid];
+  let isNewUser = false;
+
+  if (!user) {
+    // First-time user registration
+    user = {
+      uid,
+      name: name || email.split('@')[0],
+      email,
+      profilePhoto: profilePhoto || `https://api.dicebear.com/7.x/bottts/svg?seed=${uid}`,
+      createdAt: new Date().toISOString(),
+      lastLogin: new Date().toISOString(),
+      profileCompleted: false,
+      roles: [],
+      location: '',
+      bio: '',
+      skills: [],
+      interests: [],
+      roleData: {}
+    };
+    users[uid] = user;
+    isNewUser = true;
+  } else {
+    // Existing user login
+    user.lastLogin = new Date().toISOString();
+    if (name) user.name = name;
+    if (profilePhoto) user.profilePhoto = profilePhoto;
+    isNewUser = !user.profileCompleted;
+  }
+
+  res.json({
+    user,
+    isNewUser
+  });
+});
+
+// 3. POST /api/auth/onboarding - Complete profile & role selection
+app.post('/api/auth/onboarding', (req, res) => {
+  const { uid, roles, location, bio, skills, interests, roleData } = req.body;
+
+  if (!uid || !users[uid]) {
+    return res.status(404).json({ error: 'User not found. Please log in again.' });
+  }
+
+  if (!roles || !Array.isArray(roles) || roles.length === 0) {
+    return res.status(400).json({ error: 'Please select at least one role to continue.' });
+  }
+
+  const user = users[uid];
+  user.roles = roles;
+  user.location = location || user.location || '';
+  user.bio = bio || user.bio || '';
+  user.skills = Array.isArray(skills) ? skills : (typeof skills === 'string' ? skills.split(',').map(s => s.trim()).filter(Boolean) : []);
+  user.interests = Array.isArray(interests) ? interests : (typeof interests === 'string' ? interests.split(',').map(s => s.trim()).filter(Boolean) : []);
+  user.roleData = roleData || {};
+  user.profileCompleted = true;
+  user.updatedAt = new Date().toISOString();
+
+  res.json({
+    success: true,
+    user
+  });
+});
+
+// 4. GET /api/auth/me - Retrieve current session user
+app.get('/api/auth/me', (req, res) => {
+  const uid = req.headers['x-user-id'] || req.query.uid;
+  if (!uid || !users[uid]) {
+    return res.status(401).json({ authenticated: false });
+  }
+  res.json({
+    authenticated: true,
+    user: users[uid]
+  });
+});
+
+// 5. GET /api/auth/profile/:uid - Public/Authenticated user profile
+app.get('/api/auth/profile/:uid', (req, res) => {
+  const { uid } = req.params;
+  const user = users[uid];
+  if (!user) {
+    return res.status(404).json({ error: 'User not found.' });
+  }
+  res.json(user);
+});
+
 // Wildcard route to serve index.html for any frontend SPA navigation
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));

@@ -195,8 +195,8 @@
             <span class="text-xl font-bold tracking-tight text-white font-outfit">Kartavya</span>
           </div>
         </div>
-        <button onclick="transitionToAuthGate()" class="px-5 py-2 bg-brand-500 hover:bg-brand-600 text-white text-xs font-extrabold rounded-xl transition shadow-sm font-outfit uppercase tracking-wider">
-          Access Portals <i class="fa-solid fa-arrow-right"></i>
+        <button id="about-access-portals-btn" onclick="window.KartavyaAuth ? window.KartavyaAuth.openLoginModal() : transitionToAuthGate()" class="px-5 py-2 bg-brand-500 hover:bg-brand-600 text-white text-xs font-extrabold rounded-xl transition shadow-sm font-outfit uppercase tracking-wider flex items-center gap-1.5">
+          <span>Login / Join Kartavya</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
         </button>
       </div>
     </header>
@@ -1321,6 +1321,28 @@
       const appNav = document.getElementById('app-nav');
       const appFooter = document.getElementById('app-footer');
 
+      const googleUser = window.KartavyaAuthStore?.getState()?.user;
+      if (googleUser && googleUser.profileCompleted) {
+        if (gate) gate.classList.add('hidden');
+        if (about) about.classList.add('hidden');
+        appNav.classList.remove('hidden');
+        appFooter.classList.remove('hidden');
+
+        renderNavbar();
+
+        const nameLabel = document.getElementById('nav-session-name');
+        const roleLabel = document.getElementById('nav-session-role');
+        if (nameLabel) nameLabel.innerText = googleUser.name || 'Member';
+        if (roleLabel) {
+          const roles = googleUser.roles || ['Citizen'];
+          roleLabel.innerText = roles.length > 1 ? `${roles[0]} +${roles.length - 1}` : (roles[0] || 'Member');
+        }
+
+        switchTab('map');
+        syncKarmaBalances();
+        return;
+      }
+
       if (sessionRole) {
         if (gate) gate.classList.add('hidden');
         if (about) about.classList.add('hidden');
@@ -1358,6 +1380,10 @@
       sessionAdhaar = null;
       localStorage.removeItem('kartavya_session_role');
       localStorage.removeItem('kartavya_session_adhaar');
+
+      if (window.KartavyaAuth) {
+        window.KartavyaAuth.logout();
+      }
       
       if (leafletMap) {
         leafletMap.remove();
@@ -1398,7 +1424,8 @@
       const container = document.getElementById('navbar-tabs-container');
       container.innerHTML = '';
 
-      if (sessionRole === 'citizen') {
+      const googleUser = window.KartavyaAuthStore?.getState()?.user;
+      if (googleUser || sessionRole === 'citizen') {
         container.innerHTML = `
           <button onclick="switchTab('report')" id="tab-report" class="tab-btn flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-sm transition-all duration-200 text-orange-200 hover:text-white">
             <i class="fa-solid fa-circle-plus"></i> Report Issue
@@ -1835,7 +1862,8 @@
       const lng = document.getElementById('report-lng').value;
       const image = document.getElementById('captured-image').src;
 
-      if (!lat || !lng || !image || !sessionAdhaar) {
+      const activeReporterId = sessionAdhaar || window.KartavyaAuthStore?.getState()?.user?.uid;
+      if (!lat || !lng || !image || !activeReporterId) {
         showToast('Please capture telemetry evidence photo first.', 'warning');
         return;
       }
@@ -1857,7 +1885,7 @@
             lat,
             lng,
             image,
-            reporterAdhaar: sessionAdhaar
+            reporterAdhaar: activeReporterId
           })
         });
 
@@ -2816,5 +2844,14 @@ Thanking You,
       });
     }
   </script>
+
+  <!-- Kartavya Authentication & Onboarding Architecture -->
+  <script src="/js/auth/authService.js"></script>
+  <script src="/js/auth/authStore.js"></script>
+  <script src="/js/auth/components/GoogleAuthButton.js"></script>
+  <script src="/js/auth/components/LoginModal.js"></script>
+  <script src="/js/auth/components/OnboardingModal.js"></script>
+  <script src="/js/auth/router.js"></script>
+  <script src="/js/auth/index.js"></script>
 </body>
 </html>
